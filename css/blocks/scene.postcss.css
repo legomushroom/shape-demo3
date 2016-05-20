@@ -1,0 +1,54 @@
+@import '../assets/globals.postcss.css';
+
+$width:  400;
+$height: 370;
+.scene {
+  /*outline:      1px solid white;*/
+  width:        calc( $width * $PX );
+  height:       calc( $height * $PX );
+  position:     absolute;
+  left:         50%;
+  top:          50%;
+  margin-left:  calc( - $width/2 * $PX );
+  margin-top:   calc( - $height/2 * $PX );
+  &__bar {
+    background:     $c-black;
+    height:         calc( 4 * $PX );
+    border-radius:  calc( 15 * $PX );
+  }
+  &__dust {
+    width:  calc( 240*$PX );
+    height: calc( 200*$PX );
+    /*border: 1px solid white;*/
+    position: absolute;
+    bottom: calc( 3.75*$GS );
+    right: calc( -180*$PX );
+    overflow: hidden;
+    z-index: 1;
+  }
+  $width:  16;
+  $height: 10;
+  $start:  47;
+  $step:   96;
+  &__bar-handle {
+    position:       absolute;
+    width:          calc( $height * $PX );
+    height:         calc( $width  * $PX );
+    border-radius:  calc( $height * $PX );
+    background:     $c-black;
+    top:            calc( - $height/2 * $PX );
+    z-index:        1;
+    &:nth-of-type(1) {
+      margin-left:  calc( $start * $PX );
+    }
+    &:nth-of-type(2) {
+      margin-left:  calc( ($start + $step) * $PX );
+    }
+    &:nth-of-type(3) {
+      margin-left:  calc( ($start + 2*$step) * $PX );
+    }
+    &:nth-of-type(4) {
+      margin-left:  calc( ($start + 3*$step) * $PX );
+    }
+  }
+}

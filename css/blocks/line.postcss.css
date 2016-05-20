@@ -1,0 +1,22 @@
+@import '../assets/globals.postcss.css';
+
+.line {
+  &:before,
+  &:after {
+    content:        '';
+    position:       absolute;
+  }
+  
+  $width:  16;
+  $height: 10;
+  &:before {
+    width:          calc( $width  * $PX );
+    height:         calc( $height * $PX );
+    border-radius:  calc( $width  * $PX );
+    background:     $c-black;
+    top:            50%;
+    left:           calc( 1 * $PX );
+    margin-top:     calc( - $height/2 * $PX );
+    margin-left:    calc( - $width * $PX );
+  }
+}
