@@ -83,11 +83,13 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(84);
+	var _addButton = __webpack_require__(86);
 
-	var _constants2 = _interopRequireDefault(_constants);
+	var _addButton2 = _interopRequireDefault(_addButton);
 
-	var _howler = __webpack_require__(85);
+	var _modal = __webpack_require__(90);
+
+	var _modal2 = _interopRequireDefault(_modal);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -110,164 +112,11 @@
 	  Demo.prototype._render = function _render() {
 	    // super._render();
 
-	    var DURATION = 950,
-	        DELAY = 1200,
-	        SHIFT = 25;
-
-	    var vibroSound = new _howler.Howl({
-	      rate: .9,
-	      urls: ['sounds/vibro.mp3']
-	    });
-
-	    var noise = mojs.easing.path('M0,100 C0,100 2.08241272,101.287388 3.78271484,102.328264 C5.35552883,99.9999999 7.00048828,95.208496 7.00048828,95.208496 L10.1762695,103.816964 L12.7734375,95.9547991 L19.3125,102.328264 L22.2539062,95.208496 L27.0786839,106.645089 L29.2555809,93.3549108 L32.0340385,103.816964 L35.3459816,94.6015626 L38.3783493,103.092634 L41.0513382,95.9547991 L43.7739944,106.645089 L45.6729927,96.8973214 L50,105.083147 L53.3504448,93.3549108 L57.7360497,103.816964 L60.8616066,95.9547991 L65.0345993,103.092634 L68.6997757,97.5106029 L71.6646194,102.03125 L75.5066986,96.5672433 L78.2949219,102.652344 L81.0313873,96.8973214 L84.0174408,102.328264 L86.0842667,97.7332592 L88.7289352,101.606306 L91.1429977,98.3533763 L94.3822556,101.287388 L97.0809174,98.7254467 L100,100');
-	    var addButton = new mojs.Shape({
-	      fill: _colors2.default.WHITE,
-	      radius: 16,
-	      left: '50%',
-	      top: '50%',
-	      isShowStart: true,
-	      duration: DURATION,
-	      delay: DELAY,
-	      scale: { 1: 1.35 },
-	      y: 10,
-	      onStart: function onStart() {
-	        vibroSound.play();
-	      },
-
-	      onUpdate: function onUpdate(ep, p) {
-	        var proc = noise(p);
-	        var coefX = Math.random() <= .5 ? 1 : -1;
-	        var coefY = Math.random() <= .5 ? 1 : -1;
-	        addButtonCross.el.style['transform'] = 'translateX( ' + 1 * SHIFT * proc + 'px )';
-	      }
-	    }).then({
-	      scale: 1,
-	      duration: .5 * DURATION
-	    });
-
-	    addButton.el.style['cursor'] = 'pointer';
-
-	    var bigReturnCircle = new mojs.Shape({
-	      fill: _colors2.default.WHITE,
-	      fillOpacity: .65,
-	      radius: 42,
-	      left: '50%', top: '50%',
-	      parent: addButton.el,
-	      scale: { 0: 1 },
-	      // isShowStart:  true,
-	      opacity: { 1: 0 },
-	      duration: 1.5 * DURATION,
-	      delay: DELAY + .7 * DURATION,
-	      easing: 'cubic.out',
-	      isTimelineLess: true
-	    });
-
-	    var innerCircle = new mojs.Shape({
-	      fill: _colors2.default.RED,
-	      parent: addButton.el,
-	      fillOpacity: .15,
-	      radius: 13,
-	      left: '50%', top: '50%',
-	      scale: { 0: 1 },
-	      isShowStart: true,
-	      opacity: { 0: 1 },
-	      duration: .95 * DURATION,
-	      delay: DELAY,
-	      easing: 'cubic.out'
-	    }).then({
-	      scale: 0,
-	      opacity: 0,
-	      duration: .25 * DURATION
-
-	    });
-
-	    var addButtonCross = new mojs.Shape({
-	      shape: 'cross',
-	      parent: addButton.el,
-	      left: '50%',
-	      top: '50%',
-	      fill: 'none',
-	      stroke: _colors2.default.VINOUS,
-	      radius: 6,
-	      strokeLinecap: 'round',
-	      isShowStart: true,
-	      duration: DURATION,
-	      delay: DELAY + 50,
-	      isTimelineLess: true
-	    });
-
-	    var showUp2 = new mojs.Shape({
-	      fill: 'none',
-	      stroke: _colors2.default.WHITE,
-	      radius: { 0: 10 },
-	      angle: { 0: -290 },
-	      strokeWidth: { 0: 22 },
-	      left: '80%', top: '80%',
-	      strokeDasharray: '100%',
-	      strokeDashoffset: { '-100%': '0%' },
-	      strokeLinecap: 'round',
-	      duration: 1500
-	    });
-
-	    var BubbleStagger = mojs.stagger(mojs.Shape);
-
-	    var bubbles = new BubbleStagger({
-	      quantifier: 2,
-	      // parent:         showUp2.el,
-	      delay: 550,
-	      left: '80%', top: '80%',
-	      radius: [10, 7],
-	      scale: { 1: 0 },
-	      fill: 'white',
-	      y: [{ 0: -30 }, { 0: -15 }],
-	      x: [{ 15: 25 }, { 15: 30 }],
-	      duration: 400,
-	      isForce3d: true
-	      // pathScale:      [ 'rand(.3, .5)', 'rand(.5, 1)' ],
-	      // direction:     [ 1, -1 ]
-	    });
-
-	    var showUp = new mojs.Shape({
-	      fill: 'none',
-	      stroke: _colors2.default.WHITE,
-	      radius: { 0: 10 },
-	      angle: { 560: 270 },
-	      strokeWidth: { 0: 22 },
-	      left: '80%', top: '80%',
-	      strokeDasharray: '100%',
-	      strokeDashoffset: { '-100%': '0%' },
-	      strokeLinecap: 'round',
-	      duration: 1000
-	    });
-
-	    var addButtonCross2 = new mojs.Shape({
-	      shape: 'cross',
-	      parent: showUp.el,
-	      left: '50%',
-	      top: '50%',
-	      fill: 'none',
-	      stroke: _colors2.default.VINOUS,
-	      radius: 6,
-	      strokeLinecap: 'round',
-	      isShowStart: true,
-	      duration: DURATION,
-	      angle: { 0: 180 },
-	      // strokeWidth:    { 4: 2 },
-	      // stroke:       { [COLORS.WHITE]: COLORS.VINOUS },
-	      scale: { 0: 1 },
-	      y: { 25: 0 },
-	      // delay:          DELAY + 50,
-	      isTimelineLess: true
-	    });
-
 	    var mainTimeline = new mojs.Timeline();
 
-	    mainTimeline.add(showUp,
-	    // showUp2,
-	    addButtonCross2, bubbles
-	    // addButton, addButtonCross,
-	    // bigReturnCircle, innerCircle
-	    );
+	    mainTimeline.add(
+	    // new AddButton
+	    new _modal2.default());
 
 	    ;new _mojsPlayer2.default({ add: mainTimeline }).el.style['z-index'] = 10;
 	  };
@@ -11354,17 +11203,7 @@
 	exports.default = COLORS;
 
 /***/ },
-/* 84 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	exports.__esModule = true;
-	exports.default = {
-	  LINE1_DURATION: 400
-	};
-
-/***/ },
+/* 84 */,
 /* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -12721,6 +12560,494 @@
 
 	})();
 
+
+/***/ },
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(3);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(72);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(82);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _colors = __webpack_require__(83);
+
+	var _colors2 = _interopRequireDefault(_colors);
+
+	var _showButton = __webpack_require__(87);
+
+	var _showButton2 = _interopRequireDefault(_showButton);
+
+	var _vibroButton = __webpack_require__(88);
+
+	var _vibroButton2 = _interopRequireDefault(_vibroButton);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var AddButton = function (_Module) {
+	  (0, _inherits3.default)(AddButton, _Module);
+
+	  function AddButton() {
+	    (0, _classCallCheck3.default)(this, AddButton);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  AddButton.prototype._render = function _render() {
+	    _Module.prototype._render.call(this);
+	    this.timeline = new mojs.Timeline();
+
+	    this.timeline.add(new _showButton2.default());
+	    // .append( new VibroButton );
+
+	    return this.timeline;
+	  };
+
+	  return AddButton;
+	}(_module2.default);
+
+	exports.default = AddButton;
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(3);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(72);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(82);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _colors = __webpack_require__(83);
+
+	var _colors2 = _interopRequireDefault(_colors);
+
+	var _vibroButton = __webpack_require__(88);
+
+	var _vibroButton2 = _interopRequireDefault(_vibroButton);
+
+	var _constants = __webpack_require__(89);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	var _howler = __webpack_require__(85);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ShowButton = function (_Module) {
+	  (0, _inherits3.default)(ShowButton, _Module);
+
+	  function ShowButton() {
+	    (0, _classCallCheck3.default)(this, ShowButton);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  ShowButton.prototype._render = function _render() {
+	    _Module.prototype._render.call(this);
+
+	    var vibroBtn = new _vibroButton2.default();
+	    var left = '50%',
+	        top = '50%',
+	        duration = 800;
+
+	    var bubbleSound = new _howler.Howl({
+	      urls: ['sounds/bubble.' + _constants2.default.FORMAT]
+	    });
+
+	    var BubbleStagger = mojs.stagger(mojs.Shape);
+	    var bubbles = new BubbleStagger({
+	      left: left, top: top,
+	      quantifier: 2,
+	      radius: [10, 7],
+	      scale: { 1: 0 },
+	      fill: 'white',
+	      y: [{ 0: -30 }, { 0: -15 }],
+	      x: [{ 15: 25 }, { 15: 30 }],
+	      duration: duration / 2.5,
+	      delay: duration / 2,
+	      isForce3d: true,
+	      isShowEnd: false,
+	      onStart: [function (isFwd) {
+	        // isFwd && bubbleSound.play();
+	      }, null]
+	    });
+
+	    var showUp = new mojs.Shape({
+	      left: left, top: top,
+	      fill: 'none',
+	      stroke: _colors2.default.WHITE,
+	      radius: { 0: 10 },
+	      angle: { 560: 270 },
+	      strokeWidth: { 0: 22 },
+	      strokeDasharray: '100%',
+	      strokeDashoffset: { '-100%': '0%' },
+	      strokeLinecap: 'round',
+	      duration: duration,
+	      isShowEnd: false,
+	      isSoftHide: false,
+	      onComplete: function onComplete(isFwd) {
+	        isFwd && vibroBtn.timeline.play();
+	        isFwd && (vibroBtn.addButton.el.style['opacity'] = 1);
+	        // !!isFwd && vibroBtn.timeline.pause();
+	        // !!isFwd && (vibroBtn.addButton.el.style[ 'opacity' ] = 0);
+	      }
+	    });
+
+	    var addButtonCross = new mojs.Shape({
+	      left: left, top: top,
+	      shape: 'cross',
+	      parent: showUp.el,
+	      fill: 'none',
+	      stroke: _colors2.default.VINOUS,
+	      radius: 6,
+	      strokeLinecap: 'round',
+	      isShowStart: true,
+	      duration: duration,
+	      angle: { 0: -360 },
+	      scale: { 0: 1 },
+	      y: { 35: 0 },
+	      // x:              { 35: 0 },
+	      isForce3d: true,
+	      isTimelineLess: true,
+	      isShowEnd: false
+	    });
+
+	    return [bubbles, showUp, addButtonCross];
+	  };
+
+	  return ShowButton;
+	}(_module2.default);
+
+	exports.default = ShowButton;
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(3);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(72);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(82);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _colors = __webpack_require__(83);
+
+	var _colors2 = _interopRequireDefault(_colors);
+
+	var _constants = __webpack_require__(89);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	var _howler = __webpack_require__(85);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var VibroButton = function (_Module) {
+	  (0, _inherits3.default)(VibroButton, _Module);
+
+	  function VibroButton() {
+	    (0, _classCallCheck3.default)(this, VibroButton);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  VibroButton.prototype._render = function _render() {
+	    _Module.prototype._render.call(this);
+
+	    var DURATION = 950,
+	        DELAY = 2000,
+	        SHIFT = 25;
+
+	    var left = '50%',
+	        top = '50%';
+
+	    this.vibroSound = new _howler.Howl({
+	      rate: .9,
+	      urls: ['sounds/vibro.' + _constants2.default.FORMAT]
+	    });
+
+	    var noise = mojs.easing.path('M0,100 C0,100 2.08241272,101.287388 3.78271484,102.328264 C5.35552883,99.9999999 7.00048828,95.208496 7.00048828,95.208496 L10.1762695,103.816964 L12.7734375,95.9547991 L19.3125,102.328264 L22.2539062,95.208496 L27.0786839,106.645089 L29.2555809,93.3549108 L32.0340385,103.816964 L35.3459816,94.6015626 L38.3783493,103.092634 L41.0513382,95.9547991 L43.7739944,106.645089 L45.6729927,96.8973214 L50,105.083147 L53.3504448,93.3549108 L57.7360497,103.816964 L60.8616066,95.9547991 L65.0345993,103.092634 L68.6997757,97.5106029 L71.6646194,102.03125 L75.5066986,96.5672433 L78.2949219,102.652344 L81.0313873,96.8973214 L84.0174408,102.328264 L86.0842667,97.7332592 L88.7289352,101.606306 L91.1429977,98.3533763 L94.3822556,101.287388 L97.0809174,98.7254467 L100,100');
+	    var addButton = new mojs.Shape({
+	      fill: _colors2.default.WHITE,
+	      radius: 21,
+	      left: left, top: top,
+	      isShowStart: true,
+	      duration: DURATION,
+	      delay: DELAY,
+	      scale: { 1: 1.35 },
+	      onStart: function onStart(isFwd) {
+	        // console.log(isFwd)
+	        // this.vibroSound.play();
+	      },
+	      onUpdate: function onUpdate(ep, p) {
+	        var proc = noise(p);
+	        var coefX = Math.random() <= .5 ? 1 : -1;
+	        var coefY = Math.random() <= .5 ? 1 : -1;
+	        addButtonCross.el.style['transform'] = 'translateX( ' + 1 * SHIFT * proc + 'px )';
+	      }
+	    }).then({
+	      scale: 1,
+	      duration: .5 * DURATION
+	    });
+
+	    addButton.el.style['cursor'] = 'pointer';
+	    addButton.el.style['opacity'] = '0';
+	    addButton.el.style['z-index'] = '1';
+
+	    this.addButton = addButton;
+
+	    this._addListeners();
+
+	    var bigReturnCircle = new mojs.Shape({
+	      fill: _colors2.default.WHITE,
+	      fillOpacity: .65,
+	      radius: 55,
+	      left: left, top: top,
+	      // parent:       addButton.el,
+	      scale: { 0: 1 },
+	      isShowEnd: false,
+	      isSoftHide: false,
+	      isShowStart: true,
+	      opacity: { 1: 0 },
+	      duration: 1.5 * DURATION,
+	      delay: DELAY + .7 * DURATION,
+	      easing: 'cubic.out',
+	      isTimelineLess: true
+	    });
+
+	    bigReturnCircle.el.style['z-index'] = '0';
+
+	    var innerCircle = new mojs.Shape({
+	      left: left, top: top,
+	      fill: _colors2.default.RED,
+	      parent: addButton.el,
+	      fillOpacity: .15,
+	      radius: 18,
+	      scale: { 0: 1 },
+	      isShowStart: true,
+	      opacity: { 0: 1 },
+	      duration: .95 * DURATION,
+	      delay: DELAY,
+	      easing: 'cubic.out'
+	    }).then({
+	      scale: 0,
+	      opacity: 0,
+	      duration: .25 * DURATION
+
+	    });
+
+	    var addButtonCross = new mojs.Shape({
+	      shape: 'cross',
+	      left: left, top: top,
+	      parent: addButton.el,
+	      fill: 'none',
+	      stroke: _colors2.default.VINOUS,
+	      radius: 6,
+	      strokeLinecap: 'round',
+	      isShowStart: true,
+	      // isShowEnd:      false,
+	      duration: DURATION,
+	      delay: DELAY + 50,
+	      isTimelineLess: true
+	    });
+
+	    this.timeline = new mojs.Timeline({ repeat: 99999 });
+
+	    this.timeline.add(addButton, addButtonCross, bigReturnCircle, innerCircle);
+	    return this;
+	  };
+
+	  VibroButton.prototype._addListeners = function _addListeners() {
+	    // this.addButton.el.addEventListener('mouseenter', (e) => {
+	    //   // this.vibroSound.pause( );
+	    // });
+
+	    // this.addButton.el.addEventListener('mouseleave', () => {
+	    //   this.timeline
+	    //     .setSpeed(1)
+	    //     .replay();
+	    // });
+
+	  };
+
+	  return VibroButton;
+	}(_module2.default);
+
+	exports.default = VibroButton;
+
+/***/ },
+/* 89 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports.default = {
+	  SPEED: 1,
+	  FORMAT: 'mp3'
+	};
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(3);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(72);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(82);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _colors = __webpack_require__(83);
+
+	var _colors2 = _interopRequireDefault(_colors);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Modal = function (_Module) {
+	  (0, _inherits3.default)(Modal, _Module);
+
+	  function Modal() {
+	    (0, _classCallCheck3.default)(this, Modal);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  Modal.prototype._render = function _render() {
+	    var _x, _y;
+
+	    var bg = new mojs.Shape({
+	      left: '50%', top: '50%',
+	      fill: _colors2.default.BLACK,
+	      radius: 500,
+	      scale: { 0: 2 },
+	      oapcity: .95,
+	      isForce3d: true
+	    });
+
+	    var modal = new mojs.Shape({
+	      shape: 'rect',
+	      rx: 38,
+	      ry: 38,
+	      radiusX: 124,
+	      radiusY: 92,
+	      left: '50%', top: '50%',
+	      angle: -3,
+	      scaleX: { 0: 1 },
+	      scaleY: { 0: 1 },
+	      fill: _colors2.default.WHITE,
+	      delay: 100,
+	      duration: 300,
+	      origin: '15% 90%',
+	      easing: 'bounce.out',
+	      isForce3d: true
+	    });
+
+	    modal.el.style['overflow'] = 'hidden';
+	    modal.el.style['border-radius'] = '38px';
+
+	    var ripple = new mojs.Shape({
+	      fill: _colors2.default.RED,
+	      // shape: 'rect',
+	      rx: 38,
+	      ry: 38,
+	      // radiusX: 124,
+	      // radiusY: 92,
+	      radius: 140,
+	      x: (_x = {}, _x[-150] = 0, _x),
+	      y: (_y = {}, _y[150] = 0, _y),
+	      scale: { 0: 1 },
+	      parent: modal.el,
+	      isForce3d: true,
+	      isShoeEnd: false,
+	      // opacity: { 1: 0 },
+	      left: '50%', top: '50%',
+	      delay: 150,
+	      duration: 400
+	    });
+
+	    var corner = new mojs.Shape({
+	      fill: _colors2.default.RED,
+	      shape: 'polygon',
+	      // rx: 38,
+	      // ry: 38,
+	      // radiusX: 124,
+	      // radiusY: 92,
+	      radiusX: 15,
+	      radiusY: 35,
+	      x: -75,
+	      y: 95,
+	      angle: 72,
+	      scale: { 0: 1 },
+	      // parent:  modal.el,
+	      isForce3d: true,
+	      isShoeEnd: false,
+	      // opacity: { 1: 0 },
+	      left: '50%', top: '50%',
+	      delay: 150,
+	      duration: 400
+	    });
+
+	    return [bg, modal, ripple, corner];
+	  };
+
+	  return Modal;
+	}(_module2.default);
+
+	exports.default = Modal;
 
 /***/ }
 /******/ ]);
