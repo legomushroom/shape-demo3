@@ -12935,6 +12935,383 @@
 
 	exports.__esModule = true;
 
+	var _getIterator2 = __webpack_require__(96);
+
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+	var _extends2 = __webpack_require__(90);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(3);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(72);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module2 = __webpack_require__(82);
+
+	var _module3 = _interopRequireDefault(_module2);
+
+	var _colors = __webpack_require__(83);
+
+	var _colors2 = _interopRequireDefault(_colors);
+
+	var _modalIn = __webpack_require__(95);
+
+	var _modalIn2 = _interopRequireDefault(_modalIn);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Modal = function (_Module) {
+	  (0, _inherits3.default)(Modal, _Module);
+
+	  function Modal() {
+	    (0, _classCallCheck3.default)(this, Modal);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  Modal.prototype._render = function _render() {
+	    var _this2 = this;
+
+	    _Module.prototype._render.call(this);
+	    this.el.classList.add('modal-wrapper');
+	    this.wrapper = this.el;
+	    this.el = this._createChild('div', 'modal');
+
+	    var modalIn = new _modalIn2.default({ el: this.el });
+
+	    this.corner = modalIn.corner.el;
+
+	    this.buttonLove = this._findEl('#js-button-love');
+	    this.buttonHate = this._findEl('#js-button-hate');
+	    this.modalText = this._findEl('#js-modal-text');
+
+	    var circle = new mojs.Shape({
+	      fill: _colors2.default.WHITE,
+	      radius: 22,
+	      isShowStart: true,
+	      left: '50%', top: '50%',
+	      // x: { 0: 100 },
+	      // y: { 0: -100 },
+	      scale: { 1: 0 },
+	      isForce3d: true,
+	      isTimelineLess: true
+	    });
+
+	    var rotateCurve = mojs.easing.path('M0,100 C0,100 18.4374504,69.9344254 47.837504,100 C66.7065746,119.176264 100,100 100,100');
+	    var rotateTween = new mojs.Tween({
+	      duration: 2000,
+	      repeat: 999999,
+	      onUpdate: function onUpdate(ep, p) {
+	        var rotateP = rotateCurve(p);
+	        _this2.el.style['transform'] = 'rotate(' + -10 * rotateP + 'deg)';
+	        _this2.el.style['transform-origin'] = 10 + 55 * rotateP + '% ' + 80 * 10 * rotateP + '%';
+	      }
+	    });
+
+	    this.rotateTween = rotateTween;
+	    this.rotateTween.play();
+
+	    this._createNoiseTween();
+	    this._createReleaseEffect();
+	    this._addListeners();
+
+	    return [modalIn];
+	  };
+
+	  Modal.prototype._createNoiseTween = function _createNoiseTween() {
+	    var _this3 = this,
+	        _sideOpts,
+	        _x,
+	        _y;
+
+	    var prefix = mojs.h.prefix.css;
+	    var noise = mojs.easing.path('M0,100 L1.98696332,100.629117 L3.53838746,97.8756628 L5.99628366,101.223339 L7.55950567,96.8122389 L10.1815894,101.223339 L14.0277054,95.8836259 L16.1247825,101.164595 L20.9432423,95.6155105 L24.669413,101.207523 L29.2253694,93.4487468 L32.6556094,103.200313 L37.2037006,92.4636488 L40.1757887,103.28617 L41.8363434,91.0417336 L45.2449539,105.027414 L46.5555042,89.4345477 L50.5097677,105.294776 L55.6674171,87.3001687 L59.2510299,106.960707 L62.5721393,85.5431093 L65.6317285,105.27896 L69.6410488,83.6015324 L73.3996638,104.869256 L76.8859438,81.1907535 L78.8080186,106.960707 L80.7310767,80.0527695 L83.9656681,104.876787 L85.8887261,78.1774683 L88.3358076,107.094764 L91.3944137,78.7807278 L95.0763423,103.521901 L97.5234238,79.5677518 L100,100');
+	    var coef = 1;
+
+	    this.noiseTween = new mojs.Timeline();
+	    var scale = 1;
+	    this.shakeTween = new mojs.Tween({
+	      duration: 800,
+	      onUpdate: function onUpdate(ep, p, isFwd) {
+	        var nozieP = noise(p),
+	            transform = 'translate( ' + coef * (20 * nozieP) + 'px, ' + coef * (20 * nozieP) + 'px )';
+
+	        _this3.el.style['transform'] = transform;
+	      },
+	      onComplete: function onComplete(isFwd) {
+	        if (_this3._isShake) {
+	          coef = Math.random() < .5 ? -1 : 1;
+	          setTimeout(function () {
+	            _this3.shakeTween.play();
+	          }, 1);
+	        }
+	      }
+	    });
+
+	    var sideOpts = (_sideOpts = {
+	      left: 0, top: '50%',
+	      duration: 300,
+	      shape: 'curve',
+	      parent: this.el,
+	      easing: 'cubic.out',
+	      // fill:       COLORS.WHITE,
+	      fill: _colors2.default.RED,
+	      x: { 2: 10 },
+	      angle: { 0: 2 },
+	      radiusY: 28,
+	      radiusX: 76
+	    }, _sideOpts['angle'] = -90, _sideOpts.scaleY = { 0: 1 }, _sideOpts.scaleX = { 1: 1.1 }, _sideOpts.isShowStart = 1, _sideOpts);
+
+	    var leftSide = new mojs.Shape((0, _extends3.default)({}, sideOpts, {
+	      onUpdate: function onUpdate(ep, p, isFwd) {
+	        var transform = 'scale(' + (1 + .05 * ep) + ')';
+
+	        _this3.wrapper.style['transform'] = transform;
+	        _this3.wrapper.style[prefix + 'transform'] = transform;
+	      }
+	    }));
+
+	    // onComplete: ( isFwd ) => {
+	    //   if ( this._isShake ) { setTimeout( () => { shake.play(); }, 10) }
+	    // }
+	    var rightSide = new mojs.Shape((0, _extends3.default)({}, sideOpts, {
+	      left: '100%', top: '50%',
+	      x: (_x = {}, _x[-2] = -10, _x),
+	      angle: 90
+	    }));
+
+	    var topSide = new mojs.Shape((0, _extends3.default)({}, sideOpts, {
+	      left: '50%', top: 0,
+	      radiusY: 25,
+	      radiusX: 101,
+	      y: { 2: 5 },
+	      x: 0,
+	      angle: 0
+	    }));
+
+	    var bottomSide = new mojs.Shape((0, _extends3.default)({}, sideOpts, {
+	      left: '50%', top: '100%',
+	      radiusY: 25,
+	      radiusX: 102,
+	      y: (_y = {}, _y[-2] = -7, _y),
+	      x: 1,
+	      angle: 180,
+	      onUpdate: function onUpdate(ep, p) {
+	        _this3.modalText.style['transform'] = 'translateY(' + -10 * ep + 'px) scaleY(' + (1 + .05 * ep) + ')';
+	        _this3.buttonLove.style['transform'] = 'scaleX(' + (1 + .05 * ep) + ') translate( ' + -4 * ep + 'px, ' + 4 * ep + 'px ) skewX(' + 4 * ep + 'deg) rotate(' + 4 * ep + 'deg)';
+	        _this3.buttonHate.style['transform'] = 'scaleX(' + (1 + .05 * ep) + ') translate( ' + 4 * ep + 'px, ' + 4 * ep + 'px ) skewX(' + -4 * ep + 'deg) rotate(' + -4 * ep + 'deg)';
+	      }
+	    }));
+
+	    this.noiseTween.add(
+	    // shake,
+	    leftSide, rightSide, topSide, bottomSide);
+	  };
+
+	  Modal.prototype._createReleaseEffect = function _createReleaseEffect() {
+	    var ShapeStagger = mojs.stagger(mojs.ShapeSwirl);
+
+	    var smokeOpts = {
+	      quantifier: 3,
+	      top: '78%',
+	      // isShowStart: true,
+	      // shape:        'polygon',
+	      fill: 'white',
+	      x: 'rand(-40, 40)',
+	      y: { 0: -100 },
+	      duration: 1000,
+	      pathScale: 'rand(.35, 1)',
+	      direction: [1, -1],
+	      radius: 'rand( 3, 7 )',
+	      scale: { 1: 0 },
+	      swirlSize: 'rand( 8, 12 )',
+	      swirlFrequency: 'rand( 2, 5 )',
+	      parent: this.el,
+	      // isTimelineLess: true,
+	      isForce3d: true
+	    };
+
+	    this.loveSmoke = new ShapeStagger((0, _extends3.default)({}, smokeOpts, {
+	      left: '28%'
+	    }));
+
+	    // parent:       this.buttonLove,
+	    this.hateSmoke = new ShapeStagger((0, _extends3.default)({}, smokeOpts, {
+	      left: '72%'
+	    }));
+	  };
+
+	  // parent:       this.buttonHate,
+
+	  Modal.prototype._addListeners = function _addListeners() {
+	    this.buttonLove.addEventListener('mouseenter', this._buttonEnter.bind(this));
+	    this.buttonHate.addEventListener('mouseenter', this._buttonEnter.bind(this));
+	    this.buttonLove.addEventListener('mouseleave', this._buttonLeave.bind(this));
+	    this.buttonHate.addEventListener('mouseleave', this._buttonLeave.bind(this));
+	  };
+
+	  Modal.prototype._buttonEnter = function _buttonEnter(e) {
+	    this.noiseTween.play();
+	    this.shakeTween.play();
+	    this.rotateTween.pause();
+	    this._isShake = true;
+	  };
+
+	  Modal.prototype._buttonLeave = function _buttonLeave(e) {
+	    this.noiseTween.pause().playBackward();
+	    this.shakeTween.stop();
+	    this.rotateTween.play();
+
+	    if (e.target === this.buttonLove) {
+	      for (var _iterator = this.loveSmoke.childModules, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
+	        var _ref;
+
+	        if (_isArray) {
+	          if (_i >= _iterator.length) break;
+	          _ref = _iterator[_i++];
+	        } else {
+	          _i = _iterator.next();
+	          if (_i.done) break;
+	          _ref = _i.value;
+	        }
+
+	        var module = _ref;
+
+	        module.generate();
+	      }
+	      this.loveSmoke.timeline.replay();
+	    } else {
+	      for (var _iterator2 = this.hateSmoke.childModules, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : (0, _getIterator3.default)(_iterator2);;) {
+	        var _ref2;
+
+	        if (_isArray2) {
+	          if (_i2 >= _iterator2.length) break;
+	          _ref2 = _iterator2[_i2++];
+	        } else {
+	          _i2 = _iterator2.next();
+	          if (_i2.done) break;
+	          _ref2 = _i2.value;
+	        }
+
+	        var _module = _ref2;
+
+	        _module.generate();
+	      }
+	      this.hateSmoke.timeline.replay();
+	    }
+
+	    this._isShake = false;
+	  };
+
+	  return Modal;
+	}(_module3.default);
+
+	exports.default = Modal;
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _assign = __webpack_require__(91);
+
+	var _assign2 = _interopRequireDefault(_assign);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _assign2.default || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];
+
+	    for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }
+
+	  return target;
+	};
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(92), __esModule: true };
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(93);
+	module.exports = __webpack_require__(15).Object.assign;
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.3.1 Object.assign(target, source)
+	var $export = __webpack_require__(13);
+
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(94)});
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	// 19.1.2.1 Object.assign(target, source, ...)
+	var getKeys  = __webpack_require__(34)
+	  , gOPS     = __webpack_require__(63)
+	  , pIE      = __webpack_require__(64)
+	  , toObject = __webpack_require__(50)
+	  , IObject  = __webpack_require__(37)
+	  , $assign  = Object.assign;
+
+	// should work with symbols and should have deterministic property order (V8 bug)
+	module.exports = !$assign || __webpack_require__(24)(function(){
+	  var A = {}
+	    , B = {}
+	    , S = Symbol()
+	    , K = 'abcdefghijklmnopqrst';
+	  A[S] = 7;
+	  K.split('').forEach(function(k){ B[k] = k; });
+	  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+	}) ? function assign(target, source){ // eslint-disable-line no-unused-vars
+	  var T     = toObject(target)
+	    , aLen  = arguments.length
+	    , index = 1
+	    , getSymbols = gOPS.f
+	    , isEnum     = pIE.f;
+	  while(aLen > index){
+	    var S      = IObject(arguments[index++])
+	      , keys   = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S)
+	      , length = keys.length
+	      , j      = 0
+	      , key;
+	    while(length > j)if(isEnum.call(S, key = keys[j++]))T[key] = S[key];
+	  } return T;
+	} : $assign;
+
+/***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
 	var _classCallCheck2 = __webpack_require__(2);
 
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -12957,38 +13334,39 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Modal = function (_Module) {
-	  (0, _inherits3.default)(Modal, _Module);
+	var ModalIn = function (_Module) {
+	  (0, _inherits3.default)(ModalIn, _Module);
 
-	  function Modal() {
-	    (0, _classCallCheck3.default)(this, Modal);
+	  function ModalIn() {
+	    (0, _classCallCheck3.default)(this, ModalIn);
 	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
 	  }
 
-	  Modal.prototype._render = function _render() {
-	    var _x, _y, _x2, _y2;
+	  ModalIn.prototype._render = function _render() {
+	    var _x, _y, _x2, _y2, _y3;
 
 	    var bg = new mojs.Shape({
 	      left: '50%', top: '50%',
 	      fill: _colors2.default.BLACK,
 	      radius: 500,
 	      scale: { 0: 2 },
-	      oapcity: .95,
+	      // opacity: .95,
 	      isForce3d: true
 	    });
 
 	    var modal = new mojs.Shape({
+	      left: '50%', top: '50%',
+	      parent: this._o.el,
+	      className: 'modal-shape',
 	      shape: 'rect',
 	      rx: 38,
 	      ry: 38,
 	      radiusX: 124,
 	      radiusY: 92,
-	      left: '50%', top: '50%',
-	      angle: -3,
+	      // angle:     -3,
 	      scaleX: { 0: 1 },
 	      scaleY: { 0: 1 },
 	      fill: _colors2.default.WHITE,
-	      // delay: 50,
 	      duration: 300,
 	      origin: '15% 90%',
 	      easing: 'bounce.out',
@@ -12996,16 +13374,25 @@
 	    });
 
 	    modal.el.style['overflow'] = 'hidden';
-	    modal.el.style['border-radius'] = '35px';
-	    // modal.el.style[ 'border' ] = '1px solid white';
+
+	    var modalInner = this._createElement('div');
+	    modalInner.classList.add('modal__inner');
+	    modalInner.innerHTML = document.querySelector('#js-modal-template').innerHTML;
+	    this._o.el.appendChild(modalInner);
+	    mojs.h.setPrefixedStyle(modalInner, 'transform-origin', '15% 90%');
+
+	    var buttonLove = this._findEl('#js-button-love'),
+	        buttonHate = this._findEl('#js-button-hate'),
+	        modalText = this._findEl('#js-modal-text');
+
+	    var prefix = mojs.h.prefix.css,
+	        style = modalInner.style;
 
 	    var ripple = new mojs.Shape({
+	      left: '50%', top: '50%',
 	      fill: _colors2.default.RED,
-	      // shape: 'rect',
 	      rx: 38,
 	      ry: 38,
-	      // radiusX: 124,
-	      // radiusY: 92,
 	      radius: 142,
 	      x: (_x = {}, _x[-150] = 0, _x),
 	      y: (_y = {}, _y[150] = 0, _y),
@@ -13013,58 +13400,94 @@
 	      parent: modal.el,
 	      isForce3d: true,
 	      isShoeEnd: false,
-	      // opacity: { 1: 0 },
-	      left: '50%', top: '50%',
-	      // delay:    50,
-	      duration: 400
+	      duration: 400,
+	      isTimelineLess: true,
+	      onUpdate: function onUpdate(ep, p) {
+	        var bounceP = mojs.easing.bounce.out(p),
+	            transform = 'scale(' + bounceP + ')';
+
+	        style['transform'] = transform;
+	        style[prefix + 'transform'] = transform;
+	        style.opacity = ep;
+	      }
+	    });
+
+	    var buttonsTween = new mojs.Tween({
+	      delay: 75,
+	      onUpdate: function onUpdate(ep, p) {
+	        var loveTransform = 'translate(' + -30 * (1 - ep) + 'px, ' + 20 * (1 - ep) + 'px) rotate(' + 3 + 'deg)',
+	            hateTransform = 'translate(' + 30 * (1 - ep) + 'px, ' + 20 * (1 - ep) + 'px) rotate(' + -2 + 'deg)',
+	            textTransform = 'translate(' + -50 * (1 - ep) + 'px, ' + 30 * (1 - ep) + 'px) scale(' + Math.min(.3 + ep, 1) + ')';
+
+	        buttonLove.style['transform'] = loveTransform;
+	        buttonLove.style[prefix + 'transform'] = loveTransform;
+
+	        buttonHate.style['transform'] = hateTransform;
+	        buttonHate.style[prefix + 'transform'] = hateTransform;
+
+	        modalText.style['transform'] = textTransform;
+	        modalText.style[prefix + 'transform'] = textTransform;
+	      }
 	    });
 
 	    var corner = new mojs.Shape({
+	      left: '50%', top: '50%',
+	      parent: this._o.el,
 	      fill: _colors2.default.RED,
 	      shape: 'polygon',
-	      // rx: 38,
-	      // ry: 38,
-	      // radiusX: 124,
-	      // radiusY: 92,
 	      radiusX: 45,
 	      radiusY: 45,
 	      x: (_x2 = {}, _x2[-100] = -75, _x2),
-	      y: { 110: 74 },
+	      y: (_y2 = {}, _y2[110] = 76, _y2),
 	      angle: 90,
 	      scale: { 0: 1 },
-	      // parent:  modal.el,
 	      isForce3d: true,
-	      isShoeEnd: false,
-	      // opacity: { 1: 0 },
-	      left: '50%', top: '50%',
-	      // delay:    75,
-	      duration: 250
+	      duration: 250,
+	      isTimelineLess: true
 	    });
 
-	    // easing: 'bounce.out'
+	    var cornerShadow = new mojs.Shape({
+	      left: '50%', top: '50%',
+	      fill: 'rgba(0,0,0,.25)',
+	      shape: 'polygon',
+	      parent: corner.el,
+	      radiusX: 27,
+	      radiusY: 27,
+	      x: 20,
+	      y: 5,
+	      isForce3d: true,
+	      isShoeEnd: false,
+	      isShowStart: true
+	    });
+
+	    this.corner = corner;
+
+	    cornerShadow.el.style['z-index'] = '-1';
+
 	    var ShapeStagger = mojs.stagger(mojs.Shape);
 
 	    var triangles = new ShapeStagger({
 	      left: '50%', top: '50%',
+	      parent: this._o.el,
 	      quantifier: 2,
 	      shape: 'polygon',
 	      fill: [_colors2.default.RED, _colors2.default.WHITE],
-	      y: (_y2 = {}, _y2[-115] = -105, _y2),
+	      y: (_y3 = {}, _y3[-115] = -105, _y3),
 	      x: { 'rand(70, 100)': 'rand(45, 55)' },
 	      radius: 'rand(8, 12)',
 	      scale: { 1: 0 },
 	      delay: 'stagger(250)',
-	      isTimelineLess: true,
-	      isForce3d: true
+	      isForce3d: true,
+	      isTimelineLess: true
 	    });
 
 	    var lines = new ShapeStagger({
 	      left: '50%', top: '50%',
+	      parent: this._o.el,
 	      quantifier: 3,
 	      fill: 'none',
 	      shape: 'curve',
 	      stroke: [_colors2.default.WHITE, _colors2.default.RED, _colors2.default.WHITE],
-	      isShowStart: true,
 	      radiusX: 30,
 	      radiusY: 11,
 	      angle: [133, 123],
@@ -13072,20 +13495,91 @@
 	      x: [{ 70: 117 }, { 55: 117 }],
 	      y: 76,
 	      strokeLinecap: 'round',
-	      // delay:        'stagger(50)',
 	      strokeDasharray: '100%',
-	      strokeDashoffset: { '-100%': '100%' }
+	      strokeDashoffset: { '-100%': '100%' },
+	      // isShowStart:  true,
+	      isShowEnd: false,
+	      isTimelineLess: true
 	    });
 
-	    console.log(lines);
+	    this.timeline = new mojs.Timeline();
 
-	    return [bg, modal, ripple, corner, lines, triangles];
+	    this.timeline.add(bg, modal, ripple, corner, triangles, lines, buttonsTween);
+
+	    return this;
 	  };
 
-	  return Modal;
+	  return ModalIn;
 	}(_module2.default);
 
-	exports.default = Modal;
+	exports.default = ModalIn;
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(97), __esModule: true };
+
+/***/ },
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(51);
+	__webpack_require__(7);
+	module.exports = __webpack_require__(98);
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var anObject = __webpack_require__(20)
+	  , get      = __webpack_require__(99);
+	module.exports = __webpack_require__(15).getIterator = function(it){
+	  var iterFn = get(it);
+	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
+	  return anObject(iterFn.call(it));
+	};
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var classof   = __webpack_require__(100)
+	  , ITERATOR  = __webpack_require__(48)('iterator')
+	  , Iterators = __webpack_require__(30);
+	module.exports = __webpack_require__(15).getIteratorMethod = function(it){
+	  if(it != undefined)return it[ITERATOR]
+	    || it['@@iterator']
+	    || Iterators[classof(it)];
+	};
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// getting tag from 19.1.3.6 Object.prototype.toString()
+	var cof = __webpack_require__(38)
+	  , TAG = __webpack_require__(48)('toStringTag')
+	  // ES3 wrong here
+	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
+
+	// fallback for IE11 Script Access Denied error
+	var tryGet = function(it, key){
+	  try {
+	    return it[key];
+	  } catch(e){ /* empty */ }
+	};
+
+	module.exports = function(it){
+	  var O, T, B;
+	  return it === undefined ? 'Undefined' : it === null ? 'Null'
+	    // @@toStringTag case
+	    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
+	    // builtinTag case
+	    : ARG ? cof(O)
+	    // ES3 arguments fallback
+	    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+	};
 
 /***/ }
 /******/ ]);
