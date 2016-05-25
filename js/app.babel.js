@@ -4,6 +4,7 @@ import Module     from './components/module';
 import COLORS     from './components/colors';
 import AddButton  from './components/add-button/add-button';
 import Modal      from './components/modal/modal';
+import ModalHide  from './components/modal/modal-hide';
 
 // require('../css/main.postcss.css');
 // const CLASSES = require('../css/main.postcss.css.json');
@@ -20,7 +21,8 @@ class Demo extends Module {
 
     mainTimeline.add(
       // new AddButton
-      new Modal
+      new ModalHide
+      // new Modal
     );
 
     ;( new MojsPlayer({ add: mainTimeline }) )

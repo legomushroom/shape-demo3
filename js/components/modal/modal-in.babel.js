@@ -1,7 +1,6 @@
 import Module from '../module';
 import COLORS  from '../colors';
 
-
 class ModalIn extends Module {
   _render () {
     const bg = new mojs.Shape({

@@ -91,6 +91,7 @@ class Modal extends Module {
       scaleY:     { 0: 1 },
       scaleX:     { 1: 1.1 },
       isShowStart: 1,
+      isForce3d:  true
     }
 
     const leftSide = new mojs.Shape({

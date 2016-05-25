@@ -91,6 +91,10 @@
 
 	var _modal2 = _interopRequireDefault(_modal);
 
+	var _modalHide = __webpack_require__(101);
+
+	var _modalHide2 = _interopRequireDefault(_modalHide);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// require('../css/main.postcss.css');
@@ -116,7 +120,9 @@
 
 	    mainTimeline.add(
 	    // new AddButton
-	    new _modal2.default());
+	    new _modalHide2.default()
+	    // new Modal
+	    );
 
 	    ;new _mojsPlayer2.default({ add: mainTimeline }).el.style['z-index'] = 10;
 	  };
@@ -12935,11 +12941,11 @@
 
 	exports.__esModule = true;
 
-	var _getIterator2 = __webpack_require__(96);
+	var _getIterator2 = __webpack_require__(90);
 
 	var _getIterator3 = _interopRequireDefault(_getIterator2);
 
-	var _extends2 = __webpack_require__(90);
+	var _extends2 = __webpack_require__(95);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -12963,7 +12969,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _modalIn = __webpack_require__(95);
+	var _modalIn = __webpack_require__(100);
 
 	var _modalIn2 = _interopRequireDefault(_modalIn);
 
@@ -13068,7 +13074,7 @@
 	      angle: { 0: 2 },
 	      radiusY: 28,
 	      radiusX: 76
-	    }, _sideOpts['angle'] = -90, _sideOpts.scaleY = { 0: 1 }, _sideOpts.scaleX = { 1: 1.1 }, _sideOpts.isShowStart = 1, _sideOpts);
+	    }, _sideOpts['angle'] = -90, _sideOpts.scaleY = { 0: 1 }, _sideOpts.scaleX = { 1: 1.1 }, _sideOpts.isShowStart = 1, _sideOpts.isForce3d = true, _sideOpts);
 
 	    var leftSide = new mojs.Shape((0, _extends3.default)({}, sideOpts, {
 	      onUpdate: function onUpdate(ep, p, isFwd) {
@@ -13220,11 +13226,78 @@
 /* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = { "default": __webpack_require__(91), __esModule: true };
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(51);
+	__webpack_require__(7);
+	module.exports = __webpack_require__(92);
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var anObject = __webpack_require__(20)
+	  , get      = __webpack_require__(93);
+	module.exports = __webpack_require__(15).getIterator = function(it){
+	  var iterFn = get(it);
+	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
+	  return anObject(iterFn.call(it));
+	};
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var classof   = __webpack_require__(94)
+	  , ITERATOR  = __webpack_require__(48)('iterator')
+	  , Iterators = __webpack_require__(30);
+	module.exports = __webpack_require__(15).getIteratorMethod = function(it){
+	  if(it != undefined)return it[ITERATOR]
+	    || it['@@iterator']
+	    || Iterators[classof(it)];
+	};
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// getting tag from 19.1.3.6 Object.prototype.toString()
+	var cof = __webpack_require__(38)
+	  , TAG = __webpack_require__(48)('toStringTag')
+	  // ES3 wrong here
+	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
+
+	// fallback for IE11 Script Access Denied error
+	var tryGet = function(it, key){
+	  try {
+	    return it[key];
+	  } catch(e){ /* empty */ }
+	};
+
+	module.exports = function(it){
+	  var O, T, B;
+	  return it === undefined ? 'Undefined' : it === null ? 'Null'
+	    // @@toStringTag case
+	    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
+	    // builtinTag case
+	    : ARG ? cof(O)
+	    // ES3 arguments fallback
+	    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+	};
+
+/***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _assign = __webpack_require__(91);
+	var _assign = __webpack_require__(96);
 
 	var _assign2 = _interopRequireDefault(_assign);
 
@@ -13245,29 +13318,29 @@
 	};
 
 /***/ },
-/* 91 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(92), __esModule: true };
+	module.exports = { "default": __webpack_require__(97), __esModule: true };
 
 /***/ },
-/* 92 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(93);
+	__webpack_require__(98);
 	module.exports = __webpack_require__(15).Object.assign;
 
 /***/ },
-/* 93 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.3.1 Object.assign(target, source)
 	var $export = __webpack_require__(13);
 
-	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(94)});
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(99)});
 
 /***/ },
-/* 94 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13305,7 +13378,7 @@
 	} : $assign;
 
 /***/ },
-/* 95 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13515,71 +13588,202 @@
 	exports.default = ModalIn;
 
 /***/ },
-/* 96 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(97), __esModule: true };
+	'use strict';
 
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
+	exports.__esModule = true;
 
-	__webpack_require__(51);
-	__webpack_require__(7);
-	module.exports = __webpack_require__(98);
+	var _extends2 = __webpack_require__(95);
 
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
+	var _extends3 = _interopRequireDefault(_extends2);
 
-	var anObject = __webpack_require__(20)
-	  , get      = __webpack_require__(99);
-	module.exports = __webpack_require__(15).getIterator = function(it){
-	  var iterFn = get(it);
-	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
-	  return anObject(iterFn.call(it));
-	};
+	var _classCallCheck2 = __webpack_require__(2);
 
-/***/ },
-/* 99 */
-/***/ function(module, exports, __webpack_require__) {
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-	var classof   = __webpack_require__(100)
-	  , ITERATOR  = __webpack_require__(48)('iterator')
-	  , Iterators = __webpack_require__(30);
-	module.exports = __webpack_require__(15).getIteratorMethod = function(it){
-	  if(it != undefined)return it[ITERATOR]
-	    || it['@@iterator']
-	    || Iterators[classof(it)];
-	};
+	var _possibleConstructorReturn2 = __webpack_require__(3);
 
-/***/ },
-/* 100 */
-/***/ function(module, exports, __webpack_require__) {
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	// getting tag from 19.1.3.6 Object.prototype.toString()
-	var cof = __webpack_require__(38)
-	  , TAG = __webpack_require__(48)('toStringTag')
-	  // ES3 wrong here
-	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
+	var _inherits2 = __webpack_require__(72);
 
-	// fallback for IE11 Script Access Denied error
-	var tryGet = function(it, key){
-	  try {
-	    return it[key];
-	  } catch(e){ /* empty */ }
-	};
+	var _inherits3 = _interopRequireDefault(_inherits2);
 
-	module.exports = function(it){
-	  var O, T, B;
-	  return it === undefined ? 'Undefined' : it === null ? 'Null'
-	    // @@toStringTag case
-	    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
-	    // builtinTag case
-	    : ARG ? cof(O)
-	    // ES3 arguments fallback
-	    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
-	};
+	var _module = __webpack_require__(82);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _colors = __webpack_require__(83);
+
+	var _colors2 = _interopRequireDefault(_colors);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ModalHide = function (_Module) {
+	  (0, _inherits3.default)(ModalHide, _Module);
+
+	  function ModalHide() {
+	    (0, _classCallCheck3.default)(this, ModalHide);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  ModalHide.prototype._render = function _render() {
+	    var _y, _y2;
+
+	    this.timeline = new mojs.Timeline();
+
+	    document.body.style['background'] = _colors2.default.BLACK;
+
+	    var bg = new mojs.Shape({
+	      fill: _colors2.default.RED,
+	      left: '50%', top: '50%',
+	      radius: 500,
+	      duration: 200,
+	      scale: { .25: 1.5 },
+	      easing: 'linear.none',
+	      isShowStart: true,
+	      isTimelineLess: 1
+	    });
+
+	    var charOpts = {
+	      left: '50%', top: '50%',
+	      fill: _colors2.default.WHITE,
+	      radius: 10,
+	      isShowStart: true
+	    };
+
+	    var CHAR_STEP = 40;
+
+	    var SHIFTX = 4 * CHAR_STEP;
+	    var bounceCurve = mojs.easing.path('M0,-100 C0,-100 15.6877613,115.487686 32.0269814,74.203186 C62.0118605,-1.559962 100.057489,-0.0941416292 100.057489,-0.0941416292');
+	    var nBounceCurve = function nBounceCurve(p) {
+	      return 2 - bounceCurve(p);
+	    };
+	    var char1 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      y: (_y = {}, _y[-100] = -200, _y),
+	      x: { 0: -2 * CHAR_STEP, easing: 'linear.none' },
+	      angle: -11,
+	      scaleX: { .25: 1 },
+	      scaleY: { 2: 1 },
+	      easing: 'quad.out',
+	      origin: '50% 100%'
+	    })).then({
+	      scaleX: .25,
+	      scaleY: 2,
+	      x: { to: -4 * CHAR_STEP, easing: 'linear.none' },
+	      y: 0,
+	      angle: { 0: 11 },
+	      easing: 'sin.in'
+	    }).then({
+	      scaleX: 2,
+	      scaleY: .25,
+	      y: 0,
+	      angle: 0,
+	      duration: 75
+	    }).then({
+	      scaleX: { 1: 1, curve: bounceCurve },
+	      scaleY: { 1: 1, curve: nBounceCurve },
+	      x: { to: -2.5 * CHAR_STEP, easing: 'linear.none' },
+	      y: -175,
+	      angle: { to: 20, easing: 'quad.out' },
+	      duration: 350
+	    }).then({
+	      x: { to: -CHAR_STEP, easing: 'linear.none' },
+	      y: 0,
+	      scaleX: .25,
+	      scaleY: 2,
+	      angle: { 0: -10 },
+	      easing: 'quad.in'
+	    }).then({
+	      scaleX: 2,
+	      scaleY: .25,
+	      angle: 0,
+	      duration: 75
+	    });
+
+	    var char2 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      shape: 'rect',
+	      y: (_y2 = {}, _y2[-100] = -220, _y2),
+	      x: { 0: -1.75 * CHAR_STEP, easing: 'linear.none' },
+	      angle: -11,
+	      scaleX: { .25: 1 },
+	      scaleY: { 2: 1 },
+	      easing: 'quad.out',
+	      delay: 100,
+	      duration: 425,
+	      origin: '50% 100%'
+	    })).then({
+	      scaleX: .25,
+	      scaleY: 2,
+	      x: { to: -3.5 * CHAR_STEP, easing: 'linear.none' },
+	      y: -55,
+	      angle: { to: 5, easing: 'cubic.out' },
+	      easing: 'quad.in',
+	      duration: 350
+	    }).then({
+	      scaleX: 2,
+	      scaleY: .25,
+	      angle: 0,
+	      duration: 40,
+	      y: -95
+	    }).then({
+	      scaleX: { 1: 1, curve: bounceCurve },
+	      scaleY: { 1: 1, curve: nBounceCurve },
+	      x: { to: -2.75 * CHAR_STEP, easing: 'linear.none' },
+	      y: -275,
+	      angle: 0,
+	      easing: 'cubic.out',
+	      duration: 400
+	    }).then({
+	      x: { to: -2 * CHAR_STEP, easing: 'linear.none' },
+	      y: 0,
+	      scaleX: .25,
+	      scaleY: 2,
+	      angle: { 180: 180, curve: 'sin.out' },
+	      origin: { '50% 50%': '50% 50%' },
+	      easing: 'cubic.in',
+	      duration: 450
+	    }).then({
+	      scaleX: 2,
+	      scaleY: .25,
+	      // angle:  0,
+	      duration: 75,
+	      easing: 'quad.out',
+	      origin: '50% 75%'
+	    });
+
+	    // .then({
+	    //   scaleX: {
+	    //     to: 1,
+	    //     isPropertyCurve: true,
+	    //     easing: mojs.easing.path('M0,100 L30.2646503,208.450653 L71.5762558,208.450653 L100,0')
+	    //   },
+	    //   scaleY: { to: 1, easing: 'expo.out' },
+	    //   y: -150,
+	    //   angle: 0,
+	    //   duration: 250,
+	    //   origin: '50% 100%',
+	    //   // easing: 'quad.out'
+	    // });
+
+	    var char3 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      shape: 'polygon',
+	      points: 5
+	    }));
+
+	    var char4 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      shape: 'rect'
+	    }));
+
+	    return this.timeline.add(bg, char1, char2, char3, char4);
+	  };
+
+	  return ModalHide;
+	}(_module2.default);
+
+	exports.default = ModalHide;
 
 /***/ }
 /******/ ]);
