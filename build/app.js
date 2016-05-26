@@ -83,9 +83,9 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _addButton = __webpack_require__(84);
+	var _showButton = __webpack_require__(85);
 
-	var _addButton2 = _interopRequireDefault(_addButton);
+	var _showButton2 = _interopRequireDefault(_showButton);
 
 	var _modal = __webpack_require__(89);
 
@@ -118,9 +118,8 @@
 
 	    var mainTimeline = new mojs.Timeline();
 
-	    mainTimeline.add(
-	    // new AddButton
-	    new _modalHide2.default()
+	    mainTimeline.add(new _showButton2.default()
+	    // new ModalHide
 	    // new Modal
 	    );
 
@@ -129,6 +128,8 @@
 
 	  return Demo;
 	}(_module2.default);
+	// import AddButton  from './components/add-button/add-button';
+
 
 	new Demo();
 
@@ -11209,67 +11210,7 @@
 	exports.default = COLORS;
 
 /***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	var _classCallCheck2 = __webpack_require__(2);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	var _possibleConstructorReturn2 = __webpack_require__(3);
-
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-	var _inherits2 = __webpack_require__(72);
-
-	var _inherits3 = _interopRequireDefault(_inherits2);
-
-	var _module = __webpack_require__(82);
-
-	var _module2 = _interopRequireDefault(_module);
-
-	var _colors = __webpack_require__(83);
-
-	var _colors2 = _interopRequireDefault(_colors);
-
-	var _showButton = __webpack_require__(85);
-
-	var _showButton2 = _interopRequireDefault(_showButton);
-
-	var _vibroButton = __webpack_require__(86);
-
-	var _vibroButton2 = _interopRequireDefault(_vibroButton);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var AddButton = function (_Module) {
-	  (0, _inherits3.default)(AddButton, _Module);
-
-	  function AddButton() {
-	    (0, _classCallCheck3.default)(this, AddButton);
-	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
-	  }
-
-	  AddButton.prototype._render = function _render() {
-	    _Module.prototype._render.call(this);
-	    this.timeline = new mojs.Timeline();
-
-	    this.timeline.add(new _showButton2.default());
-	    // .append( new VibroButton );
-
-	    return this.timeline;
-	  };
-
-	  return AddButton;
-	}(_module2.default);
-
-	exports.default = AddButton;
-
-/***/ },
+/* 84 */,
 /* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -11318,7 +11259,11 @@
 	  }
 
 	  ShowButton.prototype._render = function _render() {
+	    var _x, _angle;
+
 	    _Module.prototype._render.call(this);
+
+	    this.timeline = new mojs.Timeline();
 
 	    var vibroBtn = new _vibroButton2.default();
 	    var left = '50%',
@@ -11329,44 +11274,68 @@
 	      urls: ['sounds/bubble.' + _constants2.default.FORMAT]
 	    });
 
-	    var BubbleStagger = mojs.stagger(mojs.Shape);
-	    var bubbles = new BubbleStagger({
-	      left: left, top: top,
-	      quantifier: 2,
-	      radius: [10, 7],
-	      scale: { 1: 0 },
-	      fill: 'white',
-	      y: [{ 0: -30 }, { 0: -15 }],
-	      x: [{ 15: 25 }, { 15: 30 }],
-	      duration: duration / 2.5,
-	      delay: duration / 2,
-	      isForce3d: true,
-	      isShowEnd: false,
-	      onStart: [function (isFwd) {
-	        // isFwd && bubbleSound.play();
-	      }, null]
-	    });
+	    // const BubbleStagger = mojs.stagger( mojs.Shape );
+	    // const bubbles = new BubbleStagger({
+	    //   left, top,
+	    //   quantifier:     2,
+	    //   // parent:         this.el,
+	    //   radius:         [ 10, 7 ],
+	    //   scale:          { 1: 0 },
+	    //   fill:           'white',
+	    //   y:              [ { 0: -30 }, { 0: -15 } ],
+	    //   x:              [ { 15: 25 }, { 15: 30 } ],
+	    //   duration:       duration/2.5,
+	    //   delay:          duration/2,
+	    //   isForce3d:      true,
+	    //   isShowEnd:      false,
+	    //   onStart: [ (isFwd) => {
+	    //     // isFwd && bubbleSound.play();
+	    //   }  , null]
+	    // });
 
 	    var showUp = new mojs.Shape({
 	      left: left, top: top,
 	      fill: 'none',
 	      stroke: _colors2.default.WHITE,
+	      // parent:         this.el,
 	      radius: { 0: 10 },
 	      angle: { 560: 270 },
+	      x: (_x = {}, _x[-150] = 0, _x),
 	      strokeWidth: { 0: 22 },
 	      strokeDasharray: '100%',
-	      strokeDashoffset: { '-100%': '0%' },
+	      strokeDashoffset: { '-100%': '0%', easing: 'cubic.in' },
 	      strokeLinecap: 'round',
 	      duration: duration,
 	      isShowEnd: false,
-	      isSoftHide: false,
 	      onComplete: function onComplete(isFwd) {
-	        isFwd && vibroBtn.timeline.play();
-	        isFwd && (vibroBtn.addButton.el.style['opacity'] = 1);
+	        // isFwd && vibroBtn.timeline.play();
+	        // isFwd && (vibroBtn.addButton.el.style[ 'opacity' ] = 1);
 	        // !!isFwd && vibroBtn.timeline.pause();
 	        // !!isFwd && (vibroBtn.addButton.el.style[ 'opacity' ] = 0);
 	      }
 	    });
+
+	    var angle = 100;
+	    var bubbles = new mojs.Burst({
+	      left: left, top: top,
+	      parent: showUp.el,
+	      count: 3,
+	      degree: 25,
+	      angle: (_angle = {}, _angle[90 + angle] = 280 + angle, _angle),
+	      y: { 0: -20 },
+	      timeline: { delay: 200 },
+	      childOptions: {
+	        radius: [10, 7],
+	        fill: _colors2.default.WHITE,
+	        scale: { 1: 0 },
+	        pathScale: 'rand(.5, 1.5)',
+	        duration: 600
+	      }
+	    });
+
+	    showUp.el.style['z-index'] = 2;
+	    // bubbles.childModules[0].el.style[ 'z-index' ] = 2;
+	    // bubbles.childModules[1].el.style[ 'z-index' ] = 2;
 
 	    var addButtonCross = new mojs.Shape({
 	      left: left, top: top,
@@ -11387,7 +11356,9 @@
 	      isShowEnd: false
 	    });
 
-	    return [bubbles, showUp, addButtonCross];
+	    this.timeline.add(bubbles, showUp, addButtonCross);
+
+	    return this;
 	  };
 
 	  return ShowButton;
@@ -13595,6 +13566,96 @@
 
 	exports.__esModule = true;
 
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(3);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(72);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(82);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _colors = __webpack_require__(83);
+
+	var _colors2 = _interopRequireDefault(_colors);
+
+	var _characters = __webpack_require__(103);
+
+	var _characters2 = _interopRequireDefault(_characters);
+
+	var _geometricShapes = __webpack_require__(102);
+
+	var _geometricShapes2 = _interopRequireDefault(_geometricShapes);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ModalHide = function (_Module) {
+	  (0, _inherits3.default)(ModalHide, _Module);
+
+	  function ModalHide() {
+	    (0, _classCallCheck3.default)(this, ModalHide);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  ModalHide.prototype._render = function _render() {
+	    this.timeline = new mojs.Timeline();
+
+	    document.body.style['background'] = _colors2.default.BLACK;
+
+	    var bg = new mojs.Shape({
+	      fill: _colors2.default.RED,
+	      left: '50%', top: '50%',
+	      radius: 500,
+	      duration: 200,
+	      scale: { .25: 1.5 },
+	      // scale:        .25,
+	      easing: 'linear.none',
+	      isShowStart: true,
+	      isTimelineLess: 1
+	    });
+
+	    // const burst = new mojs.Burst({
+	    //   degree: 75,
+	    //   count: 4,
+	    //   left: '50%', top: '50%',
+	    //   radius: { 100: 250 },
+	    //   childOptions: {
+	    //     shape: 'line',
+	    //     stroke: [ COLORS.WHITE, COLORS.VINOUS ],
+	    //     radius: 'rand(30, 60)',
+	    //     scale: { 1: 0 },
+	    //     duration: 2000,
+	    //     pathScale: 'rand(.25, 1)',
+	    //     degreeShift: 90,
+	    //     angle: 90
+	    //   }
+	    // });
+
+	    return this.timeline.add(bg,
+	    // burst,
+	    new _geometricShapes2.default(), new _characters2.default({ delay: 1600 }));
+	  };
+
+	  return ModalHide;
+	}(_module2.default);
+
+	exports.default = ModalHide;
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
 	var _extends2 = __webpack_require__(95);
 
 	var _extends3 = _interopRequireDefault(_extends2);
@@ -13621,75 +13682,38 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var ModalHide = function (_Module) {
-	  (0, _inherits3.default)(ModalHide, _Module);
+	var GeometricShapes = function (_Module) {
+	  (0, _inherits3.default)(GeometricShapes, _Module);
 
-	  function ModalHide() {
-	    (0, _classCallCheck3.default)(this, ModalHide);
+	  function GeometricShapes() {
+	    (0, _classCallCheck3.default)(this, GeometricShapes);
 	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
 	  }
 
-	  ModalHide.prototype._render = function _render() {
-	    var _y, _scaleX, _scaleY, _y2, _scaleX2, _scaleY2, _y3, _scaleX3, _scaleY3, _y4, _scaleX4, _scaleY4;
+	  GeometricShapes.prototype._render = function _render() {
+	    var _y, _x, _scaleX, _scaleY, _y2, _x2, _scaleX2, _scaleY2, _y3, _x3, _scaleX3, _scaleY3, _y4, _x4, _scaleX4, _scaleY4;
 
 	    this.timeline = new mojs.Timeline();
-
-	    document.body.style['background'] = _colors2.default.BLACK;
-
-	    var bg = new mojs.Shape({
-	      fill: _colors2.default.RED,
-	      left: '50%', top: '50%',
-	      radius: 500,
-	      duration: 200,
-	      scale: { .25: 1.5 },
-	      easing: 'linear.none',
-	      isShowStart: true,
-	      isTimelineLess: 1
-	    });
-
-	    var shift = Math.random() * 360;
-	    var burst = new mojs.Burst({
-	      fill: 'none',
-	      count: 3,
-	      left: '50%', top: '50%',
-	      radius: { 75: 300 },
-	      // angle: 20,
-	      y: -75,
-	      degree: 100,
-	      childOptions: {
-	        shape: 'line',
-	        radius: 'rand(40, 60)',
-	        strokeWidth: 4,
-	        pathScale: 'rand(0.5, 1)',
-	        // degreeShift: shift,
-	        // angle: shift,
-	        // radiusX: 2,
-	        scaleX: { 1: 0 },
-	        scaleY: { 1: .5 },
-	        stroke: [_colors2.default.WHITE, _colors2.default.VINOUS],
-	        duration: 300,
-	        isForce3d: true,
-	        delay: 'rand(100, 200)'
-	      }
-	    });
-
-	    console.log(burst);
 
 	    var charOpts = {
 	      left: '50%', top: '50%',
 	      fill: _colors2.default.WHITE,
 	      radius: 10,
-	      isShowStart: true
+	      // isShowStart:  true,
+	      isShowEnd: false
 	    };
 
 	    var CHAR_STEP = 40;
 	    var SCALE_DOWN = .25;
 	    var SCALE_UP = 2;
 
+	    var Y_SHIFT = -60;
+	    var X_SHIFT = CHAR_STEP / 2;
+
 	    var SLAP_OPTS = {
 	      scaleX: SCALE_UP,
 	      scaleY: SCALE_DOWN,
-	      y: 0,
+	      y: Y_SHIFT,
 	      angle: 0,
 	      duration: 75
 	    };
@@ -13700,8 +13724,8 @@
 	      return 2 - bounceCurve(p);
 	    };
 	    var char1 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
-	      y: (_y = {}, _y[-100] = -200, _y),
-	      x: { 0: -2 * CHAR_STEP, easing: 'linear.none' },
+	      y: (_y = {}, _y[-100 + Y_SHIFT] = -200, _y),
+	      x: (_x = {}, _x[X_SHIFT] = -2 * CHAR_STEP + X_SHIFT, _x.easing = 'linear.none', _x),
 	      angle: -11,
 	      scaleX: (_scaleX = {}, _scaleX[SCALE_DOWN] = 1, _scaleX),
 	      scaleY: (_scaleY = {}, _scaleY[SCALE_UP] = 1, _scaleY),
@@ -13710,20 +13734,20 @@
 	    })).then({
 	      scaleX: SCALE_DOWN,
 	      scaleY: SCALE_UP,
-	      x: { to: -4 * CHAR_STEP, easing: 'linear.none' },
-	      y: 0,
+	      x: { to: -4 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
 	      angle: { 0: 11 },
 	      easing: 'sin.in'
 	    }).then(SLAP_OPTS).then({
 	      scaleX: { 1: 1, curve: bounceCurve },
 	      scaleY: { 1: 1, curve: nBounceCurve },
-	      x: { to: -2.5 * CHAR_STEP, easing: 'linear.none' },
-	      y: -175,
+	      x: { to: -2.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -175 + Y_SHIFT,
 	      angle: { to: 20, easing: 'quad.out' },
 	      duration: 350
 	    }).then({
-	      x: { to: -CHAR_STEP, easing: 'linear.none' },
-	      y: 0,
+	      x: { to: -CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
 	      scaleX: SCALE_DOWN,
 	      scaleY: SCALE_UP,
 	      angle: { 0: -10 },
@@ -13732,8 +13756,8 @@
 
 	    var char2 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
 	      shape: 'rect',
-	      y: (_y2 = {}, _y2[-100] = -220, _y2),
-	      x: { 0: -1.75 * CHAR_STEP, easing: 'linear.none' },
+	      y: (_y2 = {}, _y2[-100 + Y_SHIFT] = -220, _y2),
+	      x: (_x2 = {}, _x2[X_SHIFT] = -1.75 * CHAR_STEP + X_SHIFT, _x2.easing = 'linear.none', _x2),
 	      angle: -11,
 	      scaleX: (_scaleX2 = {}, _scaleX2[SCALE_DOWN] = 1, _scaleX2),
 	      scaleY: (_scaleY2 = {}, _scaleY2[SCALE_UP] = 1, _scaleY2),
@@ -13744,25 +13768,25 @@
 	    })).then({
 	      scaleX: SCALE_DOWN,
 	      scaleY: SCALE_UP,
-	      x: { to: -3.5 * CHAR_STEP, easing: 'linear.none' },
-	      y: -55,
+	      x: { to: -3.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -55 + Y_SHIFT,
 	      angle: { to: 5, easing: 'cubic.out' },
 	      easing: 'quad.in',
 	      duration: 350
 	    }).then((0, _extends3.default)({}, SLAP_OPTS, {
 	      duration: 40,
-	      y: -95
+	      y: -95 + Y_SHIFT
 	    })).then({
 	      scaleX: { 1: 1, curve: bounceCurve },
 	      scaleY: { 1: 1, curve: nBounceCurve },
-	      x: { to: -2.75 * CHAR_STEP, easing: 'linear.none' },
-	      y: -275,
+	      x: { to: -2.75 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -275 + Y_SHIFT,
 	      angle: 0,
 	      easing: 'cubic.out',
 	      duration: 450
 	    }).then({
-	      x: { to: -2 * CHAR_STEP, easing: 'linear.none' },
-	      y: 0,
+	      x: { to: -2 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
 	      scaleX: SCALE_DOWN,
 	      scaleY: SCALE_UP,
 	      angle: { 180: 180, curve: 'quad.out' },
@@ -13779,8 +13803,8 @@
 
 	    var char3 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
 	      shape: 'rect',
-	      y: (_y3 = {}, _y3[-100] = -200, _y3),
-	      x: { 0: 1.5 * CHAR_STEP, easing: 'linear.none' },
+	      y: (_y3 = {}, _y3[-100 + Y_SHIFT] = -200, _y3),
+	      x: (_x3 = {}, _x3[X_SHIFT] = 1.5 * CHAR_STEP + X_SHIFT, _x3.easing = 'linear.none', _x3),
 	      angle: -11,
 	      scaleX: (_scaleX3 = {}, _scaleX3[SCALE_DOWN] = 1, _scaleX3),
 	      scaleY: (_scaleY3 = {}, _scaleY3[SCALE_UP] = 1, _scaleY3),
@@ -13790,20 +13814,20 @@
 	    })).then({
 	      scaleX: SCALE_DOWN,
 	      scaleY: SCALE_UP,
-	      x: { to: 3 * CHAR_STEP, easing: 'linear.none' },
-	      y: 0,
+	      x: { to: 3 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
 	      angle: { 0: -11 },
 	      easing: 'quad.in',
 	      duration: 400
 	    }).then(SLAP_OPTS).then({
-	      x: { to: 1.5 * CHAR_STEP, easing: 'linear.none' },
-	      y: -155,
+	      x: { to: 1.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -155 + Y_SHIFT,
 	      duration: 300,
 	      angle: -200,
 	      easing: 'quad.out'
 	    }).then({
-	      x: { to: 0, easing: 'linear.none' },
-	      y: 0,
+	      x: { to: X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
 	      angle: -360,
 	      easing: 'quad.in',
 	      duration: 350
@@ -13812,8 +13836,8 @@
 	    var char4 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
 	      shape: 'polygon',
 	      points: 5,
-	      y: (_y4 = {}, _y4[-100] = -220, _y4),
-	      x: { 0: .75 * CHAR_STEP, easing: 'linear.none' },
+	      y: (_y4 = {}, _y4[-100 + Y_SHIFT] = -220, _y4),
+	      x: (_x4 = {}, _x4[X_SHIFT] = 1.25 * CHAR_STEP + X_SHIFT, _x4.easing = 'linear.none', _x4),
 	      angle: -11,
 	      scaleX: (_scaleX4 = {}, _scaleX4[SCALE_DOWN] = 1, _scaleX4),
 	      scaleY: (_scaleY4 = {}, _scaleY4[SCALE_UP] = 1, _scaleY4),
@@ -13824,25 +13848,25 @@
 	    })).then({
 	      scaleX: SCALE_DOWN,
 	      scaleY: SCALE_UP,
-	      x: { to: 2.5 * CHAR_STEP, easing: 'linear.none' },
-	      y: -55,
+	      x: { to: 2.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -55 + Y_SHIFT,
 	      angle: { to: 5, easing: 'cubic.out' },
 	      easing: 'quad.in',
 	      duration: 350
 	    }).then((0, _extends3.default)({}, SLAP_OPTS, {
 	      duration: 40,
-	      y: -95
+	      y: -95 + Y_SHIFT
 	    })).then({
 	      scaleX: { 1: 1, curve: bounceCurve },
 	      scaleY: { 1: 1, curve: nBounceCurve },
-	      x: { to: 1.75 * CHAR_STEP, easing: 'linear.none' },
-	      y: -250,
+	      x: { to: 1.75 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -250 + Y_SHIFT,
 	      angle: 0,
 	      easing: 'cubic.out',
 	      duration: 450
 	    }).then({
-	      x: { to: 1 * CHAR_STEP, easing: 'linear.none' },
-	      y: 0,
+	      x: { to: 1 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
 	      scaleX: SCALE_DOWN,
 	      scaleY: SCALE_UP,
 	      angle: { 180: 180, curve: 'quad.out' },
@@ -13855,13 +13879,279 @@
 	      origin: '50% 100%'
 	    }));
 
-	    return this.timeline.add(bg, burst, char1, char2, char3, char4);
+	    return this.timeline.add(char1, char2, char3, char4);
 	  };
 
-	  return ModalHide;
+	  return GeometricShapes;
 	}(_module2.default);
 
-	exports.default = ModalHide;
+	exports.default = GeometricShapes;
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _extends2 = __webpack_require__(95);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(3);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(72);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(82);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _colors = __webpack_require__(83);
+
+	var _colors2 = _interopRequireDefault(_colors);
+
+	var _showButton = __webpack_require__(85);
+
+	var _showButton2 = _interopRequireDefault(_showButton);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var showButton = new _showButton2.default();
+
+	// showButton.play()
+
+	var Characters = function (_Module) {
+	  (0, _inherits3.default)(Characters, _Module);
+
+	  function Characters() {
+	    (0, _classCallCheck3.default)(this, Characters);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  Characters.prototype._render = function _render() {
+	    var _y, _y2, _angle, _y3, _y4;
+
+	    this.timeline = new mojs.Timeline();
+
+	    var charOpts = {
+	      left: '50%', top: '50%',
+	      fill: 'none',
+	      radius: 10,
+	      delay: this._o.delay,
+	      isShowEnd: true
+	    };
+
+	    // origin:   '50% 100%'
+	    // isShowStart:  true
+	    var CHAR_STEP = 40;
+	    var SCALE_DOWN = .25;
+	    var SCALE_UP = 2;
+
+	    var Y_SHIFT = -60;
+	    var X_SHIFT = CHAR_STEP / 2;
+
+	    var FALLDOWN_OPTS = {
+	      scaleX: 2,
+	      scaleY: 2,
+	      y: Y_SHIFT,
+	      angle: 0,
+	      easing: 'bounce.out',
+	      duration: 1000
+	    };
+
+	    var SHIFTX = 4 * CHAR_STEP;
+	    var not = function not(fn) {
+	      var base = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+	      return function (p) {
+	        return base - fn(p);
+	      };
+	    };
+	    var bounceCurve = mojs.easing.path('M0,-100 C0,-100 15.6877613,115.487686 32.0269814,74.203186 C62.0118605,-1.559962 100.057489,-0.0941416292 100.057489,-0.0941416292');
+	    var nBounceCurve = not(bounceCurve, 2);
+
+	    var elasticCurve = mojs.easing.path('M0,0 L42.4468,99.9990418 C46.3646102,-8.62551409 51.8137449,77.8031065 53.2538649,98.8047514 C54.3071019,114.164379 57.4212363,145.777285 62.4147182,98.8047479 C62.4147182,98.8047504 64.981755,73.166208 70.2635684,98.8047479 C73.8553743,114.6133 81.1660962,98.8047504 100,99.9990418');
+
+	    var PRE_WORD = 'love';
+	    var WORD = PRE_WORD.split('');
+
+	    var elasticScale = mojs.easing.path('M1.77635684e-15,-0.000957489014 L42.4468,-0.000958179367 C46.3646102,-108.625514 51.8137449,-22.1968935 53.2538649,-1.19524857 C54.3071019,14.1643792 57.4212363,45.7772847 62.4147182,-1.19525215 C62.4147182,-1.19524958 64.981755,-26.833792 70.2635684,-1.19525215 C73.8553743,14.6132996 81.1660962,-1.19524958 100,-0.000958179367');
+	    var nElasticScale = not(elasticScale, 2);
+	    var char1 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      y: (_y = {}, _y[Y_SHIFT] = -100 + Y_SHIFT, _y),
+	      angle: { 0: -50 },
+	      x: -CHAR_STEP + X_SHIFT,
+	      scaleX: { 2: 2, curve: bounceCurve },
+	      scaleY: { 2: 2, curve: nBounceCurve },
+	      easing: 'quad.out',
+	      origin: '50% 100%',
+	      duration: 350
+	    })).then({
+	      y: Y_SHIFT,
+	      angle: { to: -100, curve: elasticCurve },
+	      easing: 'bounce.out',
+	      duration: 850
+	    });
+	    var character = document.createElement('div');
+	    character.classList.add('character');
+	    character.innerText = WORD[1];
+	    char1.el.appendChild(character);
+
+	    var char2 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      y: (_y2 = {}, _y2[Y_SHIFT] = -125 + Y_SHIFT, _y2),
+	      angle: (_angle = {}, _angle[-90] = -50, _angle),
+	      x: X_SHIFT,
+	      scaleX: { 0: 2, curve: bounceCurve },
+	      scaleY: { 2: 2, curve: nBounceCurve },
+	      easing: 'quad.out',
+	      origin: '50% 100%',
+	      delay: charOpts.delay + 75,
+	      duration: 350
+	    })).then({
+	      y: Y_SHIFT,
+	      angle: { to: 100, curve: elasticCurve },
+	      easing: 'bounce.out',
+	      duration: 950
+	    });
+	    var character2 = document.createElement('div');
+	    character2.classList.add('character');
+	    character2.innerText = WORD[2];
+	    char2.el.appendChild(character2);
+
+	    var char3 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      y: (_y3 = {}, _y3[Y_SHIFT] = -150 + Y_SHIFT, _y3),
+	      angle: { 0: -180, easing: 'cubic.in' },
+	      x: -2 * CHAR_STEP + X_SHIFT,
+	      scaleY: { 2: 2, curve: bounceCurve },
+	      scaleX: { 2: 2, curve: nBounceCurve },
+	      easing: 'quad.out',
+	      delay: charOpts.delay + 250,
+	      duration: 350
+	    })).then({
+	      y: Y_SHIFT - 10,
+	      angle: { to: -360, easing: 'expo.out' },
+	      easing: 'bounce.out',
+	      duration: 1000,
+	      origin: '50% 100%'
+	    });
+	    var character3 = document.createElement('div');
+	    character3.classList.add('character');
+	    character3.innerText = WORD[0];
+	    char3.el.appendChild(character3);
+
+	    var char4 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      y: (_y4 = {}, _y4[Y_SHIFT] = -125 + Y_SHIFT, _y4),
+	      angle: { 0: 180, easing: 'cubic.in' },
+	      x: CHAR_STEP + X_SHIFT,
+	      scaleY: { 2: 2, curve: nBounceCurve },
+	      scaleX: { 2: 2, curve: bounceCurve },
+	      easing: 'quad.out',
+	      delay: charOpts.delay + 500,
+	      duration: 300
+	    })).then({
+	      y: Y_SHIFT - 10,
+	      scaleX: { 2: 2, curve: elasticScale },
+	      scaleY: { 2: 2, curve: nElasticScale },
+	      angle: { to: 360, easing: 'expo.out' },
+	      easing: 'bounce.out',
+	      duration: 1000
+	    });
+	    // origin: '50% 100%',
+	    var character4 = document.createElement('div');
+	    character4.classList.add('character');
+	    character4.innerText = WORD[3];
+	    char4.el.appendChild(character4);
+
+	    var burst1 = new mojs.Burst({
+	      left: '50%', top: '50%',
+	      degree: 20,
+	      count: 2,
+	      angle: -90,
+	      x: -150 + X_SHIFT,
+	      y: -100 + Y_SHIFT,
+	      radius: { 10: 100 },
+	      timeline: { delay: 900 },
+	      childOptions: {
+	        shape: 'line',
+	        scale: { 1: 0 },
+	        radius: 'rand(8, 18)',
+	        radiusY: 0,
+	        stroke: _colors2.default.VINOUS,
+	        strokeWidth: 7,
+	        duration: 450
+	      }
+	    });
+
+	    var burst2 = new mojs.Burst({
+	      left: '50%', top: '50%',
+	      degree: 20,
+	      count: 2,
+	      // angle:   -90,
+	      x: CHAR_STEP + X_SHIFT,
+	      y: Y_SHIFT,
+	      radius: { 10: 100 },
+	      timeline: { delay: 2200 },
+	      childOptions: {
+	        shape: 'line',
+	        scale: { 1: 0 },
+	        radius: 'rand(8, 18)',
+	        radiusY: 0,
+	        stroke: _colors2.default.VINOUS,
+	        strokeWidth: 7,
+	        duration: 450
+	      }
+	    });
+
+	    var line = new mojs.Shape({
+	      shape: 'line',
+	      stroke: _colors2.default.VINOUS,
+	      radius: 40,
+	      radiusY: 0,
+	      x: -CHAR_STEP + X_SHIFT,
+	      y: 40 + Y_SHIFT,
+	      scaleX: { 0: 1 },
+	      strokeWidth: 4,
+	      left: '50%', top: '50%',
+	      delay: 1550,
+	      duration: 100,
+	      isTimelineLess: true,
+	      isShowEnd: false,
+	      onComplete: function onComplete() {
+	        showButton.timeline.replay();
+	      }
+	    });
+
+	    var line2 = new mojs.Shape({
+	      shape: 'line',
+	      stroke: _colors2.default.VINOUS,
+	      radius: 15,
+	      radiusY: 0,
+	      x: { X_SHIFT: CHAR_STEP + X_SHIFT },
+	      y: 40 + Y_SHIFT,
+	      scaleX: { 1: 0 },
+	      strokeWidth: 4,
+	      left: '50%', top: '50%',
+	      delay: 1550,
+	      duration: 400,
+	      isTimelineLess: true,
+	      isShowEnd: false
+	    });
+
+	    return this.timeline.add(char1, char2, char3, char4, burst1, burst2, line, line2);
+	  };
+
+	  return Characters;
+	}(_module2.default);
+
+	exports.default = Characters;
 
 /***/ }
 /******/ ]);

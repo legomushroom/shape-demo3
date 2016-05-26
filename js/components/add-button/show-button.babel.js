@@ -8,6 +8,8 @@ class ShowButton extends Module {
   _render () {
     super._render();
 
+    this.timeline = new mojs.Timeline;
+
     const vibroBtn = new VibroButton();
     const left = '50%',
           top  = '50%',
@@ -17,44 +19,68 @@ class ShowButton extends Module {
       urls: [`sounds/bubble.${C.FORMAT}`]
     });
 
-    const BubbleStagger = mojs.stagger( mojs.Shape );
-    const bubbles = new BubbleStagger({
-      left, top,
-      quantifier:     2,
-      radius:         [ 10, 7 ],
-      scale:          { 1: 0 },
-      fill:           'white',
-      y:              [ { 0: -30 }, { 0: -15 } ],
-      x:              [ { 15: 25 }, { 15: 30 } ],
-      duration:       duration/2.5,
-      delay:          duration/2,
-      isForce3d:      true,
-      isShowEnd:      false,
-      onStart: [ (isFwd) => {
-        // isFwd && bubbleSound.play();
-      }  , null]
-    });
+    // const BubbleStagger = mojs.stagger( mojs.Shape );
+    // const bubbles = new BubbleStagger({
+    //   left, top,
+    //   quantifier:     2,
+    //   // parent:         this.el,
+    //   radius:         [ 10, 7 ],
+    //   scale:          { 1: 0 },
+    //   fill:           'white',
+    //   y:              [ { 0: -30 }, { 0: -15 } ],
+    //   x:              [ { 15: 25 }, { 15: 30 } ],
+    //   duration:       duration/2.5,
+    //   delay:          duration/2,
+    //   isForce3d:      true,
+    //   isShowEnd:      false,
+    //   onStart: [ (isFwd) => {
+    //     // isFwd && bubbleSound.play();
+    //   }  , null]
+    // });
 
     const showUp = new mojs.Shape({
       left, top,
       fill: 'none',
       stroke: COLORS.WHITE,
+      // parent:         this.el,
       radius: { 0: 10 },
       angle: { 560: 270 },
+      x:      { [-150]: 0 },
       strokeWidth: { 0: 22 },
       strokeDasharray: '100%',
-      strokeDashoffset: { '-100%' : '0%' },
+      strokeDashoffset: { '-100%' : '0%', easing: 'cubic.in' },
       strokeLinecap: 'round',
       duration,
       isShowEnd:      false,
-      isSoftHide:     false,
       onComplete ( isFwd ) {
-        isFwd && vibroBtn.timeline.play();
-        isFwd && (vibroBtn.addButton.el.style[ 'opacity' ] = 1);
+        // isFwd && vibroBtn.timeline.play();
+        // isFwd && (vibroBtn.addButton.el.style[ 'opacity' ] = 1);
         // !!isFwd && vibroBtn.timeline.pause();
         // !!isFwd && (vibroBtn.addButton.el.style[ 'opacity' ] = 0);
       }
     });
+
+    const angle = 100;
+    const bubbles = new mojs.Burst({
+      left, top,
+      parent:         showUp.el,
+      count:          3,
+      degree:         25,
+      angle:          { [90 + angle] : 280 + angle },
+      y:              { 0: -20 },
+      timeline:       { delay: 200 },
+      childOptions: {
+        radius:       [ 10, 7 ],
+        fill:         COLORS.WHITE,
+        scale:        { 1 : 0 },
+        pathScale:    'rand(.5, 1.5)',
+        duration:     600,
+      }
+    });
+
+    showUp.el.style[ 'z-index' ] = 2;
+    // bubbles.childModules[0].el.style[ 'z-index' ] = 2;
+    // bubbles.childModules[1].el.style[ 'z-index' ] = 2;
 
     const addButtonCross = new mojs.Shape({
       left, top,
@@ -75,7 +101,12 @@ class ShowButton extends Module {
       isShowEnd:      false
     });
 
-    return [ bubbles, showUp, addButtonCross ];
+    this.timeline.add(
+      bubbles, showUp,
+      addButtonCross
+    );
+
+    return this;
   }
 }
 

@@ -2,7 +2,8 @@ import Polyfill   from 'classlist-polyfill';
 import MojsPlayer from 'mojs-player'
 import Module     from './components/module';
 import COLORS     from './components/colors';
-import AddButton  from './components/add-button/add-button';
+// import AddButton  from './components/add-button/add-button';
+import ShowButton from './components/add-button/show-button';
 import Modal      from './components/modal/modal';
 import ModalHide  from './components/modal/modal-hide';
 
@@ -20,8 +21,8 @@ class Demo extends Module {
     const mainTimeline = new mojs.Timeline;
 
     mainTimeline.add(
-      // new AddButton
-      new ModalHide
+      new ShowButton
+      // new ModalHide
       // new Modal
     );
 
