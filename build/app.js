@@ -11300,7 +11300,7 @@
 	      radius: { 0: 10 },
 	      angle: { 560: 270 },
 	      x: (_x = {}, _x[-150] = 0, _x),
-	      strokeWidth: { 0: 22 },
+	      strokeWidth: { 0: 22, easing: 'cubic.in' },
 	      strokeDasharray: '100%',
 	      strokeDashoffset: { '-100%': '0%', easing: 'cubic.in' },
 	      strokeLinecap: 'round',
