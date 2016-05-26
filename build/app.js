@@ -83,15 +83,15 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _showButton = __webpack_require__(85);
+	var _showButton = __webpack_require__(84);
 
 	var _showButton2 = _interopRequireDefault(_showButton);
 
-	var _modal = __webpack_require__(89);
+	var _modal = __webpack_require__(88);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _modalHide = __webpack_require__(101);
+	var _modalHide = __webpack_require__(100);
 
 	var _modalHide2 = _interopRequireDefault(_modalHide);
 
@@ -11210,8 +11210,7 @@
 	exports.default = COLORS;
 
 /***/ },
-/* 84 */,
-/* 85 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11238,15 +11237,15 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _vibroButton = __webpack_require__(86);
+	var _vibroButton = __webpack_require__(85);
 
 	var _vibroButton2 = _interopRequireDefault(_vibroButton);
 
-	var _constants = __webpack_require__(87);
+	var _constants = __webpack_require__(86);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _howler = __webpack_require__(88);
+	var _howler = __webpack_require__(87);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11259,7 +11258,7 @@
 	  }
 
 	  ShowButton.prototype._render = function _render() {
-	    var _x, _angle;
+	    var _x, _angle, _angle2;
 
 	    _Module.prototype._render.call(this);
 
@@ -11322,8 +11321,28 @@
 	      count: 3,
 	      degree: 25,
 	      angle: (_angle = {}, _angle[90 + angle] = 280 + angle, _angle),
-	      y: { 0: -20 },
+	      y: { 0: -25 },
 	      timeline: { delay: 200 },
+	      // radius:         { 0: 70 },
+	      childOptions: {
+	        radius: [10, 7],
+	        fill: _colors2.default.WHITE,
+	        scale: { 1: 0 },
+	        pathScale: 'rand(.5, 1.5)',
+	        duration: 600
+	      }
+	    });
+
+	    var angle2 = 100;
+	    var bubbles2 = new mojs.Burst({
+	      left: left, top: top,
+	      parent: showUp.el,
+	      count: 3,
+	      degree: 25,
+	      angle: (_angle2 = {}, _angle2[90 + angle2] = 280 + angle2, _angle2),
+	      // x:              { 0: -25 },
+	      timeline: { delay: 350 },
+	      // radius:         { 0: 70 },
 	      childOptions: {
 	        radius: [10, 7],
 	        fill: _colors2.default.WHITE,
@@ -11356,7 +11375,7 @@
 	      isShowEnd: false
 	    });
 
-	    this.timeline.add(bubbles, showUp, addButtonCross);
+	    this.timeline.add(bubbles, bubbles2, showUp, addButtonCross);
 
 	    return this;
 	  };
@@ -11367,7 +11386,7 @@
 	exports.default = ShowButton;
 
 /***/ },
-/* 86 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11394,11 +11413,11 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(87);
+	var _constants = __webpack_require__(86);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _howler = __webpack_require__(88);
+	var _howler = __webpack_require__(87);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11535,7 +11554,7 @@
 	exports.default = VibroButton;
 
 /***/ },
-/* 87 */
+/* 86 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11547,7 +11566,7 @@
 	};
 
 /***/ },
-/* 88 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -12905,18 +12924,18 @@
 
 
 /***/ },
-/* 89 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _getIterator2 = __webpack_require__(90);
+	var _getIterator2 = __webpack_require__(89);
 
 	var _getIterator3 = _interopRequireDefault(_getIterator2);
 
-	var _extends2 = __webpack_require__(95);
+	var _extends2 = __webpack_require__(94);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -12940,7 +12959,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _modalIn = __webpack_require__(100);
+	var _modalIn = __webpack_require__(99);
 
 	var _modalIn2 = _interopRequireDefault(_modalIn);
 
@@ -13194,25 +13213,25 @@
 	exports.default = Modal;
 
 /***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(90), __esModule: true };
+
+/***/ },
 /* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(91), __esModule: true };
+	__webpack_require__(51);
+	__webpack_require__(7);
+	module.exports = __webpack_require__(91);
 
 /***/ },
 /* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(51);
-	__webpack_require__(7);
-	module.exports = __webpack_require__(92);
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var anObject = __webpack_require__(20)
-	  , get      = __webpack_require__(93);
+	  , get      = __webpack_require__(92);
 	module.exports = __webpack_require__(15).getIterator = function(it){
 	  var iterFn = get(it);
 	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
@@ -13220,10 +13239,10 @@
 	};
 
 /***/ },
-/* 93 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var classof   = __webpack_require__(94)
+	var classof   = __webpack_require__(93)
 	  , ITERATOR  = __webpack_require__(48)('iterator')
 	  , Iterators = __webpack_require__(30);
 	module.exports = __webpack_require__(15).getIteratorMethod = function(it){
@@ -13233,7 +13252,7 @@
 	};
 
 /***/ },
-/* 94 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// getting tag from 19.1.3.6 Object.prototype.toString()
@@ -13261,14 +13280,14 @@
 	};
 
 /***/ },
-/* 95 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _assign = __webpack_require__(96);
+	var _assign = __webpack_require__(95);
 
 	var _assign2 = _interopRequireDefault(_assign);
 
@@ -13289,29 +13308,29 @@
 	};
 
 /***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(96), __esModule: true };
+
+/***/ },
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(97), __esModule: true };
+	__webpack_require__(97);
+	module.exports = __webpack_require__(15).Object.assign;
 
 /***/ },
 /* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(98);
-	module.exports = __webpack_require__(15).Object.assign;
-
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// 19.1.3.1 Object.assign(target, source)
 	var $export = __webpack_require__(13);
 
-	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(99)});
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(98)});
 
 /***/ },
-/* 99 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13349,7 +13368,7 @@
 	} : $assign;
 
 /***/ },
-/* 100 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13559,7 +13578,7 @@
 	exports.default = ModalIn;
 
 /***/ },
-/* 101 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13586,7 +13605,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _characters = __webpack_require__(103);
+	var _characters = __webpack_require__(101);
 
 	var _characters2 = _interopRequireDefault(_characters);
 
@@ -13649,14 +13668,14 @@
 	exports.default = ModalHide;
 
 /***/ },
-/* 102 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _extends2 = __webpack_require__(95);
+	var _extends2 = __webpack_require__(94);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -13680,246 +13699,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var GeometricShapes = function (_Module) {
-	  (0, _inherits3.default)(GeometricShapes, _Module);
-
-	  function GeometricShapes() {
-	    (0, _classCallCheck3.default)(this, GeometricShapes);
-	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
-	  }
-
-	  GeometricShapes.prototype._render = function _render() {
-	    var _y, _x, _scaleX, _scaleY, _y2, _x2, _scaleX2, _scaleY2, _y3, _x3, _scaleX3, _scaleY3, _y4, _x4, _scaleX4, _scaleY4;
-
-	    this.timeline = new mojs.Timeline();
-
-	    var charOpts = {
-	      left: '50%', top: '50%',
-	      fill: _colors2.default.WHITE,
-	      radius: 10,
-	      // isShowStart:  true,
-	      isShowEnd: false
-	    };
-
-	    var CHAR_STEP = 40;
-	    var SCALE_DOWN = .25;
-	    var SCALE_UP = 2;
-
-	    var Y_SHIFT = -60;
-	    var X_SHIFT = CHAR_STEP / 2;
-
-	    var SLAP_OPTS = {
-	      scaleX: SCALE_UP,
-	      scaleY: SCALE_DOWN,
-	      y: Y_SHIFT,
-	      angle: 0,
-	      duration: 75
-	    };
-
-	    var SHIFTX = 4 * CHAR_STEP;
-	    var bounceCurve = mojs.easing.path('M0,-100 C0,-100 15.6877613,115.487686 32.0269814,74.203186 C62.0118605,-1.559962 100.057489,-0.0941416292 100.057489,-0.0941416292');
-	    var nBounceCurve = function nBounceCurve(p) {
-	      return 2 - bounceCurve(p);
-	    };
-	    var char1 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
-	      y: (_y = {}, _y[-100 + Y_SHIFT] = -200, _y),
-	      x: (_x = {}, _x[X_SHIFT] = -2 * CHAR_STEP + X_SHIFT, _x.easing = 'linear.none', _x),
-	      angle: -11,
-	      scaleX: (_scaleX = {}, _scaleX[SCALE_DOWN] = 1, _scaleX),
-	      scaleY: (_scaleY = {}, _scaleY[SCALE_UP] = 1, _scaleY),
-	      easing: 'quad.out',
-	      origin: '50% 100%'
-	    })).then({
-	      scaleX: SCALE_DOWN,
-	      scaleY: SCALE_UP,
-	      x: { to: -4 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: Y_SHIFT,
-	      angle: { 0: 11 },
-	      easing: 'sin.in'
-	    }).then(SLAP_OPTS).then({
-	      scaleX: { 1: 1, curve: bounceCurve },
-	      scaleY: { 1: 1, curve: nBounceCurve },
-	      x: { to: -2.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: -175 + Y_SHIFT,
-	      angle: { to: 20, easing: 'quad.out' },
-	      duration: 350
-	    }).then({
-	      x: { to: -CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: Y_SHIFT,
-	      scaleX: SCALE_DOWN,
-	      scaleY: SCALE_UP,
-	      angle: { 0: -10 },
-	      easing: 'quad.in'
-	    }).then(SLAP_OPTS);
-
-	    var char2 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
-	      shape: 'rect',
-	      y: (_y2 = {}, _y2[-100 + Y_SHIFT] = -220, _y2),
-	      x: (_x2 = {}, _x2[X_SHIFT] = -1.75 * CHAR_STEP + X_SHIFT, _x2.easing = 'linear.none', _x2),
-	      angle: -11,
-	      scaleX: (_scaleX2 = {}, _scaleX2[SCALE_DOWN] = 1, _scaleX2),
-	      scaleY: (_scaleY2 = {}, _scaleY2[SCALE_UP] = 1, _scaleY2),
-	      easing: 'quad.out',
-	      delay: 100,
-	      duration: 425,
-	      origin: '50% 100%'
-	    })).then({
-	      scaleX: SCALE_DOWN,
-	      scaleY: SCALE_UP,
-	      x: { to: -3.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: -55 + Y_SHIFT,
-	      angle: { to: 5, easing: 'cubic.out' },
-	      easing: 'quad.in',
-	      duration: 350
-	    }).then((0, _extends3.default)({}, SLAP_OPTS, {
-	      duration: 40,
-	      y: -95 + Y_SHIFT
-	    })).then({
-	      scaleX: { 1: 1, curve: bounceCurve },
-	      scaleY: { 1: 1, curve: nBounceCurve },
-	      x: { to: -2.75 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: -275 + Y_SHIFT,
-	      angle: 0,
-	      easing: 'cubic.out',
-	      duration: 450
-	    }).then({
-	      x: { to: -2 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: Y_SHIFT,
-	      scaleX: SCALE_DOWN,
-	      scaleY: SCALE_UP,
-	      angle: { 180: 180, curve: 'quad.out' },
-	      origin: { '50% 50%': '50% 50%' },
-	      easing: 'quad.in',
-	      duration: 450
-	    }).then((0, _extends3.default)({}, SLAP_OPTS, {
-	      angle: { 360: 360 },
-	      easing: 'quad.out',
-	      origin: '50% 100%'
-	    }));
-
-	    var DELAY2 = 200;
-
-	    var char3 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
-	      shape: 'rect',
-	      y: (_y3 = {}, _y3[-100 + Y_SHIFT] = -200, _y3),
-	      x: (_x3 = {}, _x3[X_SHIFT] = 1.5 * CHAR_STEP + X_SHIFT, _x3.easing = 'linear.none', _x3),
-	      angle: -11,
-	      scaleX: (_scaleX3 = {}, _scaleX3[SCALE_DOWN] = 1, _scaleX3),
-	      scaleY: (_scaleY3 = {}, _scaleY3[SCALE_UP] = 1, _scaleY3),
-	      easing: 'quad.out',
-	      origin: '50% 100%',
-	      delay: DELAY2
-	    })).then({
-	      scaleX: SCALE_DOWN,
-	      scaleY: SCALE_UP,
-	      x: { to: 3 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: Y_SHIFT,
-	      angle: { 0: -11 },
-	      easing: 'quad.in',
-	      duration: 400
-	    }).then(SLAP_OPTS).then({
-	      x: { to: 1.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: -155 + Y_SHIFT,
-	      duration: 300,
-	      angle: -200,
-	      easing: 'quad.out'
-	    }).then({
-	      x: { to: X_SHIFT, easing: 'linear.none' },
-	      y: Y_SHIFT,
-	      angle: -360,
-	      easing: 'quad.in',
-	      duration: 350
-	    });
-
-	    var char4 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
-	      shape: 'polygon',
-	      points: 5,
-	      y: (_y4 = {}, _y4[-100 + Y_SHIFT] = -220, _y4),
-	      x: (_x4 = {}, _x4[X_SHIFT] = 1.25 * CHAR_STEP + X_SHIFT, _x4.easing = 'linear.none', _x4),
-	      angle: -11,
-	      scaleX: (_scaleX4 = {}, _scaleX4[SCALE_DOWN] = 1, _scaleX4),
-	      scaleY: (_scaleY4 = {}, _scaleY4[SCALE_UP] = 1, _scaleY4),
-	      easing: 'quad.out',
-	      delay: 100 + DELAY2,
-	      duration: 425,
-	      origin: '50% 100%'
-	    })).then({
-	      scaleX: SCALE_DOWN,
-	      scaleY: SCALE_UP,
-	      x: { to: 2.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: -55 + Y_SHIFT,
-	      angle: { to: 5, easing: 'cubic.out' },
-	      easing: 'quad.in',
-	      duration: 350
-	    }).then((0, _extends3.default)({}, SLAP_OPTS, {
-	      duration: 40,
-	      y: -95 + Y_SHIFT
-	    })).then({
-	      scaleX: { 1: 1, curve: bounceCurve },
-	      scaleY: { 1: 1, curve: nBounceCurve },
-	      x: { to: 1.75 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: -250 + Y_SHIFT,
-	      angle: 0,
-	      easing: 'cubic.out',
-	      duration: 450
-	    }).then({
-	      x: { to: 1 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-	      y: Y_SHIFT,
-	      scaleX: SCALE_DOWN,
-	      scaleY: SCALE_UP,
-	      angle: { 180: 180, curve: 'quad.out' },
-	      origin: { '50% 50%': '50% 50%' },
-	      easing: 'quad.in',
-	      duration: 450
-	    }).then((0, _extends3.default)({}, SLAP_OPTS, {
-	      angle: { 360: 360 },
-	      easing: 'quad.out',
-	      origin: '50% 100%'
-	    }));
-
-	    return this.timeline.add(char1, char2, char3, char4);
-	  };
-
-	  return GeometricShapes;
-	}(_module2.default);
-
-	exports.default = GeometricShapes;
-
-/***/ },
-/* 103 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	var _extends2 = __webpack_require__(95);
-
-	var _extends3 = _interopRequireDefault(_extends2);
-
-	var _classCallCheck2 = __webpack_require__(2);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	var _possibleConstructorReturn2 = __webpack_require__(3);
-
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-	var _inherits2 = __webpack_require__(72);
-
-	var _inherits3 = _interopRequireDefault(_inherits2);
-
-	var _module = __webpack_require__(82);
-
-	var _module2 = _interopRequireDefault(_module);
-
-	var _colors = __webpack_require__(83);
-
-	var _colors2 = _interopRequireDefault(_colors);
-
-	var _showButton = __webpack_require__(85);
+	var _showButton = __webpack_require__(84);
 
 	var _showButton2 = _interopRequireDefault(_showButton);
 
@@ -14152,6 +13932,245 @@
 	}(_module2.default);
 
 	exports.default = Characters;
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _extends2 = __webpack_require__(94);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(3);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(72);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(82);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _colors = __webpack_require__(83);
+
+	var _colors2 = _interopRequireDefault(_colors);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var GeometricShapes = function (_Module) {
+	  (0, _inherits3.default)(GeometricShapes, _Module);
+
+	  function GeometricShapes() {
+	    (0, _classCallCheck3.default)(this, GeometricShapes);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  GeometricShapes.prototype._render = function _render() {
+	    var _y, _x, _scaleX, _scaleY, _y2, _x2, _scaleX2, _scaleY2, _y3, _x3, _scaleX3, _scaleY3, _y4, _x4, _scaleX4, _scaleY4;
+
+	    this.timeline = new mojs.Timeline();
+
+	    var charOpts = {
+	      left: '50%', top: '50%',
+	      fill: _colors2.default.WHITE,
+	      radius: 10,
+	      // isShowStart:  true,
+	      isShowEnd: false
+	    };
+
+	    var CHAR_STEP = 40;
+	    var SCALE_DOWN = .25;
+	    var SCALE_UP = 2;
+
+	    var Y_SHIFT = -60;
+	    var X_SHIFT = CHAR_STEP / 2;
+
+	    var SLAP_OPTS = {
+	      scaleX: SCALE_UP,
+	      scaleY: SCALE_DOWN,
+	      y: Y_SHIFT,
+	      angle: 0,
+	      duration: 75
+	    };
+
+	    var SHIFTX = 4 * CHAR_STEP;
+	    var bounceCurve = mojs.easing.path('M0,-100 C0,-100 15.6877613,115.487686 32.0269814,74.203186 C62.0118605,-1.559962 100.057489,-0.0941416292 100.057489,-0.0941416292');
+	    var nBounceCurve = function nBounceCurve(p) {
+	      return 2 - bounceCurve(p);
+	    };
+	    var char1 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      y: (_y = {}, _y[-100 + Y_SHIFT] = -200, _y),
+	      x: (_x = {}, _x[X_SHIFT] = -2 * CHAR_STEP + X_SHIFT, _x.easing = 'linear.none', _x),
+	      angle: -11,
+	      scaleX: (_scaleX = {}, _scaleX[SCALE_DOWN] = 1, _scaleX),
+	      scaleY: (_scaleY = {}, _scaleY[SCALE_UP] = 1, _scaleY),
+	      easing: 'quad.out',
+	      origin: '50% 100%'
+	    })).then({
+	      scaleX: SCALE_DOWN,
+	      scaleY: SCALE_UP,
+	      x: { to: -4 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
+	      angle: { 0: 11 },
+	      easing: 'sin.in'
+	    }).then(SLAP_OPTS).then({
+	      scaleX: { 1: 1, curve: bounceCurve },
+	      scaleY: { 1: 1, curve: nBounceCurve },
+	      x: { to: -2.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -175 + Y_SHIFT,
+	      angle: { to: 20, easing: 'quad.out' },
+	      duration: 350
+	    }).then({
+	      x: { to: -CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
+	      scaleX: SCALE_DOWN,
+	      scaleY: SCALE_UP,
+	      angle: { 0: -10 },
+	      easing: 'quad.in'
+	    }).then(SLAP_OPTS);
+
+	    var char2 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      shape: 'rect',
+	      y: (_y2 = {}, _y2[-100 + Y_SHIFT] = -220, _y2),
+	      x: (_x2 = {}, _x2[X_SHIFT] = -1.75 * CHAR_STEP + X_SHIFT, _x2.easing = 'linear.none', _x2),
+	      angle: -11,
+	      scaleX: (_scaleX2 = {}, _scaleX2[SCALE_DOWN] = 1, _scaleX2),
+	      scaleY: (_scaleY2 = {}, _scaleY2[SCALE_UP] = 1, _scaleY2),
+	      easing: 'quad.out',
+	      delay: 100,
+	      duration: 425,
+	      origin: '50% 100%'
+	    })).then({
+	      scaleX: SCALE_DOWN,
+	      scaleY: SCALE_UP,
+	      x: { to: -3.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -55 + Y_SHIFT,
+	      angle: { to: 5, easing: 'cubic.out' },
+	      easing: 'quad.in',
+	      duration: 350
+	    }).then((0, _extends3.default)({}, SLAP_OPTS, {
+	      duration: 40,
+	      y: -95 + Y_SHIFT
+	    })).then({
+	      scaleX: { 1: 1, curve: bounceCurve },
+	      scaleY: { 1: 1, curve: nBounceCurve },
+	      x: { to: -2.75 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -275 + Y_SHIFT,
+	      angle: 0,
+	      easing: 'cubic.out',
+	      duration: 450
+	    }).then({
+	      x: { to: -2 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
+	      scaleX: SCALE_DOWN,
+	      scaleY: SCALE_UP,
+	      angle: { 180: 180, curve: 'quad.out' },
+	      origin: { '50% 50%': '50% 50%' },
+	      easing: 'quad.in',
+	      duration: 450
+	    }).then((0, _extends3.default)({}, SLAP_OPTS, {
+	      angle: { 360: 360 },
+	      easing: 'quad.out',
+	      origin: '50% 100%'
+	    }));
+
+	    var DELAY2 = 200;
+
+	    var char3 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      shape: 'rect',
+	      y: (_y3 = {}, _y3[-100 + Y_SHIFT] = -200, _y3),
+	      x: (_x3 = {}, _x3[X_SHIFT] = 1.5 * CHAR_STEP + X_SHIFT, _x3.easing = 'linear.none', _x3),
+	      angle: -11,
+	      scaleX: (_scaleX3 = {}, _scaleX3[SCALE_DOWN] = 1, _scaleX3),
+	      scaleY: (_scaleY3 = {}, _scaleY3[SCALE_UP] = 1, _scaleY3),
+	      easing: 'quad.out',
+	      origin: '50% 100%',
+	      delay: DELAY2
+	    })).then({
+	      scaleX: SCALE_DOWN,
+	      scaleY: SCALE_UP,
+	      x: { to: 3 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
+	      angle: { 0: -11 },
+	      easing: 'quad.in',
+	      duration: 400
+	    }).then(SLAP_OPTS).then({
+	      x: { to: 1.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -155 + Y_SHIFT,
+	      duration: 300,
+	      angle: -200,
+	      easing: 'quad.out'
+	    }).then({
+	      x: { to: X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
+	      angle: -360,
+	      easing: 'quad.in',
+	      duration: 350
+	    });
+
+	    var char4 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
+	      shape: 'polygon',
+	      points: 5,
+	      y: (_y4 = {}, _y4[-100 + Y_SHIFT] = -220, _y4),
+	      x: (_x4 = {}, _x4[X_SHIFT] = 1.25 * CHAR_STEP + X_SHIFT, _x4.easing = 'linear.none', _x4),
+	      angle: -11,
+	      scaleX: (_scaleX4 = {}, _scaleX4[SCALE_DOWN] = 1, _scaleX4),
+	      scaleY: (_scaleY4 = {}, _scaleY4[SCALE_UP] = 1, _scaleY4),
+	      easing: 'quad.out',
+	      delay: 100 + DELAY2,
+	      duration: 425,
+	      origin: '50% 100%'
+	    })).then({
+	      scaleX: SCALE_DOWN,
+	      scaleY: SCALE_UP,
+	      x: { to: 2.5 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -55 + Y_SHIFT,
+	      angle: { to: 5, easing: 'cubic.out' },
+	      easing: 'quad.in',
+	      duration: 350
+	    }).then((0, _extends3.default)({}, SLAP_OPTS, {
+	      duration: 40,
+	      y: -95 + Y_SHIFT
+	    })).then({
+	      scaleX: { 1: 1, curve: bounceCurve },
+	      scaleY: { 1: 1, curve: nBounceCurve },
+	      x: { to: 1.75 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: -250 + Y_SHIFT,
+	      angle: 0,
+	      easing: 'cubic.out',
+	      duration: 450
+	    }).then({
+	      x: { to: 1 * CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+	      y: Y_SHIFT,
+	      scaleX: SCALE_DOWN,
+	      scaleY: SCALE_UP,
+	      angle: { 180: 180, curve: 'quad.out' },
+	      origin: { '50% 50%': '50% 50%' },
+	      easing: 'quad.in',
+	      duration: 450
+	    }).then((0, _extends3.default)({}, SLAP_OPTS, {
+	      angle: { 360: 360 },
+	      easing: 'quad.out',
+	      origin: '50% 100%'
+	    }));
+
+	    return this.timeline.add(char1, char2, char3, char4);
+	  };
+
+	  return GeometricShapes;
+	}(_module2.default);
+
+	exports.default = GeometricShapes;
 
 /***/ }
 /******/ ]);

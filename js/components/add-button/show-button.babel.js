@@ -67,8 +67,28 @@ class ShowButton extends Module {
       count:          3,
       degree:         25,
       angle:          { [90 + angle] : 280 + angle },
-      y:              { 0: -20 },
+      y:              { 0: -25 },
       timeline:       { delay: 200 },
+      // radius:         { 0: 70 },
+      childOptions: {
+        radius:       [ 10, 7 ],
+        fill:         COLORS.WHITE,
+        scale:        { 1 : 0 },
+        pathScale:    'rand(.5, 1.5)',
+        duration:     600,
+      }
+    });
+
+    const angle2 = 100;
+    const bubbles2 = new mojs.Burst({
+      left, top,
+      parent:         showUp.el,
+      count:          3,
+      degree:         25,
+      angle:          { [90 + angle2] : 280 + angle2 },
+      // x:              { 0: -25 },
+      timeline:       { delay: 350 },
+      // radius:         { 0: 70 },
       childOptions: {
         radius:       [ 10, 7 ],
         fill:         COLORS.WHITE,
@@ -102,7 +122,8 @@ class ShowButton extends Module {
     });
 
     this.timeline.add(
-      bubbles, showUp,
+      bubbles, bubbles2,
+      showUp,
       addButtonCross
     );
 
