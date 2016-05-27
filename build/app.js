@@ -11258,7 +11258,7 @@
 	  }
 
 	  ShowButton.prototype._render = function _render() {
-	    var _x, _angle, _angle2;
+	    var _x, _y, _angle, _angle2;
 
 	    _Module.prototype._render.call(this);
 
@@ -11300,6 +11300,7 @@
 	      radius: { 0: 10 },
 	      angle: { 560: 270 },
 	      x: (_x = {}, _x[-150] = 0, _x),
+	      y: (_y = {}, _y[50] = 0, _y),
 	      strokeWidth: { 0: 22, easing: 'cubic.in' },
 	      strokeDasharray: '100%',
 	      strokeDashoffset: { '-100%': '0%', easing: 'cubic.in' },
@@ -11314,15 +11315,16 @@
 	      }
 	    });
 
-	    var angle = 100;
+	    var angle = 250;
 	    var bubbles = new mojs.Burst({
 	      left: left, top: top,
 	      parent: showUp.el,
 	      count: 3,
-	      degree: 25,
+	      degree: 15,
 	      angle: (_angle = {}, _angle[90 + angle] = 280 + angle, _angle),
-	      y: { 0: -25 },
-	      timeline: { delay: 200 },
+	      y: { 0: -15 },
+	      x: { 0: 35 },
+	      timeline: { delay: 300 },
 	      // radius:         { 0: 70 },
 	      childOptions: {
 	        radius: [10, 7],
@@ -11333,15 +11335,15 @@
 	      }
 	    });
 
-	    var angle2 = 100;
+	    var angle2 = -340;
 	    var bubbles2 = new mojs.Burst({
 	      left: left, top: top,
 	      parent: showUp.el,
 	      count: 3,
 	      degree: 25,
 	      angle: (_angle2 = {}, _angle2[90 + angle2] = 280 + angle2, _angle2),
-	      // x:              { 0: -25 },
-	      timeline: { delay: 350 },
+	      y: { 0: 15 },
+	      timeline: { delay: 0 },
 	      // radius:         { 0: 70 },
 	      childOptions: {
 	        radius: [10, 7],

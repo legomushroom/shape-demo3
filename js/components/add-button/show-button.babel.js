@@ -46,6 +46,7 @@ class ShowButton extends Module {
       radius: { 0: 10 },
       angle: { 560: 270 },
       x:      { [-150]: 0 },
+      y:      { [50]: 0 },
       strokeWidth: { 0: 22, easing: 'cubic.in' },
       strokeDasharray: '100%',
       strokeDashoffset: { '-100%' : '0%', easing: 'cubic.in' },
@@ -60,15 +61,16 @@ class ShowButton extends Module {
       }
     });
 
-    const angle = 100;
+    const angle = 250;
     const bubbles = new mojs.Burst({
       left, top,
       parent:         showUp.el,
       count:          3,
-      degree:         25,
+      degree:         15,
       angle:          { [90 + angle] : 280 + angle },
-      y:              { 0: -25 },
-      timeline:       { delay: 200 },
+      y:              { 0: -15 },
+      x:              { 0: 35 },
+      timeline:       { delay: 300 },
       // radius:         { 0: 70 },
       childOptions: {
         radius:       [ 10, 7 ],
@@ -79,15 +81,15 @@ class ShowButton extends Module {
       }
     });
 
-    const angle2 = 100;
+    const angle2 = -340;
     const bubbles2 = new mojs.Burst({
       left, top,
       parent:         showUp.el,
       count:          3,
       degree:         25,
       angle:          { [90 + angle2] : 280 + angle2 },
-      // x:              { 0: -25 },
-      timeline:       { delay: 350 },
+      y:              { 0: 15 },
+      timeline:       { delay: 0 },
       // radius:         { 0: 70 },
       childOptions: {
         radius:       [ 10, 7 ],
@@ -122,7 +124,8 @@ class ShowButton extends Module {
     });
 
     this.timeline.add(
-      bubbles, bubbles2,
+      bubbles,
+      bubbles2,
       showUp,
       addButtonCross
     );
