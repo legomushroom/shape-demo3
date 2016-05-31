@@ -24,6 +24,7 @@ class ShowButton extends Module {
     const showBase = new  mojs.Shape({
       left, top,
       fill: 'none',
+      radius: 20,
       x:      { [-150]: 0,  easing: 'cubic.out' },
       y:      { [90]: 0, easing: 'cubic.out' },
       // isSwirl: true,

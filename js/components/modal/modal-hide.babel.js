@@ -127,6 +127,8 @@ class ModalHide extends Module {
       delay: 150,
     });
 
+    this.characters = new Characters({ delay: 1600 });
+
     this.timeline
       .add(
         redBg,
@@ -137,7 +139,7 @@ class ModalHide extends Module {
         circle,
         circle2,
         new GeometricShapes,
-        new Characters({ delay: 1600 })
+        this.characters
       );
 
     return this;

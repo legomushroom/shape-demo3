@@ -212,7 +212,14 @@ class Modal extends Module {
     this.buttonLove.addEventListener( 'mouseleave', this._buttonLeave.bind(this) );
     this.buttonHate.addEventListener( 'mouseleave', this._buttonLeave.bind(this) );
     
-    this.buttonLove.addEventListener( 'click', this._playHide.bind(this) );
+    this.buttonLove.addEventListener( 'click', () => {
+      this._setWord( 'love' );
+      this._playHide();
+    });
+    this.buttonHate.addEventListener( 'click', () => {
+      this._setWord( 'hate' );
+      this._playHide();
+    });
   }
 
   _buttonEnter (e) {
@@ -242,6 +249,11 @@ class Modal extends Module {
     }
 
     this._isShake = false;
+  }
+  
+  _setWord ( word ) {
+    console.log(word);
+    modalHide.characters.setWord( word );
   }
 
   _playHide () {

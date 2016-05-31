@@ -2,12 +2,8 @@ import Module from '../module';
 import COLORS  from '../colors';
 import ShowButton  from '../../components/add-button/show-button';
 
-// showButton.play()
-
 class Characters extends Module {
   _render () {
-    console.log('render')
-    
     const parent = this._findEl( '#js-modal-hide-layer' );
 
     class BubbleSpeech extends mojs.CustomShape {
@@ -23,9 +19,9 @@ class Characters extends Module {
       y: -115,
       scale: { 0 : 1 },
       angle: { [-90]: 0 },
-      duration: 800,
+      duration: 650,
       easing: 'back.out',
-      delay: this._o.delay + 400,
+      delay: this._o.delay + 700,
       fill: COLORS.VINOUS,
       origin: '50% 100%',
       parent
@@ -97,9 +93,6 @@ class Characters extends Module {
     const nBounceCurve  = not( bounceCurve, 2 );
 
     const elasticCurve  = mojs.easing.path('M0,0 L42.4468,99.9990418 C46.3646102,-8.62551409 51.8137449,77.8031065 53.2538649,98.8047514 C54.3071019,114.164379 57.4212363,145.777285 62.4147182,98.8047479 C62.4147182,98.8047504 64.981755,73.166208 70.2635684,98.8047479 C73.8553743,114.6133 81.1660962,98.8047504 100,99.9990418');
-
-    const PRE_WORD = 'hate';
-    const WORD = PRE_WORD.split('');
     
     const elasticScale  = mojs.easing.path('M1.77635684e-15,-0.000957489014 L42.4468,-0.000958179367 C46.3646102,-108.625514 51.8137449,-22.1968935 53.2538649,-1.19524857 C54.3071019,14.1643792 57.4212363,45.7772847 62.4147182,-1.19525215 C62.4147182,-1.19524958 64.981755,-26.833792 70.2635684,-1.19525215 C73.8553743,14.6132996 81.1660962,-1.19524958 100,-0.000958179367');
     const nElasticScale = not( elasticScale, 2 );
@@ -120,10 +113,9 @@ class Characters extends Module {
       easing: 'bounce.out',
       duration: 850
     })
-    const character = document.createElement('div');
-    character.classList.add( 'character' );
-    character.innerText = WORD[1];
-    char1.el.appendChild( character );
+    this.character1 = document.createElement('div');
+    this.character1.classList.add( 'character' );
+    char1.el.appendChild( this.character1 );
 
     const char2 = new mojs.Shape({
       ...charOpts,
@@ -143,10 +135,9 @@ class Characters extends Module {
       easing: 'bounce.out',
       duration: 950
     })
-    const character2 = document.createElement('div');
-    character2.classList.add( 'character' );
-    character2.innerText = WORD[2];
-    char2.el.appendChild( character2 );
+    this.character2 = document.createElement('div');
+    this.character2.classList.add( 'character' );
+    char2.el.appendChild( this.character2 );
 
     const char3 = new mojs.Shape({
       ...charOpts,
@@ -166,10 +157,9 @@ class Characters extends Module {
       duration: 1000,
       origin: '50% 100%',
     })
-    const character3 = document.createElement('div');
-    character3.classList.add( 'character' );
-    character3.innerText = WORD[0];
-    char3.el.appendChild( character3 );
+    this.character3 = document.createElement('div');
+    this.character3.classList.add( 'character' );
+    char3.el.appendChild( this.character3 );
 
 
     const char4 = new mojs.Shape({
@@ -192,10 +182,9 @@ class Characters extends Module {
       duration: 1000,
       // origin: '50% 100%',
     })
-    const character4 = document.createElement('div');
-    character4.classList.add( 'character' );
-    character4.innerText = WORD[3];
-    char4.el.appendChild( character4 );
+    this.character4 = document.createElement('div');
+    this.character4.classList.add( 'character' );
+    char4.el.appendChild( this.character4 );
 
     const burst1 = new mojs.Burst({
       left: '50%', top: '50%',
@@ -291,20 +280,17 @@ class Characters extends Module {
       parent:   speech.el,
       angle:   -60,
       x:        3,
-      y:        -5,
-      // y:        Y_SHIFT,
-      radius:    { 55: 110 },
-      // radiusX:   { 50: 100 },
+      radius:    { 55: 95 },
       timeline: { delay: 2500 },
       childOptions: {
         shape:        'line',
         scale:        { 1 : 0 },
-        radius:       10,
+        radius:       12,
         // radius:       'rand(8, 18)',
         radiusY:      0,
         stroke:       COLORS.VINOUS,
-        strokeWidth:  5,
-        duration:     400,
+        strokeWidth:  9,
+        duration:     450,
       }
     });
 
@@ -317,6 +303,14 @@ class Characters extends Module {
         undeline
       );
     return this;
+  }
+
+  setWord ( word = 'love' ) {
+    const WORD = word.split('');
+    this.character1.innerText = WORD[1];
+    this.character2.innerText = WORD[2];
+    this.character3.innerText = WORD[0];
+    this.character4.innerText = WORD[3];
   }
 }
 

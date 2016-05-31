@@ -207,7 +207,7 @@ class ModalIn extends Module {
       // delay: 1600,
     });
 
-    this.timeline = new mojs.Timeline({ });
+    this.timeline = new mojs.Timeline();
 
     const modalTimeline = new mojs.Timeline({ delay: DELAY + 100 });
 

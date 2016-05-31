@@ -11291,6 +11291,7 @@
 	    var showBase = new mojs.Shape({
 	      left: left, top: top,
 	      fill: 'none',
+	      radius: 20,
 	      x: (_x = {}, _x[-150] = 0, _x.easing = 'cubic.out', _x),
 	      y: (_y = {}, _y[90] = 0, _y.easing = 'cubic.out', _y),
 	      // isSwirl: true,
@@ -13231,12 +13232,21 @@
 	  // parent:       this.buttonHate,
 
 	  Modal.prototype._addListeners = function _addListeners() {
+	    var _this4 = this;
+
 	    this.buttonLove.addEventListener('mouseenter', this._buttonEnter.bind(this));
 	    this.buttonHate.addEventListener('mouseenter', this._buttonEnter.bind(this));
 	    this.buttonLove.addEventListener('mouseleave', this._buttonLeave.bind(this));
 	    this.buttonHate.addEventListener('mouseleave', this._buttonLeave.bind(this));
 
-	    this.buttonLove.addEventListener('click', this._playHide.bind(this));
+	    this.buttonLove.addEventListener('click', function () {
+	      _this4._setWord('love');
+	      _this4._playHide();
+	    });
+	    this.buttonHate.addEventListener('click', function () {
+	      _this4._setWord('hate');
+	      _this4._playHide();
+	    });
 	  };
 
 	  Modal.prototype._buttonEnter = function _buttonEnter(e) {
@@ -13294,6 +13304,11 @@
 	    }
 
 	    this._isShake = false;
+	  };
+
+	  Modal.prototype._setWord = function _setWord(word) {
+	    console.log(word);
+	    modalHide.characters.setWord(word);
 	  };
 
 	  Modal.prototype._playHide = function _playHide() {
@@ -13711,7 +13726,7 @@
 	    });
 
 	    // delay: 1600,
-	    this.timeline = new mojs.Timeline({});
+	    this.timeline = new mojs.Timeline();
 
 	    var modalTimeline = new mojs.Timeline({ delay: DELAY + 100 });
 
@@ -13896,7 +13911,9 @@
 	      delay: 150
 	    });
 
-	    this.timeline.add(redBg, whiteBg, burst, burst2, burst3, circle, circle2, new _geometricShapes2.default(), new _characters2.default({ delay: 1600 }));
+	    this.characters = new _characters2.default({ delay: 1600 });
+
+	    this.timeline.add(redBg, whiteBg, burst, burst2, burst3, circle, circle2, new _geometricShapes2.default(), this.characters);
 
 	    return this;
 	  };
@@ -13949,8 +13966,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// showButton.play()
-
 	var Characters = function (_Module) {
 	  (0, _inherits3.default)(Characters, _Module);
 
@@ -13961,8 +13976,6 @@
 
 	  Characters.prototype._render = function _render() {
 	    var _angle, _y, _y2, _angle2, _y3, _y4, _x2;
-
-	    console.log('render');
 
 	    var parent = this._findEl('#js-modal-hide-layer');
 
@@ -13990,9 +14003,9 @@
 	      y: -115,
 	      scale: { 0: 1 },
 	      angle: (_angle = {}, _angle[-90] = 0, _angle),
-	      duration: 800,
+	      duration: 650,
 	      easing: 'back.out',
-	      delay: this._o.delay + 400,
+	      delay: this._o.delay + 700,
 	      fill: _colors2.default.VINOUS,
 	      origin: '50% 100%',
 	      parent: parent
@@ -14082,9 +14095,6 @@
 
 	    var elasticCurve = mojs.easing.path('M0,0 L42.4468,99.9990418 C46.3646102,-8.62551409 51.8137449,77.8031065 53.2538649,98.8047514 C54.3071019,114.164379 57.4212363,145.777285 62.4147182,98.8047479 C62.4147182,98.8047504 64.981755,73.166208 70.2635684,98.8047479 C73.8553743,114.6133 81.1660962,98.8047504 100,99.9990418');
 
-	    var PRE_WORD = 'hate';
-	    var WORD = PRE_WORD.split('');
-
 	    var elasticScale = mojs.easing.path('M1.77635684e-15,-0.000957489014 L42.4468,-0.000958179367 C46.3646102,-108.625514 51.8137449,-22.1968935 53.2538649,-1.19524857 C54.3071019,14.1643792 57.4212363,45.7772847 62.4147182,-1.19525215 C62.4147182,-1.19524958 64.981755,-26.833792 70.2635684,-1.19525215 C73.8553743,14.6132996 81.1660962,-1.19524958 100,-0.000958179367');
 	    var nElasticScale = not(elasticScale, 2);
 	    var char1 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
@@ -14102,10 +14112,9 @@
 	      easing: 'bounce.out',
 	      duration: 850
 	    });
-	    var character = document.createElement('div');
-	    character.classList.add('character');
-	    character.innerText = WORD[1];
-	    char1.el.appendChild(character);
+	    this.character1 = document.createElement('div');
+	    this.character1.classList.add('character');
+	    char1.el.appendChild(this.character1);
 
 	    var char2 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
 	      y: (_y2 = {}, _y2[Y_SHIFT] = -125 + Y_SHIFT, _y2),
@@ -14123,10 +14132,9 @@
 	      easing: 'bounce.out',
 	      duration: 950
 	    });
-	    var character2 = document.createElement('div');
-	    character2.classList.add('character');
-	    character2.innerText = WORD[2];
-	    char2.el.appendChild(character2);
+	    this.character2 = document.createElement('div');
+	    this.character2.classList.add('character');
+	    char2.el.appendChild(this.character2);
 
 	    var char3 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
 	      y: (_y3 = {}, _y3[Y_SHIFT] = -150 + Y_SHIFT, _y3),
@@ -14144,10 +14152,9 @@
 	      duration: 1000,
 	      origin: '50% 100%'
 	    });
-	    var character3 = document.createElement('div');
-	    character3.classList.add('character');
-	    character3.innerText = WORD[0];
-	    char3.el.appendChild(character3);
+	    this.character3 = document.createElement('div');
+	    this.character3.classList.add('character');
+	    char3.el.appendChild(this.character3);
 
 	    var char4 = new mojs.Shape((0, _extends3.default)({}, charOpts, {
 	      y: (_y4 = {}, _y4[Y_SHIFT] = -125 + Y_SHIFT, _y4),
@@ -14167,10 +14174,9 @@
 	      duration: 1000
 	    });
 	    // origin: '50% 100%',
-	    var character4 = document.createElement('div');
-	    character4.classList.add('character');
-	    character4.innerText = WORD[3];
-	    char4.el.appendChild(character4);
+	    this.character4 = document.createElement('div');
+	    this.character4.classList.add('character');
+	    char4.el.appendChild(this.character4);
 
 	    var burst1 = new mojs.Burst({
 	      left: '50%', top: '50%',
@@ -14265,20 +14271,17 @@
 	      parent: speech.el,
 	      angle: -60,
 	      x: 3,
-	      y: -5,
-	      // y:        Y_SHIFT,
-	      radius: { 55: 110 },
-	      // radiusX:   { 50: 100 },
+	      radius: { 55: 95 },
 	      timeline: { delay: 2500 },
 	      childOptions: {
 	        shape: 'line',
 	        scale: { 1: 0 },
-	        radius: 10,
+	        radius: 12,
 	        // radius:       'rand(8, 18)',
 	        radiusY: 0,
 	        stroke: _colors2.default.VINOUS,
-	        strokeWidth: 5,
-	        duration: 400
+	        strokeWidth: 9,
+	        duration: 450
 	      }
 	    });
 
@@ -14286,6 +14289,16 @@
 	    // line, line2,
 	    speech, speechBurst, undeline);
 	    return this;
+	  };
+
+	  Characters.prototype.setWord = function setWord() {
+	    var word = arguments.length <= 0 || arguments[0] === undefined ? 'love' : arguments[0];
+
+	    var WORD = word.split('');
+	    this.character1.innerText = WORD[1];
+	    this.character2.innerText = WORD[2];
+	    this.character3.innerText = WORD[0];
+	    this.character4.innerText = WORD[3];
 	  };
 
 	  return Characters;
