@@ -29,6 +29,7 @@ class VibroButton extends Module {
       delay:          DELAY,
       scale:          { 1: 1.35 },
       parent:         this._o.parent,
+      isForce3d:      true,
       onStart: ( isFwd ) => {
         // isFwd && this.vibroSound.play();
       },
@@ -64,7 +65,8 @@ class VibroButton extends Module {
       duration:     1.5*DURATION,
       delay:        DELAY + .7*DURATION,
       easing:       'cubic.out',
-      isTimelineLess: true
+      isTimelineLess: true,
+      isForce3d: true,
     });
 
     bigReturnCircle.el.style[ 'z-index' ] = '0';
@@ -82,6 +84,7 @@ class VibroButton extends Module {
       duration:       .95*DURATION,
       delay:          DELAY,
       easing:         'cubic.out',
+      isForce3d:      true,
     }).then({
       scale:          0,
       opacity:        0,
@@ -100,6 +103,7 @@ class VibroButton extends Module {
       isShowStart:    true,
       scale:          1,
       // isShowEnd:      false,
+      isForce3d:      true,
       duration:       DURATION,
       delay:          DELAY + 50,
       isTimelineLess: true
@@ -109,7 +113,7 @@ class VibroButton extends Module {
 
     this.timeline.add(
         addButton,
-        addButtonCross,
+        // addButtonCross,
         bigReturnCircle, innerCircle
       );
     return this;

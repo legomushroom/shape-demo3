@@ -2,26 +2,22 @@ import Module           from '../module';
 import COLORS           from '../colors';
 import Characters       from './characters';
 import GeometricShapes  from './geometric-shapes';
+import pool from '../../pool';
 
 class ModalHide extends Module {
   _render () {
     super._render();
-
     this.parent = this._findEl( '#js-modal-hide-layer' );
 
-    // parent.appendChild( this.el );
-
     this.timeline = new mojs.Timeline;
-
-    // document.body.style[ 'background' ] = COLORS.BLACK;
 
     const whiteBg = new mojs.Shape({
       parent:       this.parent,
       fill:         COLORS.WHITE,
       left:         '50%', top: '50%',
       radius:       500,
-      duration:     700,
-      scale:        { .25 : 2 },
+      duration:     500,
+      scale:        { .25 : pool.getScaler( 500 ) },
       // scale:        .25,
       easing:       'cubic.out',
       // isShowStart:  true,
@@ -34,9 +30,9 @@ class ModalHide extends Module {
       fill:         COLORS.RED,
       left:         '50%', top: '50%',
       radius:       500,
-      duration:     700,
+      duration:     500,
       delay:        50,
-      scale:        { .25 : 2 },
+      scale:        { .25 : pool.getScaler( 500 ) },
       // scale:        .25,
       easing:       'quad.out',
       // isShowStart:  true,
@@ -88,18 +84,18 @@ class ModalHide extends Module {
     });
 
     const burst3 = new mojs.Burst({
-      count: 5,
-      left: '50%', top: '50%',
+      count:  5,
+      left:   '50%', top: '50%',
       radius: { 0: 150 },
       parent: this.parent,
       childOptions: {
-        shape: [ 'circle', 'rect', 'polygon' ],
-        points: 5,
-        fill: [ COLORS.WHITE, COLORS.VINOUS ],
-        radius: 'rand(30, 60)',
-        scale: { 1: 0 },
-        pathScale: 'rand(.5, 1)',
-        isForce3d: true
+        shape:      [ 'circle', 'rect', 'polygon' ],
+        points:     5,
+        fill:       [ COLORS.WHITE, COLORS.VINOUS ],
+        radius:     'rand(30, 60)',
+        scale:      { 1: 0 },
+        pathScale:  'rand(.5, 1)',
+        isForce3d:  true
       }
     });
 

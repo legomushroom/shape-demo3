@@ -99,12 +99,16 @@
 
 	var _characters2 = _interopRequireDefault(_characters);
 
+	var _pool = __webpack_require__(103);
+
+	var _pool2 = _interopRequireDefault(_pool);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// require('../css/main.postcss.css');
 	// const CLASSES = require('../css/main.postcss.css.json');
 
-	// import AddButton  from './components/add-button/add-button';
+	// import Vibro      from './components/add-button/vibro-button';
 
 	var Demo = function (_Module) {
 	  (0, _inherits3.default)(Demo, _Module);
@@ -138,7 +142,7 @@
 
 	  return Demo;
 	}(_module2.default);
-	// import Vibro      from './components/add-button/vibro-button';
+	// import AddButton  from './components/add-button/add-button';
 
 
 	new Demo();
@@ -11294,6 +11298,7 @@
 	      radius: 20,
 	      x: (_x = {}, _x[-150] = 0, _x.easing = 'cubic.out', _x),
 	      y: (_y = {}, _y[90] = 0, _y.easing = 'cubic.out', _y),
+	      isForce3d: true,
 	      // isSwirl: true,
 	      // swirlSize: 20,
 	      // swirlFrequency: 3,
@@ -11376,7 +11381,8 @@
 	        fill: _colors2.default.WHITE,
 	        // scale:        { 1 : 0 },
 	        pathScale: 'rand(.5, 1.5)',
-	        duration: 600
+	        duration: 600,
+	        isForce3d: true
 	      }
 	    });
 
@@ -11395,7 +11401,8 @@
 	        fill: _colors2.default.WHITE,
 	        // scale:        { 1 : 0 },
 	        pathScale: 'rand(.5, 1.5)',
-	        duration: 600
+	        duration: 600,
+	        isForce3d: true
 	      }
 	    });
 
@@ -11527,6 +11534,7 @@
 	      delay: DELAY,
 	      scale: { 1: 1.35 },
 	      parent: this._o.parent,
+	      isForce3d: true,
 	      onStart: function onStart(isFwd) {
 	        // isFwd && this.vibroSound.play();
 	      },
@@ -11561,7 +11569,8 @@
 	      duration: 1.5 * DURATION,
 	      delay: DELAY + .7 * DURATION,
 	      easing: 'cubic.out',
-	      isTimelineLess: true
+	      isTimelineLess: true,
+	      isForce3d: true
 	    });
 
 	    bigReturnCircle.el.style['z-index'] = '0';
@@ -11577,7 +11586,8 @@
 	      opacity: { 0: 1 },
 	      duration: .95 * DURATION,
 	      delay: DELAY,
-	      easing: 'cubic.out'
+	      easing: 'cubic.out',
+	      isForce3d: true
 	    }).then({
 	      scale: 0,
 	      opacity: 0,
@@ -11596,6 +11606,7 @@
 	      isShowStart: true,
 	      scale: 1,
 	      // isShowEnd:      false,
+	      isForce3d: true,
 	      duration: DURATION,
 	      delay: DELAY + 50,
 	      isTimelineLess: true
@@ -11603,7 +11614,9 @@
 
 	    this.timeline = new mojs.Timeline({ repeat: 99999 });
 
-	    this.timeline.add(addButton, addButtonCross, bigReturnCircle, innerCircle);
+	    this.timeline.add(addButton,
+	    // addButtonCross,
+	    bigReturnCircle, innerCircle);
 	    return this;
 	  };
 
@@ -13076,6 +13089,7 @@
 	    //   isTimelineLess: true,
 	    // });
 
+	    mojs.h.force3d(this.el);
 	    var rotateCurve = mojs.easing.path('M0,100 C0,100 18.4374504,69.9344254 47.837504,100 C66.7065746,119.176264 100,100 100,100');
 	    var rotateTween = new mojs.Tween({
 	      duration: 2000,
@@ -13123,7 +13137,6 @@
 	        _this3.shakeEl.style['transform'] = transform;
 	      },
 	      onComplete: function onComplete(isFwd) {
-	        console.log('complete');
 	        if (_this3._isShake) {
 	          coef = Math.random() < .5 ? -1 : 1;
 	          setTimeout(function () {
@@ -13307,7 +13320,6 @@
 	  };
 
 	  Modal.prototype._setWord = function _setWord(word) {
-	    console.log(word);
 	    modalHide.characters.setWord(word);
 	  };
 
@@ -13510,6 +13522,10 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
+	var _pool = __webpack_require__(103);
+
+	var _pool2 = _interopRequireDefault(_pool);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var ModalIn = function (_Module) {
@@ -13525,11 +13541,11 @@
 
 	    var travelCircleExpand = new mojs.Shape({
 	      fill: _colors2.default.BLACK,
-	      radius: 18,
+	      radius: 126,
 	      left: '50%', top: '50%',
 	      // x: { 0: -70 },
 	      // y: { 0:  60 },
-	      scale: { 1: 7 },
+	      scale: { .1: 1 },
 	      isTimelineLess: true,
 	      easing: 'cubic.out',
 	      duration: 400,
@@ -13539,37 +13555,36 @@
 	    });
 
 	    var travelCircle = new mojs.Shape({
-	      fill: _colors2.default.WHITE,
-	      radius: 23,
 	      left: '50%', top: '50%',
-	      // x: { 0: -70 },
-	      // y: { 0:  60 },
-	      scale: { 1: 5 },
-	      isTimelineLess: true,
+	      radius: 115,
+	      fill: _colors2.default.WHITE,
+	      scale: { .2: 1 },
+	      easing: 'back.in',
 	      isShowEnd: false,
-	      easing: 'back.in'
+	      isForce3d: true,
+	      isTimelineLess: true
 	    });
 
+	    var BG_DURATION = 250;
 	    var DELAY = 300;
 
 	    var circle = new mojs.Shape({
 	      fill: _colors2.default.WHITE,
 	      left: '50%', top: '50%',
-	      // x: { 0 : 250 },
-	      // y: { 0 : -250 },
 	      radius: 500,
-	      scale: { .1: 2 },
+	      scale: { .1: _pool2.default.getScaler(500) },
 	      isForce3d: true,
 	      easing: 'cubic.out',
+	      duration: BG_DURATION,
 	      delay: DELAY
-	      // duration: 500
 	    });
 
 	    var bg = new mojs.Shape({
 	      left: '50%', top: '50%',
 	      fill: _colors2.default.BLACK,
 	      radius: 500,
-	      scale: { 0: 2 },
+	      scale: { 0: _pool2.default.getScaler(500) },
+	      duration: BG_DURATION,
 	      // opacity: .95,
 	      isForce3d: true,
 	      delay: DELAY + 50
@@ -13728,7 +13743,7 @@
 	    // delay: 1600,
 	    this.timeline = new mojs.Timeline();
 
-	    var modalTimeline = new mojs.Timeline({ delay: DELAY + 100 });
+	    var modalTimeline = new mojs.Timeline({ delay: BG_DURATION + 100 });
 
 	    modalTimeline.add(modal, ripple, corner, triangles, lines, buttonsTween);
 
@@ -13778,6 +13793,10 @@
 
 	var _geometricShapes2 = _interopRequireDefault(_geometricShapes);
 
+	var _pool = __webpack_require__(103);
+
+	var _pool2 = _interopRequireDefault(_pool);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var ModalHide = function (_Module) {
@@ -13790,22 +13809,17 @@
 
 	  ModalHide.prototype._render = function _render() {
 	    _Module.prototype._render.call(this);
-
 	    this.parent = this._findEl('#js-modal-hide-layer');
 
-	    // parent.appendChild( this.el );
-
 	    this.timeline = new mojs.Timeline();
-
-	    // document.body.style[ 'background' ] = COLORS.BLACK;
 
 	    var whiteBg = new mojs.Shape({
 	      parent: this.parent,
 	      fill: _colors2.default.WHITE,
 	      left: '50%', top: '50%',
 	      radius: 500,
-	      duration: 700,
-	      scale: { .25: 2 },
+	      duration: 500,
+	      scale: { .25: _pool2.default.getScaler(500) },
 	      // scale:        .25,
 	      easing: 'cubic.out',
 	      // isShowStart:  true,
@@ -13818,9 +13832,9 @@
 	      fill: _colors2.default.RED,
 	      left: '50%', top: '50%',
 	      radius: 500,
-	      duration: 700,
+	      duration: 500,
 	      delay: 50,
-	      scale: { .25: 2 },
+	      scale: { .25: _pool2.default.getScaler(500) },
 	      // scale:        .25,
 	      easing: 'quad.out',
 	      // isShowStart:  true,
@@ -13997,8 +14011,8 @@
 	    mojs.addShape('bubble-speech', BubbleSpeech);
 
 	    var speech = new mojs.Shape({
-	      shape: 'bubble-speech',
 	      top: '50%', left: '50%',
+	      shape: 'bubble-speech',
 	      radius: 50,
 	      y: -115,
 	      scale: { 0: 1 },
@@ -14008,6 +14022,7 @@
 	      delay: this._o.delay + 700,
 	      fill: _colors2.default.VINOUS,
 	      origin: '50% 100%',
+	      isForce3d: true,
 	      parent: parent
 	    });
 
@@ -14061,6 +14076,7 @@
 	      radius: 23,
 	      delay: this._o.delay,
 	      isShowEnd: true,
+	      isForce3d: true,
 	      parent: parent
 	      // origin:   '50% 100%'
 	      // isShowStart:  true
@@ -14195,7 +14211,8 @@
 	        radiusY: 0,
 	        stroke: _colors2.default.VINOUS,
 	        strokeWidth: 7,
-	        duration: 450
+	        duration: 450,
+	        isForce3d: true
 	      }
 	    });
 
@@ -14216,7 +14233,8 @@
 	        radiusY: 0,
 	        stroke: _colors2.default.VINOUS,
 	        strokeWidth: 7,
-	        duration: 450
+	        duration: 450,
+	        isForce3d: true
 	      }
 	    });
 
@@ -14281,7 +14299,8 @@
 	        radiusY: 0,
 	        stroke: _colors2.default.VINOUS,
 	        strokeWidth: 9,
-	        duration: 450
+	        duration: 450,
+	        isForce3d: true
 	      }
 	    });
 
@@ -14359,6 +14378,7 @@
 	      left: '50%', top: '50%',
 	      fill: _colors2.default.WHITE,
 	      radius: 10,
+	      isForce3d: true,
 	      // isShowStart:  true,
 	      isShowEnd: false,
 	      parent: parent
@@ -14506,7 +14526,8 @@
 	      easing: 'quad.out',
 	      delay: 100 + DELAY2,
 	      duration: 425,
-	      origin: '50% 100%'
+	      origin: '50% 100%',
+	      isForce3d: true
 	    })).then({
 	      scaleX: SCALE_DOWN,
 	      scaleY: SCALE_UP,
@@ -14548,6 +14569,77 @@
 	}(_module2.default);
 
 	exports.default = GeometricShapes;
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _getIterator2 = __webpack_require__(89);
+
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Pool = function () {
+	  function Pool() {
+	    (0, _classCallCheck3.default)(this, Pool);
+
+	    this._vars();
+	    this._getWindowSize();
+	    this._listenResize();
+	  }
+
+	  Pool.prototype._vars = function _vars() {
+	    this._subscribers = [];
+	  };
+
+	  Pool.prototype._listenResize = function _listenResize() {
+	    window.addEventListener('resize', this._getWindowSize.bind(this));
+	  };
+
+	  Pool.prototype._getWindowSize = function _getWindowSize() {
+	    this.windowWidth = window.innerWidth;
+	    this.windowHeight = window.innerHeight;
+	    this._emitSubscribe();
+	  };
+
+	  Pool.prototype.getScaler = function getScaler(initial) {
+	    var max = Math.max(this.windowWidth, this.windowHeight);
+	    return 1.25 * (max / (2 * initial));
+	  };
+
+	  Pool.prototype.resizeSubscribe = function resizeSubscribe(subscriber) {
+	    this._subscribers.push(subscriber);
+	    subscriber(this.windowWidth, this.windowHeight);
+	  };
+
+	  Pool.prototype._emitSubscribe = function _emitSubscribe() {
+	    for (var _iterator = this._subscribers, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
+	      if (_isArray) {
+	        if (_i >= _iterator.length) break;
+	        subscriber = _iterator[_i++];
+	      } else {
+	        _i = _iterator.next();
+	        if (_i.done) break;
+	        subscriber = _i.value;
+	      }
+
+	      subscriber(this.windowWidth, this.windowHeight);
+	    }
+	  };
+
+	  return Pool;
+	}();
+
+	exports.default = new Pool();
 
 /***/ }
 /******/ ]);

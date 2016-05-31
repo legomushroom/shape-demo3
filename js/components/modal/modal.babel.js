@@ -43,6 +43,7 @@ class Modal extends Module {
     //   isTimelineLess: true,
     // });
 
+    mojs.h.force3d(this.el);
     const rotateCurve = mojs.easing.path('M0,100 C0,100 18.4374504,69.9344254 47.837504,100 C66.7065746,119.176264 100,100 100,100');
     const rotateTween = new mojs.Tween({
       duration: 2000,
@@ -86,7 +87,6 @@ class Modal extends Module {
         this.shakeEl.style[ 'transform' ] = transform;
       },
       onComplete: ( isFwd ) => {
-        console.log( 'complete' );
         if ( this._isShake ) {
           coef = Math.random() < .5 ? -1 : 1; 
           setTimeout( () => {
@@ -251,10 +251,7 @@ class Modal extends Module {
     this._isShake = false;
   }
   
-  _setWord ( word ) {
-    console.log(word);
-    modalHide.characters.setWord( word );
-  }
+  _setWord ( word ) { modalHide.characters.setWord( word ); }
 
   _playHide () {
     this._isHidden = true;

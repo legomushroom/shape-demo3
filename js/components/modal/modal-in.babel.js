@@ -1,16 +1,17 @@
-import Module from '../module';
+import Module  from '../module';
 import COLORS  from '../colors';
+import pool    from '../../pool';
 
 class ModalIn extends Module {
   _render () {
 
     const travelCircleExpand = new mojs.Shape({
       fill: COLORS.BLACK,
-      radius: 18,
+      radius: 126,
       left: '50%', top: '50%',
       // x: { 0: -70 },
       // y: { 0:  60 },
-      scale: { 1: 7 },
+      scale: { .1: 1 },
       isTimelineLess: true,
       easing: 'cubic.out',
       duration: 400,
@@ -20,40 +21,39 @@ class ModalIn extends Module {
     });
 
     const travelCircle = new mojs.Shape({
-      fill: COLORS.WHITE,
-      radius: 23,
       left: '50%', top: '50%',
-      // x: { 0: -70 },
-      // y: { 0:  60 },
-      scale: { 1: 5 },
+      radius:         115,
+      fill:           COLORS.WHITE,
+      scale:          { .2: 1 },
+      easing:         'back.in',
+      isShowEnd:      false,
+      isForce3d:      true,
       isTimelineLess: true,
-      isShowEnd: false,
-      easing: 'back.in'
     });
 
+    const BG_DURATION = 250;
     const DELAY = 300;
 
     const circle = new mojs.Shape({
       fill: COLORS.WHITE,
       left: '50%', top: '50%',
-      // x: { 0 : 250 },
-      // y: { 0 : -250 },
-      radius: 500,
-      scale:  { .1 : 2 },
+      radius:     500,
+      scale:      { .1 : pool.getScaler( 500 ) },
       isForce3d:  true,
-      easing: 'cubic.out',
-      delay: DELAY
-      // duration: 500
+      easing:     'cubic.out',
+      duration:   BG_DURATION,
+      delay:      DELAY
     });
 
     const bg = new mojs.Shape({
       left: '50%', top: '50%',
       fill:       COLORS.BLACK,
       radius:     500,
-      scale:      { 0: 2 },
+      scale:      { 0: pool.getScaler( 500 ) },
+      duration:   BG_DURATION,
       // opacity: .95,
       isForce3d:  true,
-      delay: DELAY + 50,
+      delay:      DELAY + 50,
     });
 
     const modal = new mojs.Shape({
@@ -209,7 +209,7 @@ class ModalIn extends Module {
 
     this.timeline = new mojs.Timeline();
 
-    const modalTimeline = new mojs.Timeline({ delay: DELAY + 100 });
+    const modalTimeline = new mojs.Timeline({ delay: BG_DURATION + 100 });
 
     modalTimeline
       .add(

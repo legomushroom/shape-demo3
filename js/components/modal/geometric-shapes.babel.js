@@ -12,8 +12,9 @@ class GeometricShapes extends Module {
       left: '50%', top: '50%',
       fill:         COLORS.WHITE,
       radius:       10,
+      isForce3d:    true,
       // isShowStart:  true,
-      isShowEnd: false,
+      isShowEnd:    false,
       parent
     }
 
@@ -165,17 +166,18 @@ class GeometricShapes extends Module {
 
     const char4 = new mojs.Shape({
       ...charOpts,
-      shape: 'polygon',
-      points: 5,
-      y: { [-100 + Y_SHIFT] : -220 },
-      x: { [X_SHIFT]: 1.25*CHAR_STEP + X_SHIFT, easing: 'linear.none' },
-      angle: -11,
-      scaleX: { [SCALE_DOWN] : 1 },
-      scaleY: { [SCALE_UP]: 1 },
-      easing: 'quad.out',
-      delay:  100 + DELAY2,
-      duration: 425,
-      origin: '50% 100%'
+      shape:      'polygon',
+      points:     5,
+      y:          { [-100 + Y_SHIFT] : -220 },
+      x:          { [X_SHIFT]: 1.25*CHAR_STEP + X_SHIFT, easing: 'linear.none' },
+      angle:     -11,
+      scaleX:     { [SCALE_DOWN] : 1 },
+      scaleY:     { [SCALE_UP]: 1 },
+      easing:     'quad.out',
+      delay:      100 + DELAY2,
+      duration:   425,
+      origin:     '50% 100%',
+      isForce3d:  true,
     })
     .then({
       scaleX: SCALE_DOWN,

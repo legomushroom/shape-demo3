@@ -13,17 +13,18 @@ class Characters extends Module {
     mojs.addShape( 'bubble-speech', BubbleSpeech );
 
     const speech = new mojs.Shape({
-      shape: 'bubble-speech',
       top: '50%', left: '50%',
-      radius:   50,
-      y: -115,
-      scale: { 0 : 1 },
-      angle: { [-90]: 0 },
-      duration: 650,
-      easing: 'back.out',
-      delay: this._o.delay + 700,
-      fill: COLORS.VINOUS,
-      origin: '50% 100%',
+      shape:      'bubble-speech',
+      radius:     50,
+      y:         -115,
+      scale:      { 0 : 1 },
+      angle:      { [-90]: 0 },
+      duration:   650,
+      easing:     'back.out',
+      delay:      this._o.delay + 700,
+      fill:       COLORS.VINOUS,
+      origin:     '50% 100%',
+      isForce3d:  true,
       parent
     });
 
@@ -65,6 +66,7 @@ class Characters extends Module {
       radius:       23,
       delay:        this._o.delay,
       isShowEnd:    true,
+      isForce3d:    true,
       parent
       // origin:   '50% 100%'
       // isShowStart:  true
@@ -204,6 +206,7 @@ class Characters extends Module {
         stroke:       COLORS.VINOUS,
         strokeWidth:  7,
         duration:     450,
+        isForce3d:    true
       }
     });
 
@@ -225,6 +228,7 @@ class Characters extends Module {
         stroke:       COLORS.VINOUS,
         strokeWidth:  7,
         duration:     450,
+        isForce3d:    true
       }
     });
 
@@ -291,6 +295,7 @@ class Characters extends Module {
         stroke:       COLORS.VINOUS,
         strokeWidth:  9,
         duration:     450,
+        isForce3d:    true
       }
     });
 

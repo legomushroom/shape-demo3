@@ -23,19 +23,19 @@ class ShowButton extends Module {
 
     const showBase = new  mojs.Shape({
       left, top,
-      fill: 'none',
-      radius: 20,
-      x:      { [-150]: 0,  easing: 'cubic.out' },
-      y:      { [90]: 0, easing: 'cubic.out' },
+      fill:         'none',
+      radius:       20,
+      x:            { [-150]: 0,  easing: 'cubic.out' },
+      y:            { [90]: 0, easing: 'cubic.out' },
+      isForce3d:    true,
       // isSwirl: true,
       // swirlSize: 20,
       // swirlFrequency: 3,
       // duration: 4000,
-      duration: duration + 400
+      duration:     duration + 400
     });
 
     const vibroBtn = new VibroButton({ parent: showBase.el });
-
 
     this.showBase = showBase;
     showBase.el.style[ 'z-index' ] = 5;
@@ -55,18 +55,18 @@ class ShowButton extends Module {
 
     const showUp = new mojs.Shape({
       left, top,
-      fill:           'none',
-      stroke:         COLORS.WHITE,
-      parent:         showBase.el,
+      fill:             'none',
+      stroke:           COLORS.WHITE,
+      parent:           showBase.el,
       // scale:          { 1: .75 },
-      radius:         { 0: 10 },
-      angle:          { 560: 270 },
+      radius:           { 0: 10 },
+      angle:            { 560: 270 },
       strokeWidth:      { 0: 22, easing: 'cubic.inout' },
       strokeDasharray:  '100%',
       strokeDashoffset: { '-100%' : '0%', easing: 'cubic.in' },
       strokeLinecap:    'round',
       duration,
-      isShowEnd:      false,
+      isShowEnd:        false,
     })
     .then({
       scale: .75,
@@ -113,6 +113,7 @@ class ShowButton extends Module {
         // scale:        { 1 : 0 },
         pathScale:    'rand(.5, 1.5)',
         duration:     600,
+        isForce3d:    true,
       }
     });
 
@@ -132,6 +133,7 @@ class ShowButton extends Module {
         // scale:        { 1 : 0 },
         pathScale:    'rand(.5, 1.5)',
         duration:     600,
+        isForce3d:    true,
       }
     });
 
