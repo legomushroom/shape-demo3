@@ -28,9 +28,9 @@ class VibroButton extends Module {
       duration:       DURATION,
       delay:          DELAY,
       scale:          { 1: 1.35 },
+      parent:         this._o.parent,
       onStart: ( isFwd ) => {
-        // console.log(isFwd)
-        // this.vibroSound.play();
+        // isFwd && this.vibroSound.play();
       },
       onUpdate: ( ep, p ) => {
         var proc = noise( p );
@@ -46,18 +46,16 @@ class VibroButton extends Module {
 
     addButton.el.style[ 'cursor' ] = 'pointer';
     addButton.el.style[ 'opacity' ] = '0';
-    addButton.el.style[ 'z-index' ] = '1';
+    addButton.el.style[ 'z-index' ] = '2';
 
     this.addButton = addButton;
-
-    this._addListeners();
 
     const bigReturnCircle = new mojs.Shape({
       fill:         COLORS.WHITE,
       fillOpacity:  .65,
       radius:       55,
       left, top,
-      // parent:       addButton.el,
+      parent:       this._o.parent,
       scale:        { 0: 1 },
       isShowEnd:    false,
       isSoftHide:   false,
@@ -100,6 +98,7 @@ class VibroButton extends Module {
       radius:         6,
       strokeLinecap: 'round',
       isShowStart:    true,
+      scale:          1,
       // isShowEnd:      false,
       duration:       DURATION,
       delay:          DELAY + 50,
@@ -109,23 +108,11 @@ class VibroButton extends Module {
     this.timeline = new mojs.Timeline({ repeat: 99999 });
 
     this.timeline.add(
-        addButton, addButtonCross,
+        addButton,
+        addButtonCross,
         bigReturnCircle, innerCircle
       );
     return this;
-  }
-
-  _addListeners() {
-    // this.addButton.el.addEventListener('mouseenter', (e) => {
-    //   // this.vibroSound.pause( );
-    // });
-
-    // this.addButton.el.addEventListener('mouseleave', () => {
-    //   this.timeline
-    //     .setSpeed(1)
-    //     .replay();
-    // });
-
   }
 }
 

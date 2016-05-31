@@ -5,19 +5,24 @@ class GeometricShapes extends Module {
   _render () {
     this.timeline = new mojs.Timeline;
 
+    const parent = this._findEl( '#js-modal-hide-layer' );
+
+
     const charOpts = {
       left: '50%', top: '50%',
       fill:         COLORS.WHITE,
       radius:       10,
       // isShowStart:  true,
-      isShowEnd: false
+      isShowEnd: false,
+      parent
     }
 
     const CHAR_STEP  = 40;
     const SCALE_DOWN = .25;
     const SCALE_UP   = 2;
 
-    const Y_SHIFT = -60;
+    const Y_SHIFT = 0;
+    // const Y_SHIFT = -60;
     const X_SHIFT = CHAR_STEP/2;
 
     const SLAP_OPTS = {

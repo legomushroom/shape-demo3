@@ -6,6 +6,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="css/main.css"> -->
   </head>
   <body>
+    <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
     <style>
       :root {
         /*font-size: 16px;*/
@@ -13,7 +14,7 @@
       }
 
       body {
-        background:     #EA485C;
+        background:     #FD5061;
         overflow:       hidden;
         font-family: Arial, Open Sans, sans-serif;
       }
@@ -25,7 +26,7 @@
 
       .character {
         color: white;
-        font-size: 36px;
+        font-size: 68px;
         position: absolute;
         left:0;
         top: 0;
@@ -34,15 +35,18 @@
         text-align: center;
         /*border: 1px solid green;*/
         line-height: .475;
-        
+        font-family: Oswald, monospace;
+        /*font-weight: bold;*/
       }
-
+      
       .modal-wrapper {
         position: absolute;
         width: 248px;
         height: 184px;
         margin-left: -124px;
         margin-top: -92px;
+        /*margin-left: -70px;*/
+        /*margin-top: -162px;*/
         left: 50%;
         top: 50%;
         z-index: 1;
@@ -53,7 +57,8 @@
                 transform: rotate(-3deg) translate( 60px, -60px );*/
       }
 
-      .modal {
+      .modal,
+      .modal__shake {
         position: absolute;
         left: 0;
         top: 0;
@@ -137,6 +142,27 @@
                 transform: rotate(-2deg);
       }
 
+      .layer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transform: scale(0);
+           -moz-transform: scale(0);
+            -ms-transform: scale(0);
+             -o-transform: scale(0);
+                transform: scale(0);
+      }
+
+      .layer--modal {
+        z-index: 5;
+      }
+
+      .layer--modal-hide {
+        z-index: 10;
+      }
+
       /** {
         outline: 1px solid cyan;
       }*/
@@ -156,6 +182,9 @@
       */
 
     </style>
+
+    <div id="js-modal-layer" class="layer layer--modal"></div>
+    <div id="js-modal-hide-layer" class="layer layer--modal-hide"></div>
 
     <div class="scene" id="js-scene"></div>
 

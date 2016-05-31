@@ -3,13 +3,57 @@ import COLORS  from '../colors';
 
 class ModalIn extends Module {
   _render () {
+
+    const travelCircleExpand = new mojs.Shape({
+      fill: COLORS.BLACK,
+      radius: 18,
+      left: '50%', top: '50%',
+      // x: { 0: -70 },
+      // y: { 0:  60 },
+      scale: { 1: 7 },
+      isTimelineLess: true,
+      easing: 'cubic.out',
+      duration: 400,
+      isForce3d: true,
+      opacity: { 0 : 1 }
+      // opacity: .25
+    });
+
+    const travelCircle = new mojs.Shape({
+      fill: COLORS.WHITE,
+      radius: 23,
+      left: '50%', top: '50%',
+      // x: { 0: -70 },
+      // y: { 0:  60 },
+      scale: { 1: 5 },
+      isTimelineLess: true,
+      isShowEnd: false,
+      easing: 'back.in'
+    });
+
+    const DELAY = 300;
+
+    const circle = new mojs.Shape({
+      fill: COLORS.WHITE,
+      left: '50%', top: '50%',
+      // x: { 0 : 250 },
+      // y: { 0 : -250 },
+      radius: 500,
+      scale:  { .1 : 2 },
+      isForce3d:  true,
+      easing: 'cubic.out',
+      delay: DELAY
+      // duration: 500
+    });
+
     const bg = new mojs.Shape({
       left: '50%', top: '50%',
       fill:       COLORS.BLACK,
       radius:     500,
       scale:      { 0: 2 },
       // opacity: .95,
-      isForce3d:  true
+      isForce3d:  true,
+      delay: DELAY + 50,
     });
 
     const modal = new mojs.Shape({
@@ -17,6 +61,8 @@ class ModalIn extends Module {
       parent:     this._o.el,
       className:  'modal-shape',
       shape:      'rect',
+      x:          { [-100] : 0 },
+      y:          { [100] : 0 },
       rx:         38,
       ry:         38,
       radiusX:    124,
@@ -158,16 +204,28 @@ class ModalIn extends Module {
       // isShowStart:  true,
       isShowEnd: false,
       isTimelineLess: true,
+      // delay: 1600,
     });
 
-    this.timeline = new mojs.Timeline();
+    this.timeline = new mojs.Timeline({ });
+
+    const modalTimeline = new mojs.Timeline({ delay: DELAY + 100 });
+
+    modalTimeline
+      .add(
+        modal, ripple, corner,
+        triangles, lines,
+        buttonsTween,
+      );
 
     this.timeline
       .add(
-            bg, modal, ripple, corner,
-            triangles, lines,
-            buttonsTween
-          );
+        bg,
+        modalTimeline,
+        circle,
+        travelCircle,
+        travelCircleExpand
+      );
 
     return this;
   }

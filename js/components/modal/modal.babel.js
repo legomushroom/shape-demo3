@@ -1,16 +1,29 @@
 
-import Module  from '../module';
-import COLORS  from '../colors';
-import ModalIn from './modal-in';
+import Module    from '../module';
+import COLORS    from '../colors';
+import ModalIn   from './modal-in';
+import ModalHide from './modal-hide';
+
+const modalHide = new ModalHide;
 
 class Modal extends Module {
   _render () {
     super._render();
+
+    this._isHidden = false;
+
     this.el.classList.add( 'modal-wrapper' );
     this.wrapper = this.el;
-    this.el = this._createChild('div', 'modal');
 
-    let modalIn = new ModalIn({ el: this.el });
+    // this.el.style[ 'margin-top' ]   = '-20px';
+    // this.el.style[ 'margin-right' ] = '-20px';
+
+    this.el = this._createChild('div', 'modal');
+    this.shakeEl = this._createElement( 'div' );
+    this.shakeEl.classList.add( 'modal__shake' );
+    this.el.appendChild( this.shakeEl );
+
+    let modalIn = new ModalIn({ el: this.shakeEl });
 
     this.corner = modalIn.corner.el;
 
@@ -18,17 +31,17 @@ class Modal extends Module {
     this.buttonHate = this._findEl('#js-button-hate');
     this.modalText  = this._findEl('#js-modal-text');
 
-    const circle = new mojs.Shape({
-      fill: COLORS.WHITE,
-      radius: 22,
-      isShowStart: true,
-      left: '50%', top: '50%',
-      // x: { 0: 100 },
-      // y: { 0: -100 },
-      scale: { 1: 0 },
-      isForce3d: true,
-      isTimelineLess: true,
-    });
+    // const circle = new mojs.Shape({
+    //   fill: COLORS.WHITE,
+    //   radius: 22,
+    //   isShowStart: true,
+    //   left: '50%', top: '50%',
+    //   // x: { 0: 100 },
+    //   // y: { 0: -100 },
+    //   scale: { 1: 0 },
+    //   isForce3d: true,
+    //   isTimelineLess: true,
+    // });
 
     const rotateCurve = mojs.easing.path('M0,100 C0,100 18.4374504,69.9344254 47.837504,100 C66.7065746,119.176264 100,100 100,100');
     const rotateTween = new mojs.Tween({
@@ -42,13 +55,18 @@ class Modal extends Module {
     });
 
     this.rotateTween = rotateTween;
-    this.rotateTween.play();
-
     this._createNoiseTween();
     this._createReleaseEffect();
-    this._addListeners();
 
-    return [ modalIn ];
+    this.timeline = new mojs.Timeline;
+    this.timeline.add( rotateTween, modalIn );
+
+    return this;
+  }
+
+  init () {
+    this._addListeners();
+    this.timeline.play();
   }
 
   _createNoiseTween () {
@@ -65,21 +83,27 @@ class Modal extends Module {
             transform =
               `translate( ${ coef*(20*nozieP)}px, ${ coef*(20*nozieP)}px )`;
 
-        this.el.style[ 'transform' ] = transform;
+        this.shakeEl.style[ 'transform' ] = transform;
       },
       onComplete: ( isFwd ) => {
+        console.log( 'complete' );
         if ( this._isShake ) {
           coef = Math.random() < .5 ? -1 : 1; 
-          setTimeout( () => { this.shakeTween.play(); }, 1)
+          setTimeout( () => {
+            // console.log('start');
+            this.shakeTween.play();
+          }, 1)
         }
       }
     });
+
+    this.shakeTween.isIt = 1;
 
     const sideOpts = {
       left: 0, top: '50%',
       duration:   300,
       shape:      'curve',
-      parent:     this.el,
+      parent:     this.shakeEl,
       easing:     'cubic.out',
       // fill:       COLORS.WHITE,
       fill:       COLORS.RED,
@@ -187,6 +211,8 @@ class Modal extends Module {
     this.buttonHate.addEventListener( 'mouseenter', this._buttonEnter.bind(this) );
     this.buttonLove.addEventListener( 'mouseleave', this._buttonLeave.bind(this) );
     this.buttonHate.addEventListener( 'mouseleave', this._buttonLeave.bind(this) );
+    
+    this.buttonLove.addEventListener( 'click', this._playHide.bind(this) );
   }
 
   _buttonEnter (e) {
@@ -197,8 +223,10 @@ class Modal extends Module {
   }
 
   _buttonLeave (e) {
+    if ( this._isHidden ) { return; }
     this.noiseTween.pause().playBackward();
     this.shakeTween.stop();
+    // this.shakeTween.pause().reset();
     this.rotateTween.play();
 
     if ( e.target === this.buttonLove ) {
@@ -214,6 +242,17 @@ class Modal extends Module {
     }
 
     this._isShake = false;
+  }
+
+  _playHide () {
+    this._isHidden = true;
+    mojs.h.setPrefixedStyle( this.el, 'transform', 'scale(0)' );
+
+    this.noiseTween.pause();
+    this.shakeTween.pause();
+    this.timeline.pause();
+
+    modalHide.play();
   }
 
 }
