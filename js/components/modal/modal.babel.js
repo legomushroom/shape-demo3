@@ -22,6 +22,8 @@ class Modal extends Module {
     this.shakeEl = this._createElement( 'div' );
     this.shakeEl.classList.add( 'modal__shake' );
     this.el.appendChild( this.shakeEl );
+    mojs.h.force3d( this.wrapper );
+    mojs.h.force3d( this.el );
 
     let modalIn = new ModalIn({ el: this.shakeEl });
 

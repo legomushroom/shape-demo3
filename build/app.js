@@ -91,15 +91,15 @@
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _modalHide = __webpack_require__(100);
+	var _modalHide = __webpack_require__(101);
 
 	var _modalHide2 = _interopRequireDefault(_modalHide);
 
-	var _characters = __webpack_require__(101);
+	var _characters = __webpack_require__(102);
 
 	var _characters2 = _interopRequireDefault(_characters);
 
-	var _pool = __webpack_require__(103);
+	var _pool = __webpack_require__(100);
 
 	var _pool2 = _interopRequireDefault(_pool);
 
@@ -13035,7 +13035,7 @@
 
 	var _modalIn2 = _interopRequireDefault(_modalIn);
 
-	var _modalHide = __webpack_require__(100);
+	var _modalHide = __webpack_require__(101);
 
 	var _modalHide2 = _interopRequireDefault(_modalHide);
 
@@ -13068,6 +13068,8 @@
 	    this.shakeEl = this._createElement('div');
 	    this.shakeEl.classList.add('modal__shake');
 	    this.el.appendChild(this.shakeEl);
+	    mojs.h.force3d(this.wrapper);
+	    mojs.h.force3d(this.el);
 
 	    var modalIn = new _modalIn2.default({ el: this.shakeEl });
 
@@ -13522,7 +13524,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _pool = __webpack_require__(103);
+	var _pool = __webpack_require__(100);
 
 	var _pool2 = _interopRequireDefault(_pool);
 
@@ -13765,6 +13767,77 @@
 
 	exports.__esModule = true;
 
+	var _getIterator2 = __webpack_require__(89);
+
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Pool = function () {
+	  function Pool() {
+	    (0, _classCallCheck3.default)(this, Pool);
+
+	    this._vars();
+	    this._getWindowSize();
+	    this._listenResize();
+	  }
+
+	  Pool.prototype._vars = function _vars() {
+	    this._subscribers = [];
+	  };
+
+	  Pool.prototype._listenResize = function _listenResize() {
+	    window.addEventListener('resize', this._getWindowSize.bind(this));
+	  };
+
+	  Pool.prototype._getWindowSize = function _getWindowSize() {
+	    this.windowWidth = window.innerWidth;
+	    this.windowHeight = window.innerHeight;
+	    this._emitSubscribe();
+	  };
+
+	  Pool.prototype.getScaler = function getScaler(initial) {
+	    var max = Math.max(this.windowWidth, this.windowHeight);
+	    return 1.25 * (max / (2 * initial));
+	  };
+
+	  Pool.prototype.resizeSubscribe = function resizeSubscribe(subscriber) {
+	    this._subscribers.push(subscriber);
+	    subscriber(this.windowWidth, this.windowHeight);
+	  };
+
+	  Pool.prototype._emitSubscribe = function _emitSubscribe() {
+	    for (var _iterator = this._subscribers, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
+	      if (_isArray) {
+	        if (_i >= _iterator.length) break;
+	        subscriber = _iterator[_i++];
+	      } else {
+	        _i = _iterator.next();
+	        if (_i.done) break;
+	        subscriber = _i.value;
+	      }
+
+	      subscriber(this.windowWidth, this.windowHeight);
+	    }
+	  };
+
+	  return Pool;
+	}();
+
+	exports.default = new Pool();
+
+/***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
 	var _classCallCheck2 = __webpack_require__(2);
 
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -13785,15 +13858,15 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _characters = __webpack_require__(101);
+	var _characters = __webpack_require__(102);
 
 	var _characters2 = _interopRequireDefault(_characters);
 
-	var _geometricShapes = __webpack_require__(102);
+	var _geometricShapes = __webpack_require__(103);
 
 	var _geometricShapes2 = _interopRequireDefault(_geometricShapes);
 
-	var _pool = __webpack_require__(103);
+	var _pool = __webpack_require__(100);
 
 	var _pool2 = _interopRequireDefault(_pool);
 
@@ -13810,6 +13883,7 @@
 	  ModalHide.prototype._render = function _render() {
 	    _Module.prototype._render.call(this);
 	    this.parent = this._findEl('#js-modal-hide-layer');
+	    mojs.h.force3d(this.parent);
 
 	    this.timeline = new mojs.Timeline();
 
@@ -13823,7 +13897,7 @@
 	      // scale:        .25,
 	      easing: 'cubic.out',
 	      // isShowStart:  true,
-	      isTimelineLess: 1,
+	      isTimelineLess: true,
 	      isForce3d: true
 	    });
 
@@ -13838,13 +13912,13 @@
 	      // scale:        .25,
 	      easing: 'quad.out',
 	      // isShowStart:  true,
-	      isTimelineLess: 1,
+	      isTimelineLess: true,
 	      isForce3d: true
 	    });
 
 	    var burst = new mojs.Burst({
-	      count: 3,
 	      left: '50%', top: '50%',
+	      count: 6,
 	      radius: { 100: 250 },
 	      parent: this.parent,
 	      childOptions: {
@@ -13857,12 +13931,12 @@
 	        scale: { 1: 0 },
 	        // duration: 800,
 	        pathScale: 'rand(.5, 1)',
-	        isForce3d: true
-	        // degreeShift: 90,
-	        // angle: 90
+	        isForce3d: true,
+	        degreeShift: 'rand(0, 360)'
 	      }
 	    });
 
+	    // angle: 90
 	    var burst2 = new mojs.Burst({
 	      count: 3,
 	      left: '50%', top: '50%',
@@ -13886,12 +13960,12 @@
 	    });
 
 	    var burst3 = new mojs.Burst({
-	      count: 5,
+	      count: 3,
 	      left: '50%', top: '50%',
-	      radius: { 0: 150 },
+	      radius: { 0: 250 },
 	      parent: this.parent,
 	      childOptions: {
-	        shape: ['circle', 'rect', 'polygon'],
+	        shape: ['circle', 'rect'],
 	        points: 5,
 	        fill: [_colors2.default.WHITE, _colors2.default.VINOUS],
 	        radius: 'rand(30, 60)',
@@ -13927,7 +14001,11 @@
 
 	    this.characters = new _characters2.default({ delay: 1600 });
 
-	    this.timeline.add(redBg, whiteBg, burst, burst2, burst3, circle, circle2, new _geometricShapes2.default(), this.characters);
+	    this.timeline.add(redBg,
+	    // whiteBg,
+	    burst,
+	    // burst2,
+	    burst3, circle, circle2, new _geometricShapes2.default(), this.characters);
 
 	    return this;
 	  };
@@ -13943,7 +14021,7 @@
 	exports.default = ModalHide;
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14013,12 +14091,12 @@
 	    var speech = new mojs.Shape({
 	      top: '50%', left: '50%',
 	      shape: 'bubble-speech',
-	      radius: 50,
-	      y: -115,
+	      radius: 45,
+	      y: -100,
 	      scale: { 0: 1 },
 	      angle: (_angle = {}, _angle[-90] = 0, _angle),
-	      duration: 650,
-	      easing: 'back.out',
+	      duration: 550,
+	      easing: 'cubic.out',
 	      delay: this._o.delay + 700,
 	      fill: _colors2.default.VINOUS,
 	      origin: '50% 100%',
@@ -14054,14 +14132,14 @@
 	      fill: 'none',
 	      radius: 75,
 	      // radiusY:  20,
-	      y: 25,
-	      duration: 700,
+	      y: 20,
+	      duration: 600,
 	      scaleX: { 2: 1 },
 	      // x: { 50 : 0 },
 	      origin: '0 50%',
 	      easing: 'cubic.out',
 	      // delay: this._o.delay + 275,
-	      delay: this._o.delay + 875,
+	      delay: this._o.delay + 675,
 	      stroke: _colors2.default.VINOUS,
 	      strokeWidth: 4,
 	      strokeLinecap: 'round',
@@ -14298,8 +14376,8 @@
 	        // radius:       'rand(8, 18)',
 	        radiusY: 0,
 	        stroke: _colors2.default.VINOUS,
-	        strokeWidth: 9,
-	        duration: 450,
+	        strokeWidth: 7,
+	        duration: 400,
 	        isForce3d: true
 	      }
 	    });
@@ -14326,7 +14404,7 @@
 	exports.default = Characters;
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14569,77 +14647,6 @@
 	}(_module2.default);
 
 	exports.default = GeometricShapes;
-
-/***/ },
-/* 103 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	var _getIterator2 = __webpack_require__(89);
-
-	var _getIterator3 = _interopRequireDefault(_getIterator2);
-
-	var _classCallCheck2 = __webpack_require__(2);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Pool = function () {
-	  function Pool() {
-	    (0, _classCallCheck3.default)(this, Pool);
-
-	    this._vars();
-	    this._getWindowSize();
-	    this._listenResize();
-	  }
-
-	  Pool.prototype._vars = function _vars() {
-	    this._subscribers = [];
-	  };
-
-	  Pool.prototype._listenResize = function _listenResize() {
-	    window.addEventListener('resize', this._getWindowSize.bind(this));
-	  };
-
-	  Pool.prototype._getWindowSize = function _getWindowSize() {
-	    this.windowWidth = window.innerWidth;
-	    this.windowHeight = window.innerHeight;
-	    this._emitSubscribe();
-	  };
-
-	  Pool.prototype.getScaler = function getScaler(initial) {
-	    var max = Math.max(this.windowWidth, this.windowHeight);
-	    return 1.25 * (max / (2 * initial));
-	  };
-
-	  Pool.prototype.resizeSubscribe = function resizeSubscribe(subscriber) {
-	    this._subscribers.push(subscriber);
-	    subscriber(this.windowWidth, this.windowHeight);
-	  };
-
-	  Pool.prototype._emitSubscribe = function _emitSubscribe() {
-	    for (var _iterator = this._subscribers, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
-	      if (_isArray) {
-	        if (_i >= _iterator.length) break;
-	        subscriber = _iterator[_i++];
-	      } else {
-	        _i = _iterator.next();
-	        if (_i.done) break;
-	        subscriber = _i.value;
-	      }
-
-	      subscriber(this.windowWidth, this.windowHeight);
-	    }
-	  };
-
-	  return Pool;
-	}();
-
-	exports.default = new Pool();
 
 /***/ }
 /******/ ]);

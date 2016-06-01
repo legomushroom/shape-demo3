@@ -8,6 +8,7 @@ class ModalHide extends Module {
   _render () {
     super._render();
     this.parent = this._findEl( '#js-modal-hide-layer' );
+    mojs.h.force3d( this.parent );
 
     this.timeline = new mojs.Timeline;
 
@@ -21,7 +22,7 @@ class ModalHide extends Module {
       // scale:        .25,
       easing:       'cubic.out',
       // isShowStart:  true,
-      isTimelineLess: 1,
+      isTimelineLess: true,
       isForce3d: true
     });
 
@@ -36,18 +37,18 @@ class ModalHide extends Module {
       // scale:        .25,
       easing:       'quad.out',
       // isShowStart:  true,
-      isTimelineLess: 1,
-      isForce3d: true
+      isTimelineLess: true,
+      isForce3d:      true
     });
 
     const burst = new mojs.Burst({
-      count: 3,
       left: '50%', top: '50%',
-      radius: { 100: 250 },
-      parent: this.parent,
+      count:    6,
+      radius:   { 100: 250 },
+      parent:   this.parent,
       childOptions: {
-        fill: 'white',
-        shape: 'line',
+        fill:   'white',
+        shape:  'line',
         stroke: [ COLORS.WHITE, COLORS.VINOUS ],
         strokeWidth: 12, 
         radius: 'rand(30, 60)',
@@ -55,8 +56,8 @@ class ModalHide extends Module {
         scale: { 1: 0 },
         // duration: 800,
         pathScale: 'rand(.5, 1)',
-        isForce3d: true
-        // degreeShift: 90,
+        isForce3d: true,
+        degreeShift: 'rand(0, 360)',
         // angle: 90
       }
     });
@@ -84,12 +85,12 @@ class ModalHide extends Module {
     });
 
     const burst3 = new mojs.Burst({
-      count:  5,
+      count:  3,
       left:   '50%', top: '50%',
-      radius: { 0: 150 },
+      radius: { 0: 250 },
       parent: this.parent,
       childOptions: {
-        shape:      [ 'circle', 'rect', 'polygon' ],
+        shape:      [ 'circle', 'rect' ],
         points:     5,
         fill:       [ COLORS.WHITE, COLORS.VINOUS ],
         radius:     'rand(30, 60)',
@@ -128,9 +129,9 @@ class ModalHide extends Module {
     this.timeline
       .add(
         redBg,
-        whiteBg,
+        // whiteBg,
         burst,
-        burst2,
+        // burst2,
         burst3,
         circle,
         circle2,
