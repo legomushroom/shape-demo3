@@ -15,9 +15,6 @@ class Modal extends Module {
     this.el.classList.add( 'modal-wrapper' );
     this.wrapper = this.el;
 
-    // this.el.style[ 'margin-top' ]   = '-20px';
-    // this.el.style[ 'margin-right' ] = '-20px';
-
     this.el = this._createChild('div', 'modal');
     this.shakeEl = this._createElement( 'div' );
     this.shakeEl.classList.add( 'modal__shake' );
@@ -27,23 +24,9 @@ class Modal extends Module {
 
     let modalIn = new ModalIn({ el: this.shakeEl });
 
-    this.corner = modalIn.corner.el;
-
     this.buttonLove = this._findEl('#js-button-love');
     this.buttonHate = this._findEl('#js-button-hate');
     this.modalText  = this._findEl('#js-modal-text');
-
-    // const circle = new mojs.Shape({
-    //   fill: COLORS.WHITE,
-    //   radius: 22,
-    //   isShowStart: true,
-    //   left: '50%', top: '50%',
-    //   // x: { 0: 100 },
-    //   // y: { 0: -100 },
-    //   scale: { 1: 0 },
-    //   isForce3d: true,
-    //   isTimelineLess: true,
-    // });
 
     mojs.h.force3d(this.el);
     const rotateCurve = mojs.easing.path('M0,100 C0,100 18.4374504,69.9344254 47.837504,100 C66.7065746,119.176264 100,100 100,100');
@@ -92,7 +75,6 @@ class Modal extends Module {
         if ( this._isShake ) {
           coef = Math.random() < .5 ? -1 : 1; 
           setTimeout( () => {
-            // console.log('start');
             this.shakeTween.play();
           }, 1)
         }
@@ -107,7 +89,7 @@ class Modal extends Module {
       shape:      'curve',
       parent:     this.shakeEl,
       easing:     'cubic.out',
-      // fill:       COLORS.WHITE,
+      backwardEasing: 'cubic.in',
       fill:       COLORS.RED,
       x:          { 2 : 10 },
       angle:      { 0: 2 },
@@ -128,9 +110,6 @@ class Modal extends Module {
         this.wrapper.style[ 'transform' ] = transform;
         this.wrapper.style[ `${prefix}transform` ] = transform;
       },
-      // onComplete: ( isFwd ) => {
-      //   if ( this._isShake ) { setTimeout( () => { shake.play(); }, 10) }
-      // }
     });
 
     const rightSide = new mojs.Shape({
@@ -166,7 +145,6 @@ class Modal extends Module {
     });
 
     this.noiseTween.add(
-        // shake,
         leftSide, rightSide,
         topSide, bottomSide
     );
@@ -178,8 +156,6 @@ class Modal extends Module {
     const smokeOpts = {
       quantifier:   3,
       top:          '78%',
-      // isShowStart: true,
-      // shape:        'polygon',
       fill:         'white',
       x:            'rand(-40, 40)',
       y:            { 0: -100 },
@@ -191,20 +167,17 @@ class Modal extends Module {
       swirlSize:    'rand( 8, 12 )',
       swirlFrequency: 'rand( 2, 5 )',
       parent:       this.el,
-      // isTimelineLess: true,
       isForce3d:      true
     }
 
     this.loveSmoke = new ShapeStagger({
       ...smokeOpts,
       left:         '28%',
-      // parent:       this.buttonLove,
     });
 
     this.hateSmoke = new ShapeStagger({
       ...smokeOpts,
       left:         '72%',
-      // parent:       this.buttonHate,
     });
   }
 
@@ -235,7 +208,6 @@ class Modal extends Module {
     if ( this._isHidden ) { return; }
     this.noiseTween.pause().playBackward();
     this.shakeTween.stop();
-    // this.shakeTween.pause().reset();
     this.rotateTween.play();
 
     if ( e.target === this.buttonLove ) {

@@ -46,7 +46,7 @@ class ModalHide extends Module {
       count:    6,
       radius:   { 100: 250 },
       parent:   this.parent,
-      childOptions: {
+      children: {
         fill:   'white',
         shape:  'line',
         stroke: [ COLORS.WHITE, COLORS.VINOUS ],
@@ -68,7 +68,7 @@ class ModalHide extends Module {
       radius: { 100: 250 },
       parent: this.parent,
       angle: 90,
-      childOptions: {
+      children: {
         fill: 'white',
         shape: 'line',
         stroke: [ COLORS.WHITE, COLORS.VINOUS ],
@@ -89,7 +89,7 @@ class ModalHide extends Module {
       left:   '50%', top: '50%',
       radius: { 0: 250 },
       parent: this.parent,
-      childOptions: {
+      children: {
         shape:      [ 'circle', 'rect' ],
         points:     5,
         fill:       [ COLORS.WHITE, COLORS.VINOUS ],

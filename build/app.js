@@ -87,19 +87,19 @@
 
 	var _showButton2 = _interopRequireDefault(_showButton);
 
-	var _modal = __webpack_require__(88);
+	var _modal = __webpack_require__(87);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _modalHide = __webpack_require__(101);
+	var _modalHide = __webpack_require__(100);
 
 	var _modalHide2 = _interopRequireDefault(_modalHide);
 
-	var _characters = __webpack_require__(102);
+	var _characters = __webpack_require__(101);
 
 	var _characters2 = _interopRequireDefault(_characters);
 
-	var _pool = __webpack_require__(100);
+	var _pool = __webpack_require__(99);
 
 	var _pool2 = _interopRequireDefault(_pool);
 
@@ -1833,7 +1833,7 @@
 	/*! 
 		:: MojsPlayer :: Player controls for [mojs](mojs.io). Intended to help you to craft `mojs` animation sequences.
 		Oleg Solomka @LegoMushroom 2016 MIT
-		0.43.7 
+		0.43.9 
 	*/
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -1969,6 +1969,9 @@
 
 		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+		// TODO
+		// buttons click happens 2 times on ios devices
+
 		__webpack_require__(151);
 		var CLASSES = __webpack_require__(153);
 
@@ -2006,7 +2009,7 @@
 		    this._defaults.precision = 0.1;
 		    this._defaults.name = 'mojs-player';
 
-		    this.revision = '0.43.3';
+		    this.revision = '0.43.9';
 
 		    var str = this._fallbackTo(this._o.name, this._defaults.name);
 		    str += str === this._defaults.name ? '' : '__' + this._defaults.name;
@@ -2214,6 +2217,7 @@
 
 		  MojsPlayer.prototype._listen = function _listen() {
 		    window.addEventListener('beforeunload', this._onUnload.bind(this));
+		    window.addEventListener('pagehide', this._onUnload.bind(this));
 		    document.addEventListener('keyup', this._keyUp.bind(this));
 		  };
 		  /*
@@ -2348,7 +2352,7 @@
 
 		  MojsPlayer.prototype._reset = function _reset() {
 		    this._sysTween.reset();
-		    this.timeline.reset();
+		    this.timeline.stop();
 		  };
 		  /*
 		    Method to set play button state.
@@ -5395,6 +5399,8 @@
 
 		  Handle.prototype._pointerUp = function _pointerUp(e) {
 		    this._callIfFunction(this._props.onSeekEnd, e);
+		    e.preventDefault();
+		    return false;
 		  };
 		  /*
 		    Callback for pointer up on document.
@@ -9238,6 +9244,8 @@
 		    this.wasTouched = false;
 		    this._callIfFunction(this._props.onPointerUp);
 		    this.ripple._release();
+		    e.preventDefault();
+		    return false;
 		  };
 		  /*
 		    Method to invoke onPointerCancel callback if exist.
@@ -11259,15 +11267,15 @@
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _howler = __webpack_require__(87);
-
-	var _modal = __webpack_require__(88);
+	var _modal = __webpack_require__(87);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var modal = new _modal2.default();
+	// import {Howl}       from 'howler';
+
 
 	var ShowButton = function (_Module) {
 	  (0, _inherits3.default)(ShowButton, _Module);
@@ -11284,29 +11292,19 @@
 
 	    this.timeline = new mojs.Timeline({ speed: 1 });
 
-	    var left = '50%',
-	        top = '50%',
-	        duration = 800;
-
-	    var bubbleSound = new _howler.Howl({
-	      urls: ['sounds/bubble.' + _constants2.default.FORMAT]
-	    });
+	    var duration = 800;
 
 	    var showBase = new mojs.Shape({
-	      left: left, top: top,
 	      fill: 'none',
 	      radius: 20,
 	      x: (_x = {}, _x[-150] = 0, _x.easing = 'cubic.out', _x),
 	      y: (_y = {}, _y[90] = 0, _y.easing = 'cubic.out', _y),
 	      isForce3d: true,
-	      // isSwirl: true,
-	      // swirlSize: 20,
-	      // swirlFrequency: 3,
-	      // duration: 4000,
 	      duration: duration + 400
 	    });
 
 	    var vibroBtn = new _vibroButton2.default({ parent: showBase.el });
+	    this.vibroBtn = vibroBtn;
 
 	    this.showBase = showBase;
 	    showBase.el.style['z-index'] = 5;
@@ -11314,7 +11312,6 @@
 	    var circle = new mojs.Shape({
 	      fill: _colors2.default.WHITE,
 	      parent: showBase.el,
-	      left: left, top: top,
 	      radius: 50,
 	      scale: { .4: 1 },
 	      duration: 650,
@@ -11325,11 +11322,9 @@
 	    });
 
 	    var showUp = new mojs.Shape({
-	      left: left, top: top,
 	      fill: 'none',
 	      stroke: _colors2.default.WHITE,
 	      parent: showBase.el,
-	      // scale:          { 1: .75 },
 	      radius: { 0: 10 },
 	      angle: { 560: 270 },
 	      strokeWidth: { 0: 22, easing: 'cubic.inout' },
@@ -11347,39 +11342,22 @@
 	      onComplete: function onComplete(isFwd) {
 	        isFwd && vibroBtn.timeline.play();
 	        isFwd && (vibroBtn.addButton.el.style['opacity'] = 1);
-	        // !!isFwd && vibroBtn.timeline.pause();
-	        // !!isFwd && (vibroBtn.addButton.el.style[ 'opacity' ] = 0);
 	      }
 	    });
-	    this.vibroBtn = vibroBtn;
-	    // .then({
-	    //   scale: 1,
-	    //   duration: 1100,
-	    //   easing: 'elastic.out',
-	    //   onComplete ( isFwd ) {
-	    //     // isFwd && vibroBtn.timeline.play();
-	    //     // isFwd && (vibroBtn.addButton.el.style[ 'opacity' ] = 1);
-	    //     // !!isFwd && vibroBtn.timeline.pause();
-	    //     // !!isFwd && (vibroBtn.addButton.el.style[ 'opacity' ] = 0);
-	    //   }
-	    // });
 
 	    var angle = 250;
 	    var bubbles = new mojs.Burst({
-	      left: left, top: top,
 	      parent: showUp.el,
 	      count: 3,
 	      degree: 15,
-	      // scale:          1,
 	      angle: (_angle = {}, _angle[90 + angle] = 280 + angle, _angle),
 	      y: { 0: -15 },
 	      x: { 0: 35 },
 	      timeline: { delay: 300 },
-	      // radius:         { 0: 70 },
-	      childOptions: {
+	      radius: { 0: 70 },
+	      children: {
 	        radius: [10, 7],
 	        fill: _colors2.default.WHITE,
-	        // scale:        { 1 : 0 },
 	        pathScale: 'rand(.5, 1.5)',
 	        duration: 600,
 	        isForce3d: true
@@ -11388,30 +11366,23 @@
 
 	    var angle2 = -340;
 	    var bubbles2 = new mojs.Burst({
-	      left: left, top: top,
 	      parent: showUp.el,
 	      count: 3,
-	      // scale:          1,
 	      degree: 25,
 	      angle: (_angle2 = {}, _angle2[90 + angle2] = 280 + angle2, _angle2),
 	      y: { 0: 15 },
 	      timeline: { delay: 0 },
-	      childOptions: {
+	      radius: { 0: 70 },
+	      children: {
 	        radius: [10, 7],
 	        fill: _colors2.default.WHITE,
-	        // scale:        { 1 : 0 },
 	        pathScale: 'rand(.5, 1.5)',
 	        duration: 600,
 	        isForce3d: true
 	      }
 	    });
 
-	    // showUp.el.style[ 'z-index' ] = 2;
-	    // // bubbles.childModules[0].el.style[ 'z-index' ] = 2;
-	    // // bubbles.childModules[1].el.style[ 'z-index' ] = 2;
-
 	    var addButtonCross = new mojs.Shape({
-	      left: left, top: top,
 	      shape: 'cross',
 	      parent: showUp.el,
 	      fill: 'none',
@@ -11425,14 +11396,11 @@
 	      y: { 35: 0 },
 	      x: { 35: 0 },
 	      isForce3d: true
-	    }). // isTimelineLess: true,
-	    // isShowEnd:      false
-	    then({
+	    }).then({
 	      angle: -540,
 	      duration: duration / 2
 	    });
 
-	    // easing: 'cubic.out'
 	    this.timeline.add(bubbles, bubbles2, circle, showUp, showBase, addButtonCross);
 
 	    this._addListeners();
@@ -11442,16 +11410,6 @@
 
 	  ShowButton.prototype._addListeners = function _addListeners() {
 	    var _this2 = this;
-
-	    // let curtain = this._createElement('div');
-	    // curtain.style[ 'position' ] = 'absolute';
-	    // curtain.style[ 'width' ] = '100%';
-	    // curtain.style[ 'height' ] = '100%';
-	    // curtain.style[ 'left' ] = '0';
-	    // curtain.style[ 'top' ] = '0';
-	    // curtain.style[ 'z-index' ] = '15';
-	    // curtain.style[ 'background' ] = 'cyan';
-	    // this.showBase.el.appendChild( curtain );
 
 	    this.showBase.el.addEventListener('click', function (e) {
 	      var timeline = _this2.vibroBtn.timeline;
@@ -11497,8 +11455,6 @@
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _howler = __webpack_require__(87);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var VibroButton = function (_Module) {
@@ -11510,40 +11466,24 @@
 	  }
 
 	  VibroButton.prototype._render = function _render() {
+	    var _x, _y;
+
 	    _Module.prototype._render.call(this);
 
 	    var DURATION = 950,
 	        DELAY = 2000,
-	        SHIFT = 25;
+	        SHIFT = 22;
 
-	    var left = '50%',
-	        top = '50%';
-
-	    this.vibroSound = new _howler.Howl({
-	      rate: .9,
-	      urls: ['sounds/vibro.' + _constants2.default.FORMAT]
-	    });
-
-	    var noise = mojs.easing.path('M0,100 C0,100 2.08241272,101.287388 3.78271484,102.328264 C5.35552883,99.9999999 7.00048828,95.208496 7.00048828,95.208496 L10.1762695,103.816964 L12.7734375,95.9547991 L19.3125,102.328264 L22.2539062,95.208496 L27.0786839,106.645089 L29.2555809,93.3549108 L32.0340385,103.816964 L35.3459816,94.6015626 L38.3783493,103.092634 L41.0513382,95.9547991 L43.7739944,106.645089 L45.6729927,96.8973214 L50,105.083147 L53.3504448,93.3549108 L57.7360497,103.816964 L60.8616066,95.9547991 L65.0345993,103.092634 L68.6997757,97.5106029 L71.6646194,102.03125 L75.5066986,96.5672433 L78.2949219,102.652344 L81.0313873,96.8973214 L84.0174408,102.328264 L86.0842667,97.7332592 L88.7289352,101.606306 L91.1429977,98.3533763 L94.3822556,101.287388 L97.0809174,98.7254467 L100,100');
 	    var addButton = new mojs.Shape({
+	      className: 'add-button',
 	      fill: _colors2.default.WHITE,
 	      radius: 21,
-	      left: left, top: top,
 	      isShowStart: true,
 	      duration: DURATION,
 	      delay: DELAY,
 	      scale: { 1: 1.35 },
 	      parent: this._o.parent,
-	      isForce3d: true,
-	      onStart: function onStart(isFwd) {
-	        // isFwd && this.vibroSound.play();
-	      },
-	      onUpdate: function onUpdate(ep, p) {
-	        var proc = noise(p);
-	        var coefX = Math.random() <= .5 ? 1 : -1;
-	        var coefY = Math.random() <= .5 ? 1 : -1;
-	        addButtonCross.el.style['transform'] = 'translateX( ' + 1 * SHIFT * proc + 'px )';
-	      }
+	      isForce3d: true
 	    }).then({
 	      scale: 1,
 	      duration: .5 * DURATION
@@ -11559,7 +11499,6 @@
 	      fill: _colors2.default.WHITE,
 	      fillOpacity: .65,
 	      radius: 55,
-	      left: left, top: top,
 	      parent: this._o.parent,
 	      scale: { 0: 1 },
 	      isShowEnd: false,
@@ -11576,7 +11515,6 @@
 	    bigReturnCircle.el.style['z-index'] = '0';
 
 	    var innerCircle = new mojs.Shape({
-	      left: left, top: top,
 	      fill: _colors2.default.RED,
 	      parent: addButton.el,
 	      fillOpacity: .15,
@@ -11595,21 +11533,46 @@
 
 	    });
 
+	    var noise = mojs.easing.path('M0,100 C0,100 2.08241272,101.287388 3.78271484,102.328264 C5.35552883,99.9999999 7.00048828,95.208496 7.00048828,95.208496 L10.1762695,103.816964 L12.7734375,95.9547991 L19.3125,102.328264 L22.2539062,95.208496 L27.0786839,106.645089 L29.2555809,93.3549108 L32.0340385,103.816964 L35.3459816,94.6015626 L38.3783493,103.092634 L41.0513382,95.9547991 L43.7739944,106.645089 L45.6729927,96.8973214 L50,105.083147 L53.3504448,93.3549108 L57.7360497,103.816964 L60.8616066,95.9547991 L65.0345993,103.092634 L68.6997757,97.5106029 L71.6646194,102.03125 L75.5066986,96.5672433 L78.2949219,102.652344 L81.0313873,96.8973214 L84.0174408,102.328264 L86.0842667,97.7332592 L88.7289352,101.606306 L91.1429977,98.3533763 L94.3822556,101.287388 L97.0809174,98.7254467 L100,100');
+
+	    var noiseCurveX = mojs.easing.approximate(function (p) {
+	      var coef = Math.random() < .5 ? 1 : -1;
+	      return coef * noise(p);
+	    });
+
+	    var noiseCurveY = mojs.easing.approximate(function (p) {
+	      var coef = Math.random() < .5 ? 1 : -1;
+	      return coef * noise(p);
+	    });
+
 	    var addButtonCross = new mojs.Shape({
 	      shape: 'cross',
-	      left: left, top: top,
 	      parent: addButton.el,
 	      fill: 'none',
 	      stroke: _colors2.default.VINOUS,
 	      radius: 6,
 	      strokeLinecap: 'round',
-	      isShowStart: true,
 	      scale: 1,
-	      // isShowEnd:      false,
-	      isForce3d: true,
+	      x: (_x = {}, _x[SHIFT] = SHIFT, _x.curve = noiseCurveX, _x),
+	      y: (_y = {}, _y[-SHIFT] = -SHIFT, _y.curve = noiseCurveY, _y),
 	      duration: DURATION,
 	      delay: DELAY + 50,
-	      isTimelineLess: true
+	      isTimelineLess: true,
+	      isShowStart: true,
+	      isForce3d: true
+	    });
+
+	    var ripple = new mojs.Shape({
+	      left: 0, top: 0,
+	      parent: addButton.el,
+	      fill: _colors2.default.VINOUS,
+	      scale: { 0: 1 },
+	      opacity: { .5: 0 },
+	      isForce3d: true
+	    });
+
+	    addButton.el.addEventListener('mouseenter', function (e) {
+	      ripple.tune({ x: e.layerX, y: e.layerY }).replay();
 	    });
 
 	    this.timeline = new mojs.Timeline({ repeat: 99999 });
@@ -11641,1373 +11604,15 @@
 /* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	 *  howler.js v1.1.29
-	 *  howlerjs.com
-	 *
-	 *  (c) 2013-2016, James Simpson of GoldFire Studios
-	 *  goldfirestudios.com
-	 *
-	 *  MIT License
-	 */
-
-	(function() {
-	  // setup
-	  var cache = {};
-
-	  // setup the audio context
-	  var ctx = null,
-	    usingWebAudio = true,
-	    noAudio = false;
-	  try {
-	    if (typeof AudioContext !== 'undefined') {
-	      ctx = new AudioContext();
-	    } else if (typeof webkitAudioContext !== 'undefined') {
-	      ctx = new webkitAudioContext();
-	    } else {
-	      usingWebAudio = false;
-	    }
-	  } catch(e) {
-	    usingWebAudio = false;
-	  }
-
-	  if (!usingWebAudio) {
-	    if (typeof Audio !== 'undefined') {
-	      try {
-	        new Audio();
-	      } catch(e) {
-	        noAudio = true;
-	      }
-	    } else {
-	      noAudio = true;
-	    }
-	  }
-
-	  // create a master gain node
-	  if (usingWebAudio) {
-	    var masterGain = (typeof ctx.createGain === 'undefined') ? ctx.createGainNode() : ctx.createGain();
-	    masterGain.gain.value = 1;
-	    masterGain.connect(ctx.destination);
-	  }
-
-	  // create global controller
-	  var HowlerGlobal = function(codecs) {
-	    this._volume = 1;
-	    this._muted = false;
-	    this.usingWebAudio = usingWebAudio;
-	    this.ctx = ctx;
-	    this.noAudio = noAudio;
-	    this._howls = [];
-	    this._codecs = codecs;
-	    this.iOSAutoEnable = true;
-	  };
-	  HowlerGlobal.prototype = {
-	    /**
-	     * Get/set the global volume for all sounds.
-	     * @param  {Float} vol Volume from 0.0 to 1.0.
-	     * @return {Howler/Float}     Returns self or current volume.
-	     */
-	    volume: function(vol) {
-	      var self = this;
-
-	      // make sure volume is a number
-	      vol = parseFloat(vol);
-
-	      if (vol >= 0 && vol <= 1) {
-	        self._volume = vol;
-
-	        if (usingWebAudio) {
-	          masterGain.gain.value = vol;
-	        }
-
-	        // loop through cache and change volume of all nodes that are using HTML5 Audio
-	        for (var key in self._howls) {
-	          if (self._howls.hasOwnProperty(key) && self._howls[key]._webAudio === false) {
-	            // loop through the audio nodes
-	            for (var i=0; i<self._howls[key]._audioNode.length; i++) {
-	              self._howls[key]._audioNode[i].volume = self._howls[key]._volume * self._volume;
-	            }
-	          }
-	        }
-
-	        return self;
-	      }
-
-	      // return the current global volume
-	      return (usingWebAudio) ? masterGain.gain.value : self._volume;
-	    },
-
-	    /**
-	     * Mute all sounds.
-	     * @return {Howler}
-	     */
-	    mute: function() {
-	      this._setMuted(true);
-
-	      return this;
-	    },
-
-	    /**
-	     * Unmute all sounds.
-	     * @return {Howler}
-	     */
-	    unmute: function() {
-	      this._setMuted(false);
-
-	      return this;
-	    },
-
-	    /**
-	     * Handle muting and unmuting globally.
-	     * @param  {Boolean} muted Is muted or not.
-	     */
-	    _setMuted: function(muted) {
-	      var self = this;
-
-	      self._muted = muted;
-
-	      if (usingWebAudio) {
-	        masterGain.gain.value = muted ? 0 : self._volume;
-	      }
-
-	      for (var key in self._howls) {
-	        if (self._howls.hasOwnProperty(key) && self._howls[key]._webAudio === false) {
-	          // loop through the audio nodes
-	          for (var i=0; i<self._howls[key]._audioNode.length; i++) {
-	            self._howls[key]._audioNode[i].muted = muted;
-	          }
-	        }
-	      }
-	    },
-
-	    /**
-	     * Check for codec support.
-	     * @param  {String} ext Audio file extension.
-	     * @return {Boolean}
-	     */
-	    codecs: function(ext) {
-	      return this._codecs[ext];
-	    },
-
-	    /**
-	     * iOS will only allow audio to be played after a user interaction.
-	     * Attempt to automatically unlock audio on the first user interaction.
-	     * Concept from: http://paulbakaus.com/tutorials/html5/web-audio-on-ios/
-	     * @return {Howler}
-	     */
-	    _enableiOSAudio: function() {
-	      var self = this;
-
-	      // only run this on iOS if audio isn't already eanbled
-	      if (ctx && (self._iOSEnabled || !/iPhone|iPad|iPod/i.test(navigator.userAgent))) {
-	        return;
-	      }
-
-	      self._iOSEnabled = false;
-
-	      // call this method on touch start to create and play a buffer,
-	      // then check if the audio actually played to determine if
-	      // audio has now been unlocked on iOS
-	      var unlock = function() {
-	        // create an empty buffer
-	        var buffer = ctx.createBuffer(1, 1, 22050);
-	        var source = ctx.createBufferSource();
-	        source.buffer = buffer;
-	        source.connect(ctx.destination);
-
-	        // play the empty buffer
-	        if (typeof source.start === 'undefined') {
-	          source.noteOn(0);
-	        } else {
-	          source.start(0);
-	        }
-
-	        // setup a timeout to check that we are unlocked on the next event loop
-	        setTimeout(function() {
-	          if ((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
-	            // update the unlocked state and prevent this check from happening again
-	            self._iOSEnabled = true;
-	            self.iOSAutoEnable = false;
-
-	            // remove the touch start listener
-	            window.removeEventListener('touchend', unlock, false);
-	          }
-	        }, 0);
-	      };
-
-	      // setup a touch start listener to attempt an unlock in
-	      window.addEventListener('touchend', unlock, false);
-
-	      return self;
-	    }
-	  };
-
-	  // check for browser codec support
-	  var audioTest = null;
-	  var codecs = {};
-	  if (!noAudio) {
-	    audioTest = new Audio();
-	    codecs = {
-	      mp3: !!audioTest.canPlayType('audio/mpeg;').replace(/^no$/, ''),
-	      opus: !!audioTest.canPlayType('audio/ogg; codecs="opus"').replace(/^no$/, ''),
-	      ogg: !!audioTest.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/, ''),
-	      wav: !!audioTest.canPlayType('audio/wav; codecs="1"').replace(/^no$/, ''),
-	      aac: !!audioTest.canPlayType('audio/aac;').replace(/^no$/, ''),
-	      m4a: !!(audioTest.canPlayType('audio/x-m4a;') || audioTest.canPlayType('audio/m4a;') || audioTest.canPlayType('audio/aac;')).replace(/^no$/, ''),
-	      mp4: !!(audioTest.canPlayType('audio/x-mp4;') || audioTest.canPlayType('audio/mp4;') || audioTest.canPlayType('audio/aac;')).replace(/^no$/, ''),
-	      weba: !!audioTest.canPlayType('audio/webm; codecs="vorbis"').replace(/^no$/, '')
-	    };
-	  }
-
-	  // allow access to the global audio controls
-	  var Howler = new HowlerGlobal(codecs);
-
-	  // setup the audio object
-	  var Howl = function(o) {
-	    var self = this;
-
-	    // setup the defaults
-	    self._autoplay = o.autoplay || false;
-	    self._buffer = o.buffer || false;
-	    self._duration = o.duration || 0;
-	    self._format = o.format || null;
-	    self._loop = o.loop || false;
-	    self._loaded = false;
-	    self._sprite = o.sprite || {};
-	    self._src = o.src || '';
-	    self._pos3d = o.pos3d || [0, 0, -0.5];
-	    self._volume = o.volume !== undefined ? o.volume : 1;
-	    self._urls = o.urls || [];
-	    self._rate = o.rate || 1;
-
-	    // allow forcing of a specific panningModel ('equalpower' or 'HRTF'),
-	    // if none is specified, defaults to 'equalpower' and switches to 'HRTF'
-	    // if 3d sound is used
-	    self._model = o.model || null;
-
-	    // setup event functions
-	    self._onload = [o.onload || function() {}];
-	    self._onloaderror = [o.onloaderror || function() {}];
-	    self._onend = [o.onend || function() {}];
-	    self._onpause = [o.onpause || function() {}];
-	    self._onplay = [o.onplay || function() {}];
-
-	    self._onendTimer = [];
-
-	    // Web Audio or HTML5 Audio?
-	    self._webAudio = usingWebAudio && !self._buffer;
-
-	    // check if we need to fall back to HTML5 Audio
-	    self._audioNode = [];
-	    if (self._webAudio) {
-	      self._setupAudioNode();
-	    }
-
-	    // automatically try to enable audio on iOS
-	    if (typeof ctx !== 'undefined' && ctx && Howler.iOSAutoEnable) {
-	      Howler._enableiOSAudio();
-	    }
-
-	    // add this to an array of Howl's to allow global control
-	    Howler._howls.push(self);
-
-	    // load the track
-	    self.load();
-	  };
-
-	  // setup all of the methods
-	  Howl.prototype = {
-	    /**
-	     * Load an audio file.
-	     * @return {Howl}
-	     */
-	    load: function() {
-	      var self = this,
-	        url = null;
-
-	      // if no audio is available, quit immediately
-	      if (noAudio) {
-	        self.on('loaderror', new Error('No audio support.'));
-	        return;
-	      }
-
-	      // loop through source URLs and pick the first one that is compatible
-	      for (var i=0; i<self._urls.length; i++) {
-	        var ext, urlItem;
-
-	        if (self._format) {
-	          // use specified audio format if available
-	          ext = self._format;
-	        } else {
-	          // figure out the filetype (whether an extension or base64 data)
-	          urlItem = self._urls[i];
-	          ext = /^data:audio\/([^;,]+);/i.exec(urlItem);
-	          if (!ext) {
-	            ext = /\.([^.]+)$/.exec(urlItem.split('?', 1)[0]);
-	          }
-
-	          if (ext) {
-	            ext = ext[1].toLowerCase();
-	          } else {
-	            self.on('loaderror', new Error('Could not extract format from passed URLs, please add format parameter.'));
-	            return;
-	          }
-	        }
-
-	        if (codecs[ext]) {
-	          url = self._urls[i];
-	          break;
-	        }
-	      }
-
-	      if (!url) {
-	        self.on('loaderror', new Error('No codec support for selected audio sources.'));
-	        return;
-	      }
-
-	      self._src = url;
-
-	      if (self._webAudio) {
-	        loadBuffer(self, url);
-	      } else {
-	        var newNode = new Audio();
-
-	        // listen for errors with HTML5 audio (http://dev.w3.org/html5/spec-author-view/spec.html#mediaerror)
-	        newNode.addEventListener('error', function () {
-	          if (newNode.error && newNode.error.code === 4) {
-	            HowlerGlobal.noAudio = true;
-	          }
-
-	          self.on('loaderror', {type: newNode.error ? newNode.error.code : 0});
-	        }, false);
-
-	        self._audioNode.push(newNode);
-
-	        // setup the new audio node
-	        newNode.src = url;
-	        newNode._pos = 0;
-	        newNode.preload = 'auto';
-	        newNode.volume = (Howler._muted) ? 0 : self._volume * Howler.volume();
-
-	        // setup the event listener to start playing the sound
-	        // as soon as it has buffered enough
-	        var listener = function() {
-	          // round up the duration when using HTML5 Audio to account for the lower precision
-	          self._duration = Math.ceil(newNode.duration * 10) / 10;
-
-	          // setup a sprite if none is defined
-	          if (Object.getOwnPropertyNames(self._sprite).length === 0) {
-	            self._sprite = {_default: [0, self._duration * 1000]};
-	          }
-
-	          if (!self._loaded) {
-	            self._loaded = true;
-	            self.on('load');
-	          }
-
-	          if (self._autoplay) {
-	            self.play();
-	          }
-
-	          // clear the event listener
-	          newNode.removeEventListener('canplaythrough', listener, false);
-	        };
-	        newNode.addEventListener('canplaythrough', listener, false);
-	        newNode.load();
-	      }
-
-	      return self;
-	    },
-
-	    /**
-	     * Get/set the URLs to be pulled from to play in this source.
-	     * @param  {Array} urls  Arry of URLs to load from
-	     * @return {Howl}        Returns self or the current URLs
-	     */
-	    urls: function(urls) {
-	      var self = this;
-
-	      if (urls) {
-	        self.stop();
-	        self._urls = (typeof urls === 'string') ? [urls] : urls;
-	        self._loaded = false;
-	        self.load();
-
-	        return self;
-	      } else {
-	        return self._urls;
-	      }
-	    },
-
-	    /**
-	     * Play a sound from the current time (0 by default).
-	     * @param  {String}   sprite   (optional) Plays from the specified position in the sound sprite definition.
-	     * @param  {Function} callback (optional) Returns the unique playback id for this sound instance.
-	     * @return {Howl}
-	     */
-	    play: function(sprite, callback) {
-	      var self = this;
-
-	      // if no sprite was passed but a callback was, update the variables
-	      if (typeof sprite === 'function') {
-	        callback = sprite;
-	      }
-
-	      // use the default sprite if none is passed
-	      if (!sprite || typeof sprite === 'function') {
-	        sprite = '_default';
-	      }
-
-	      // if the sound hasn't been loaded, add it to the event queue
-	      if (!self._loaded) {
-	        self.on('load', function() {
-	          self.play(sprite, callback);
-	        });
-
-	        return self;
-	      }
-
-	      // if the sprite doesn't exist, play nothing
-	      if (!self._sprite[sprite]) {
-	        if (typeof callback === 'function') callback();
-	        return self;
-	      }
-
-	      // get the node to playback
-	      self._inactiveNode(function(node) {
-	        // persist the sprite being played
-	        node._sprite = sprite;
-
-	        // determine where to start playing from
-	        var pos = (node._pos > 0) ? node._pos : self._sprite[sprite][0] / 1000;
-
-	        // determine how long to play for
-	        var duration = 0;
-	        if (self._webAudio) {
-	          duration = self._sprite[sprite][1] / 1000 - node._pos;
-	          if (node._pos > 0) {
-	            pos = self._sprite[sprite][0] / 1000 + pos;
-	          }
-	        } else {
-	          duration = self._sprite[sprite][1] / 1000 - (pos - self._sprite[sprite][0] / 1000);
-	        }
-
-	        // determine if this sound should be looped
-	        var loop = !!(self._loop || self._sprite[sprite][2]);
-
-	        // set timer to fire the 'onend' event
-	        var soundId = (typeof callback === 'string') ? callback : Math.round(Date.now() * Math.random()) + '',
-	          timerId;
-	        (function() {
-	          var data = {
-	            id: soundId,
-	            sprite: sprite,
-	            loop: loop
-	          };
-	          timerId = setTimeout(function() {
-	            // if looping, restart the track
-	            if (!self._webAudio && loop) {
-	              self.stop(data.id).play(sprite, data.id);
-	            }
-
-	            // set web audio node to paused at end
-	            if (self._webAudio && !loop) {
-	              self._nodeById(data.id).paused = true;
-	              self._nodeById(data.id)._pos = 0;
-
-	              // clear the end timer
-	              self._clearEndTimer(data.id);
-	            }
-
-	            // end the track if it is HTML audio and a sprite
-	            if (!self._webAudio && !loop) {
-	              self.stop(data.id);
-	            }
-
-	            // fire ended event
-	            self.on('end', soundId);
-	          }, (duration / self._rate) * 1000);
-
-	          // store the reference to the timer
-	          self._onendTimer.push({timer: timerId, id: data.id});
-	        })();
-
-	        if (self._webAudio) {
-	          var loopStart = self._sprite[sprite][0] / 1000,
-	            loopEnd = self._sprite[sprite][1] / 1000;
-
-	          // set the play id to this node and load into context
-	          node.id = soundId;
-	          node.paused = false;
-	          refreshBuffer(self, [loop, loopStart, loopEnd], soundId);
-	          self._playStart = ctx.currentTime;
-	          node.gain.value = self._volume;
-
-	          if (typeof node.bufferSource.start === 'undefined') {
-	            loop ? node.bufferSource.noteGrainOn(0, pos, 86400) : node.bufferSource.noteGrainOn(0, pos, duration);
-	          } else {
-	            loop ? node.bufferSource.start(0, pos, 86400) : node.bufferSource.start(0, pos, duration);
-	          }
-	        } else {
-	          if (node.readyState === 4 || !node.readyState && navigator.isCocoonJS) {
-	            node.readyState = 4;
-	            node.id = soundId;
-	            node.currentTime = pos;
-	            node.muted = Howler._muted || node.muted;
-	            node.volume = self._volume * Howler.volume();
-	            setTimeout(function() { node.play(); }, 0);
-	          } else {
-	            self._clearEndTimer(soundId);
-
-	            (function(){
-	              var sound = self,
-	                playSprite = sprite,
-	                fn = callback,
-	                newNode = node;
-	              var listener = function() {
-	                sound.play(playSprite, fn);
-
-	                // clear the event listener
-	                newNode.removeEventListener('canplaythrough', listener, false);
-	              };
-	              newNode.addEventListener('canplaythrough', listener, false);
-	            })();
-
-	            return self;
-	          }
-	        }
-
-	        // fire the play event and send the soundId back in the callback
-	        self.on('play');
-	        if (typeof callback === 'function') callback(soundId);
-
-	        return self;
-	      });
-
-	      return self;
-	    },
-
-	    /**
-	     * Pause playback and save the current position.
-	     * @param {String} id (optional) The play instance ID.
-	     * @return {Howl}
-	     */
-	    pause: function(id) {
-	      var self = this;
-
-	      // if the sound hasn't been loaded, add it to the event queue
-	      if (!self._loaded) {
-	        self.on('play', function() {
-	          self.pause(id);
-	        });
-
-	        return self;
-	      }
-
-	      // clear 'onend' timer
-	      self._clearEndTimer(id);
-
-	      var activeNode = (id) ? self._nodeById(id) : self._activeNode();
-	      if (activeNode) {
-	        activeNode._pos = self.pos(null, id);
-
-	        if (self._webAudio) {
-	          // make sure the sound has been created
-	          if (!activeNode.bufferSource || activeNode.paused) {
-	            return self;
-	          }
-
-	          activeNode.paused = true;
-	          if (typeof activeNode.bufferSource.stop === 'undefined') {
-	            activeNode.bufferSource.noteOff(0);
-	          } else {
-	            activeNode.bufferSource.stop(0);
-	          }
-	        } else {
-	          activeNode.pause();
-	        }
-	      }
-
-	      self.on('pause');
-
-	      return self;
-	    },
-
-	    /**
-	     * Stop playback and reset to start.
-	     * @param  {String} id  (optional) The play instance ID.
-	     * @return {Howl}
-	     */
-	    stop: function(id) {
-	      var self = this;
-
-	      // if the sound hasn't been loaded, add it to the event queue
-	      if (!self._loaded) {
-	        self.on('play', function() {
-	          self.stop(id);
-	        });
-
-	        return self;
-	      }
-
-	      // clear 'onend' timer
-	      self._clearEndTimer(id);
-
-	      var activeNode = (id) ? self._nodeById(id) : self._activeNode();
-	      if (activeNode) {
-	        activeNode._pos = 0;
-
-	        if (self._webAudio) {
-	          // make sure the sound has been created
-	          if (!activeNode.bufferSource || activeNode.paused) {
-	            return self;
-	          }
-
-	          activeNode.paused = true;
-
-	          if (typeof activeNode.bufferSource.stop === 'undefined') {
-	            activeNode.bufferSource.noteOff(0);
-	          } else {
-	            activeNode.bufferSource.stop(0);
-	          }
-	        } else if (!isNaN(activeNode.duration)) {
-	          activeNode.pause();
-	          activeNode.currentTime = 0;
-	        }
-	      }
-
-	      return self;
-	    },
-
-	    /**
-	     * Mute this sound.
-	     * @param  {String} id (optional) The play instance ID.
-	     * @return {Howl}
-	     */
-	    mute: function(id) {
-	      var self = this;
-
-	      // if the sound hasn't been loaded, add it to the event queue
-	      if (!self._loaded) {
-	        self.on('play', function() {
-	          self.mute(id);
-	        });
-
-	        return self;
-	      }
-
-	      var activeNode = (id) ? self._nodeById(id) : self._activeNode();
-	      if (activeNode) {
-	        if (self._webAudio) {
-	          activeNode.gain.value = 0;
-	        } else {
-	          activeNode.muted = true;
-	        }
-	      }
-
-	      return self;
-	    },
-
-	    /**
-	     * Unmute this sound.
-	     * @param  {String} id (optional) The play instance ID.
-	     * @return {Howl}
-	     */
-	    unmute: function(id) {
-	      var self = this;
-
-	      // if the sound hasn't been loaded, add it to the event queue
-	      if (!self._loaded) {
-	        self.on('play', function() {
-	          self.unmute(id);
-	        });
-
-	        return self;
-	      }
-
-	      var activeNode = (id) ? self._nodeById(id) : self._activeNode();
-	      if (activeNode) {
-	        if (self._webAudio) {
-	          activeNode.gain.value = self._volume;
-	        } else {
-	          activeNode.muted = false;
-	        }
-	      }
-
-	      return self;
-	    },
-
-	    /**
-	     * Get/set volume of this sound.
-	     * @param  {Float}  vol Volume from 0.0 to 1.0.
-	     * @param  {String} id  (optional) The play instance ID.
-	     * @return {Howl/Float}     Returns self or current volume.
-	     */
-	    volume: function(vol, id) {
-	      var self = this;
-
-	      // make sure volume is a number
-	      vol = parseFloat(vol);
-
-	      if (vol >= 0 && vol <= 1) {
-	        self._volume = vol;
-
-	        // if the sound hasn't been loaded, add it to the event queue
-	        if (!self._loaded) {
-	          self.on('play', function() {
-	            self.volume(vol, id);
-	          });
-
-	          return self;
-	        }
-
-	        var activeNode = (id) ? self._nodeById(id) : self._activeNode();
-	        if (activeNode) {
-	          if (self._webAudio) {
-	            activeNode.gain.value = vol;
-	          } else {
-	            activeNode.volume = vol * Howler.volume();
-	          }
-	        }
-
-	        return self;
-	      } else {
-	        return self._volume;
-	      }
-	    },
-
-	    /**
-	     * Get/set whether to loop the sound.
-	     * @param  {Boolean} loop To loop or not to loop, that is the question.
-	     * @return {Howl/Boolean}      Returns self or current looping value.
-	     */
-	    loop: function(loop) {
-	      var self = this;
-
-	      if (typeof loop === 'boolean') {
-	        self._loop = loop;
-
-	        return self;
-	      } else {
-	        return self._loop;
-	      }
-	    },
-
-	    /**
-	     * Get/set sound sprite definition.
-	     * @param  {Object} sprite Example: {spriteName: [offset, duration, loop]}
-	     *                @param {Integer} offset   Where to begin playback in milliseconds
-	     *                @param {Integer} duration How long to play in milliseconds
-	     *                @param {Boolean} loop     (optional) Set true to loop this sprite
-	     * @return {Howl}        Returns current sprite sheet or self.
-	     */
-	    sprite: function(sprite) {
-	      var self = this;
-
-	      if (typeof sprite === 'object') {
-	        self._sprite = sprite;
-
-	        return self;
-	      } else {
-	        return self._sprite;
-	      }
-	    },
-
-	    /**
-	     * Get/set the position of playback.
-	     * @param  {Float}  pos The position to move current playback to.
-	     * @param  {String} id  (optional) The play instance ID.
-	     * @return {Howl/Float}      Returns self or current playback position.
-	     */
-	    pos: function(pos, id) {
-	      var self = this;
-
-	      // if the sound hasn't been loaded, add it to the event queue
-	      if (!self._loaded) {
-	        self.on('load', function() {
-	          self.pos(pos);
-	        });
-
-	        return typeof pos === 'number' ? self : self._pos || 0;
-	      }
-
-	      // make sure we are dealing with a number for pos
-	      pos = parseFloat(pos);
-
-	      var activeNode = (id) ? self._nodeById(id) : self._activeNode();
-	      if (activeNode) {
-	        if (pos >= 0) {
-	          self.pause(id);
-	          activeNode._pos = pos;
-	          self.play(activeNode._sprite, id);
-
-	          return self;
-	        } else {
-	          return self._webAudio ? activeNode._pos + (ctx.currentTime - self._playStart) : activeNode.currentTime;
-	        }
-	      } else if (pos >= 0) {
-	        return self;
-	      } else {
-	        // find the first inactive node to return the pos for
-	        for (var i=0; i<self._audioNode.length; i++) {
-	          if (self._audioNode[i].paused && self._audioNode[i].readyState === 4) {
-	            return (self._webAudio) ? self._audioNode[i]._pos : self._audioNode[i].currentTime;
-	          }
-	        }
-	      }
-	    },
-
-	    /**
-	     * Get/set the 3D position of the audio source.
-	     * The most common usage is to set the 'x' position
-	     * to affect the left/right ear panning. Setting any value higher than
-	     * 1.0 will begin to decrease the volume of the sound as it moves further away.
-	     * NOTE: This only works with Web Audio API, HTML5 Audio playback
-	     * will not be affected.
-	     * @param  {Float}  x  The x-position of the playback from -1000.0 to 1000.0
-	     * @param  {Float}  y  The y-position of the playback from -1000.0 to 1000.0
-	     * @param  {Float}  z  The z-position of the playback from -1000.0 to 1000.0
-	     * @param  {String} id (optional) The play instance ID.
-	     * @return {Howl/Array}   Returns self or the current 3D position: [x, y, z]
-	     */
-	    pos3d: function(x, y, z, id) {
-	      var self = this;
-
-	      // set a default for the optional 'y' & 'z'
-	      y = (typeof y === 'undefined' || !y) ? 0 : y;
-	      z = (typeof z === 'undefined' || !z) ? -0.5 : z;
-
-	      // if the sound hasn't been loaded, add it to the event queue
-	      if (!self._loaded) {
-	        self.on('play', function() {
-	          self.pos3d(x, y, z, id);
-	        });
-
-	        return self;
-	      }
-
-	      if (x >= 0 || x < 0) {
-	        if (self._webAudio) {
-	          var activeNode = (id) ? self._nodeById(id) : self._activeNode();
-	          if (activeNode) {
-	            self._pos3d = [x, y, z];
-	            activeNode.panner.setPosition(x, y, z);
-	            activeNode.panner.panningModel = self._model || 'HRTF';
-	          }
-	        }
-	      } else {
-	        return self._pos3d;
-	      }
-
-	      return self;
-	    },
-
-	    /**
-	     * Fade a currently playing sound between two volumes.
-	     * @param  {Number}   from     The volume to fade from (0.0 to 1.0).
-	     * @param  {Number}   to       The volume to fade to (0.0 to 1.0).
-	     * @param  {Number}   len      Time in milliseconds to fade.
-	     * @param  {Function} callback (optional) Fired when the fade is complete.
-	     * @param  {String}   id       (optional) The play instance ID.
-	     * @return {Howl}
-	     */
-	    fade: function(from, to, len, callback, id) {
-	      var self = this,
-	        diff = Math.abs(from - to),
-	        dir = from > to ? 'down' : 'up',
-	        steps = diff / 0.01,
-	        stepTime = len / steps;
-
-	      // if the sound hasn't been loaded, add it to the event queue
-	      if (!self._loaded) {
-	        self.on('load', function() {
-	          self.fade(from, to, len, callback, id);
-	        });
-
-	        return self;
-	      }
-
-	      // set the volume to the start position
-	      self.volume(from, id);
-
-	      for (var i=1; i<=steps; i++) {
-	        (function() {
-	          var change = self._volume + (dir === 'up' ? 0.01 : -0.01) * i,
-	            vol = Math.round(1000 * change) / 1000,
-	            toVol = to;
-
-	          setTimeout(function() {
-	            self.volume(vol, id);
-
-	            if (vol === toVol) {
-	              if (callback) callback();
-	            }
-	          }, stepTime * i);
-	        })();
-	      }
-	    },
-
-	    /**
-	     * [DEPRECATED] Fade in the current sound.
-	     * @param  {Float}    to      Volume to fade to (0.0 to 1.0).
-	     * @param  {Number}   len     Time in milliseconds to fade.
-	     * @param  {Function} callback
-	     * @return {Howl}
-	     */
-	    fadeIn: function(to, len, callback) {
-	      return this.volume(0).play().fade(0, to, len, callback);
-	    },
-
-	    /**
-	     * [DEPRECATED] Fade out the current sound and pause when finished.
-	     * @param  {Float}    to       Volume to fade to (0.0 to 1.0).
-	     * @param  {Number}   len      Time in milliseconds to fade.
-	     * @param  {Function} callback
-	     * @param  {String}   id       (optional) The play instance ID.
-	     * @return {Howl}
-	     */
-	    fadeOut: function(to, len, callback, id) {
-	      var self = this;
-
-	      return self.fade(self._volume, to, len, function() {
-	        if (callback) callback();
-	        self.pause(id);
-
-	        // fire ended event
-	        self.on('end');
-	      }, id);
-	    },
-
-	    /**
-	     * Get an audio node by ID.
-	     * @return {Howl} Audio node.
-	     */
-	    _nodeById: function(id) {
-	      var self = this,
-	        node = self._audioNode[0];
-
-	      // find the node with this ID
-	      for (var i=0; i<self._audioNode.length; i++) {
-	        if (self._audioNode[i].id === id) {
-	          node = self._audioNode[i];
-	          break;
-	        }
-	      }
-
-	      return node;
-	    },
-
-	    /**
-	     * Get the first active audio node.
-	     * @return {Howl} Audio node.
-	     */
-	    _activeNode: function() {
-	      var self = this,
-	        node = null;
-
-	      // find the first playing node
-	      for (var i=0; i<self._audioNode.length; i++) {
-	        if (!self._audioNode[i].paused) {
-	          node = self._audioNode[i];
-	          break;
-	        }
-	      }
-
-	      // remove excess inactive nodes
-	      self._drainPool();
-
-	      return node;
-	    },
-
-	    /**
-	     * Get the first inactive audio node.
-	     * If there is none, create a new one and add it to the pool.
-	     * @param  {Function} callback Function to call when the audio node is ready.
-	     */
-	    _inactiveNode: function(callback) {
-	      var self = this,
-	        node = null;
-
-	      // find first inactive node to recycle
-	      for (var i=0; i<self._audioNode.length; i++) {
-	        if (self._audioNode[i].paused && self._audioNode[i].readyState === 4) {
-	          // send the node back for use by the new play instance
-	          callback(self._audioNode[i]);
-	          node = true;
-	          break;
-	        }
-	      }
-
-	      // remove excess inactive nodes
-	      self._drainPool();
-
-	      if (node) {
-	        return;
-	      }
-
-	      // create new node if there are no inactives
-	      var newNode;
-	      if (self._webAudio) {
-	        newNode = self._setupAudioNode();
-	        callback(newNode);
-	      } else {
-	        self.load();
-	        newNode = self._audioNode[self._audioNode.length - 1];
-
-	        // listen for the correct load event and fire the callback
-	        var listenerEvent = navigator.isCocoonJS ? 'canplaythrough' : 'loadedmetadata';
-	        var listener = function() {
-	          newNode.removeEventListener(listenerEvent, listener, false);
-	          callback(newNode);
-	        };
-	        newNode.addEventListener(listenerEvent, listener, false);
-	      }
-	    },
-
-	    /**
-	     * If there are more than 5 inactive audio nodes in the pool, clear out the rest.
-	     */
-	    _drainPool: function() {
-	      var self = this,
-	        inactive = 0,
-	        i;
-
-	      // count the number of inactive nodes
-	      for (i=0; i<self._audioNode.length; i++) {
-	        if (self._audioNode[i].paused) {
-	          inactive++;
-	        }
-	      }
-
-	      // remove excess inactive nodes
-	      for (i=self._audioNode.length-1; i>=0; i--) {
-	        if (inactive <= 5) {
-	          break;
-	        }
-
-	        if (self._audioNode[i].paused) {
-	          // disconnect the audio source if using Web Audio
-	          if (self._webAudio) {
-	            self._audioNode[i].disconnect(0);
-	          }
-
-	          inactive--;
-	          self._audioNode.splice(i, 1);
-	        }
-	      }
-	    },
-
-	    /**
-	     * Clear 'onend' timeout before it ends.
-	     * @param  {String} soundId  The play instance ID.
-	     */
-	    _clearEndTimer: function(soundId) {
-	      var self = this,
-	        index = -1;
-
-	      // loop through the timers to find the one associated with this sound
-	      for (var i=0; i<self._onendTimer.length; i++) {
-	        if (self._onendTimer[i].id === soundId) {
-	          index = i;
-	          break;
-	        }
-	      }
-
-	      var timer = self._onendTimer[index];
-	      if (timer) {
-	        clearTimeout(timer.timer);
-	        self._onendTimer.splice(index, 1);
-	      }
-	    },
-
-	    /**
-	     * Setup the gain node and panner for a Web Audio instance.
-	     * @return {Object} The new audio node.
-	     */
-	    _setupAudioNode: function() {
-	      var self = this,
-	        node = self._audioNode,
-	        index = self._audioNode.length;
-
-	      // create gain node
-	      node[index] = (typeof ctx.createGain === 'undefined') ? ctx.createGainNode() : ctx.createGain();
-	      node[index].gain.value = self._volume;
-	      node[index].paused = true;
-	      node[index]._pos = 0;
-	      node[index].readyState = 4;
-	      node[index].connect(masterGain);
-
-	      // create the panner
-	      node[index].panner = ctx.createPanner();
-	      node[index].panner.panningModel = self._model || 'equalpower';
-	      node[index].panner.setPosition(self._pos3d[0], self._pos3d[1], self._pos3d[2]);
-	      node[index].panner.connect(node[index]);
-
-	      return node[index];
-	    },
-
-	    /**
-	     * Call/set custom events.
-	     * @param  {String}   event Event type.
-	     * @param  {Function} fn    Function to call.
-	     * @return {Howl}
-	     */
-	    on: function(event, fn) {
-	      var self = this,
-	        events = self['_on' + event];
-
-	      if (typeof fn === 'function') {
-	        events.push(fn);
-	      } else {
-	        for (var i=0; i<events.length; i++) {
-	          if (fn) {
-	            events[i].call(self, fn);
-	          } else {
-	            events[i].call(self);
-	          }
-	        }
-	      }
-
-	      return self;
-	    },
-
-	    /**
-	     * Remove a custom event.
-	     * @param  {String}   event Event type.
-	     * @param  {Function} fn    Listener to remove.
-	     * @return {Howl}
-	     */
-	    off: function(event, fn) {
-	      var self = this,
-	        events = self['_on' + event];
-
-	      if (fn) {
-	        // loop through functions in the event for comparison
-	        for (var i=0; i<events.length; i++) {
-	          if (fn === events[i]) {
-	            events.splice(i, 1);
-	            break;
-	          }
-	        }
-	      } else {
-	        self['_on' + event] = [];
-	      }
-
-	      return self;
-	    },
-
-	    /**
-	     * Unload and destroy the current Howl object.
-	     * This will immediately stop all play instances attached to this sound.
-	     */
-	    unload: function() {
-	      var self = this;
-
-	      // stop playing any active nodes
-	      var nodes = self._audioNode;
-	      for (var i=0; i<self._audioNode.length; i++) {
-	        // stop the sound if it is currently playing
-	        if (!nodes[i].paused) {
-	          self.stop(nodes[i].id);
-	          self.on('end', nodes[i].id);
-	        }
-
-	        if (!self._webAudio) {
-	          // remove the source if using HTML5 Audio
-	          nodes[i].src = '';
-	        } else {
-	          // disconnect the output from the master gain
-	          nodes[i].disconnect(0);
-	        }
-	      }
-
-	      // make sure all timeouts are cleared
-	      for (i=0; i<self._onendTimer.length; i++) {
-	        clearTimeout(self._onendTimer[i].timer);
-	      }
-
-	      // remove the reference in the global Howler object
-	      var index = Howler._howls.indexOf(self);
-	      if (index !== null && index >= 0) {
-	        Howler._howls.splice(index, 1);
-	      }
-
-	      // delete this sound from the cache
-	      delete cache[self._src];
-	      self = null;
-	    }
-
-	  };
-
-	  // only define these functions when using WebAudio
-	  if (usingWebAudio) {
-
-	    /**
-	     * Buffer a sound from URL (or from cache) and decode to audio source (Web Audio API).
-	     * @param  {Object} obj The Howl object for the sound to load.
-	     * @param  {String} url The path to the sound file.
-	     */
-	    var loadBuffer = function(obj, url) {
-	      // check if the buffer has already been cached
-	      if (url in cache) {
-	        // set the duration from the cache
-	        obj._duration = cache[url].duration;
-
-	        // load the sound into this object
-	        loadSound(obj);
-	        return;
-	      }
-	      
-	      if (/^data:[^;]+;base64,/.test(url)) {
-	        // Decode base64 data-URIs because some browsers cannot load data-URIs with XMLHttpRequest.
-	        var data = atob(url.split(',')[1]);
-	        var dataView = new Uint8Array(data.length);
-	        for (var i=0; i<data.length; ++i) {
-	          dataView[i] = data.charCodeAt(i);
-	        }
-	        
-	        decodeAudioData(dataView.buffer, obj, url);
-	      } else {
-	        // load the buffer from the URL
-	        var xhr = new XMLHttpRequest();
-	        xhr.open('GET', url, true);
-	        xhr.responseType = 'arraybuffer';
-	        xhr.onload = function() {
-	          decodeAudioData(xhr.response, obj, url);
-	        };
-	        xhr.onerror = function() {
-	          // if there is an error, switch the sound to HTML Audio
-	          if (obj._webAudio) {
-	            obj._buffer = true;
-	            obj._webAudio = false;
-	            obj._audioNode = [];
-	            delete obj._gainNode;
-	            delete cache[url];
-	            obj.load();
-	          }
-	        };
-	        try {
-	          xhr.send();
-	        } catch (e) {
-	          xhr.onerror();
-	        }
-	      }
-	    };
-
-	    /**
-	     * Decode audio data from an array buffer.
-	     * @param  {ArrayBuffer} arraybuffer The audio data.
-	     * @param  {Object} obj The Howl object for the sound to load.
-	     * @param  {String} url The path to the sound file.
-	     */
-	    var decodeAudioData = function(arraybuffer, obj, url) {
-	      // decode the buffer into an audio source
-	      ctx.decodeAudioData(
-	        arraybuffer,
-	        function(buffer) {
-	          if (buffer) {
-	            cache[url] = buffer;
-	            loadSound(obj, buffer);
-	          }
-	        },
-	        function(err) {
-	          obj.on('loaderror', err);
-	        }
-	      );
-	    };
-
-	    /**
-	     * Finishes loading the Web Audio API sound and fires the loaded event
-	     * @param  {Object}  obj    The Howl object for the sound to load.
-	     * @param  {Objecct} buffer The decoded buffer sound source.
-	     */
-	    var loadSound = function(obj, buffer) {
-	      // set the duration
-	      obj._duration = (buffer) ? buffer.duration : obj._duration;
-
-	      // setup a sprite if none is defined
-	      if (Object.getOwnPropertyNames(obj._sprite).length === 0) {
-	        obj._sprite = {_default: [0, obj._duration * 1000]};
-	      }
-
-	      // fire the loaded event
-	      if (!obj._loaded) {
-	        obj._loaded = true;
-	        obj.on('load');
-	      }
-
-	      if (obj._autoplay) {
-	        obj.play();
-	      }
-	    };
-
-	    /**
-	     * Load the sound back into the buffer source.
-	     * @param  {Object} obj   The sound to load.
-	     * @param  {Array}  loop  Loop boolean, pos, and duration.
-	     * @param  {String} id    (optional) The play instance ID.
-	     */
-	    var refreshBuffer = function(obj, loop, id) {
-	      // determine which node to connect to
-	      var node = obj._nodeById(id);
-
-	      // setup the buffer source for playback
-	      node.bufferSource = ctx.createBufferSource();
-	      node.bufferSource.buffer = cache[obj._src];
-	      node.bufferSource.connect(node.panner);
-	      node.bufferSource.loop = loop[0];
-	      if (loop[0]) {
-	        node.bufferSource.loopStart = loop[1];
-	        node.bufferSource.loopEnd = loop[1] + loop[2];
-	      }
-	      node.bufferSource.playbackRate.value = obj._rate;
-	    };
-
-	  }
-
-	  /**
-	   * Add support for AMD (Asynchronous Module Definition) libraries such as require.js.
-	   */
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
-	      return {
-	        Howler: Howler,
-	        Howl: Howl
-	      };
-	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  }
-
-	  /**
-	   * Add support for CommonJS libraries such as browserify.
-	   */
-	  if (true) {
-	    exports.Howler = Howler;
-	    exports.Howl = Howl;
-	  }
-
-	  // define globally in case AMD is not available or available but not used
-
-	  if (typeof window !== 'undefined') {
-	    window.Howler = Howler;
-	    window.Howl = Howl;
-	  }
-
-	})();
-
-
-/***/ },
-/* 88 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _getIterator2 = __webpack_require__(89);
+	var _getIterator2 = __webpack_require__(88);
 
 	var _getIterator3 = _interopRequireDefault(_getIterator2);
 
-	var _extends2 = __webpack_require__(94);
+	var _extends2 = __webpack_require__(93);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -13031,11 +11636,11 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _modalIn = __webpack_require__(99);
+	var _modalIn = __webpack_require__(98);
 
 	var _modalIn2 = _interopRequireDefault(_modalIn);
 
-	var _modalHide = __webpack_require__(101);
+	var _modalHide = __webpack_require__(100);
 
 	var _modalHide2 = _interopRequireDefault(_modalHide);
 
@@ -13061,9 +11666,6 @@
 	    this.el.classList.add('modal-wrapper');
 	    this.wrapper = this.el;
 
-	    // this.el.style[ 'margin-top' ]   = '-20px';
-	    // this.el.style[ 'margin-right' ] = '-20px';
-
 	    this.el = this._createChild('div', 'modal');
 	    this.shakeEl = this._createElement('div');
 	    this.shakeEl.classList.add('modal__shake');
@@ -13073,23 +11675,9 @@
 
 	    var modalIn = new _modalIn2.default({ el: this.shakeEl });
 
-	    this.corner = modalIn.corner.el;
-
 	    this.buttonLove = this._findEl('#js-button-love');
 	    this.buttonHate = this._findEl('#js-button-hate');
 	    this.modalText = this._findEl('#js-modal-text');
-
-	    // const circle = new mojs.Shape({
-	    //   fill: COLORS.WHITE,
-	    //   radius: 22,
-	    //   isShowStart: true,
-	    //   left: '50%', top: '50%',
-	    //   // x: { 0: 100 },
-	    //   // y: { 0: -100 },
-	    //   scale: { 1: 0 },
-	    //   isForce3d: true,
-	    //   isTimelineLess: true,
-	    // });
 
 	    mojs.h.force3d(this.el);
 	    var rotateCurve = mojs.easing.path('M0,100 C0,100 18.4374504,69.9344254 47.837504,100 C66.7065746,119.176264 100,100 100,100');
@@ -13142,7 +11730,6 @@
 	        if (_this3._isShake) {
 	          coef = Math.random() < .5 ? -1 : 1;
 	          setTimeout(function () {
-	            // console.log('start');
 	            _this3.shakeTween.play();
 	          }, 1);
 	        }
@@ -13157,7 +11744,7 @@
 	      shape: 'curve',
 	      parent: this.shakeEl,
 	      easing: 'cubic.out',
-	      // fill:       COLORS.WHITE,
+	      backwardEasing: 'cubic.in',
 	      fill: _colors2.default.RED,
 	      x: { 2: 10 },
 	      angle: { 0: 2 },
@@ -13174,9 +11761,6 @@
 	      }
 	    }));
 
-	    // onComplete: ( isFwd ) => {
-	    //   if ( this._isShake ) { setTimeout( () => { shake.play(); }, 10) }
-	    // }
 	    var rightSide = new mojs.Shape((0, _extends3.default)({}, sideOpts, {
 	      left: '100%', top: '50%',
 	      x: (_x = {}, _x[-2] = -10, _x),
@@ -13206,9 +11790,7 @@
 	      }
 	    }));
 
-	    this.noiseTween.add(
-	    // shake,
-	    leftSide, rightSide, topSide, bottomSide);
+	    this.noiseTween.add(leftSide, rightSide, topSide, bottomSide);
 	  };
 
 	  Modal.prototype._createReleaseEffect = function _createReleaseEffect() {
@@ -13217,8 +11799,6 @@
 	    var smokeOpts = {
 	      quantifier: 3,
 	      top: '78%',
-	      // isShowStart: true,
-	      // shape:        'polygon',
 	      fill: 'white',
 	      x: 'rand(-40, 40)',
 	      y: { 0: -100 },
@@ -13230,7 +11810,6 @@
 	      swirlSize: 'rand( 8, 12 )',
 	      swirlFrequency: 'rand( 2, 5 )',
 	      parent: this.el,
-	      // isTimelineLess: true,
 	      isForce3d: true
 	    };
 
@@ -13238,13 +11817,10 @@
 	      left: '28%'
 	    }));
 
-	    // parent:       this.buttonLove,
 	    this.hateSmoke = new ShapeStagger((0, _extends3.default)({}, smokeOpts, {
 	      left: '72%'
 	    }));
 	  };
-
-	  // parent:       this.buttonHate,
 
 	  Modal.prototype._addListeners = function _addListeners() {
 	    var _this4 = this;
@@ -13277,7 +11853,6 @@
 	    }
 	    this.noiseTween.pause().playBackward();
 	    this.shakeTween.stop();
-	    // this.shakeTween.pause().reset();
 	    this.rotateTween.play();
 
 	    if (e.target === this.buttonLove) {
@@ -13342,25 +11917,25 @@
 	exports.default = Modal;
 
 /***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(89), __esModule: true };
+
+/***/ },
 /* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(90), __esModule: true };
+	__webpack_require__(51);
+	__webpack_require__(7);
+	module.exports = __webpack_require__(90);
 
 /***/ },
 /* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(51);
-	__webpack_require__(7);
-	module.exports = __webpack_require__(91);
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var anObject = __webpack_require__(20)
-	  , get      = __webpack_require__(92);
+	  , get      = __webpack_require__(91);
 	module.exports = __webpack_require__(15).getIterator = function(it){
 	  var iterFn = get(it);
 	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
@@ -13368,10 +11943,10 @@
 	};
 
 /***/ },
-/* 92 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var classof   = __webpack_require__(93)
+	var classof   = __webpack_require__(92)
 	  , ITERATOR  = __webpack_require__(48)('iterator')
 	  , Iterators = __webpack_require__(30);
 	module.exports = __webpack_require__(15).getIteratorMethod = function(it){
@@ -13381,7 +11956,7 @@
 	};
 
 /***/ },
-/* 93 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// getting tag from 19.1.3.6 Object.prototype.toString()
@@ -13409,14 +11984,14 @@
 	};
 
 /***/ },
-/* 94 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _assign = __webpack_require__(95);
+	var _assign = __webpack_require__(94);
 
 	var _assign2 = _interopRequireDefault(_assign);
 
@@ -13437,29 +12012,29 @@
 	};
 
 /***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(95), __esModule: true };
+
+/***/ },
 /* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(96), __esModule: true };
+	__webpack_require__(96);
+	module.exports = __webpack_require__(15).Object.assign;
 
 /***/ },
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(97);
-	module.exports = __webpack_require__(15).Object.assign;
-
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// 19.1.3.1 Object.assign(target, source)
 	var $export = __webpack_require__(13);
 
-	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(98)});
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(97)});
 
 /***/ },
-/* 98 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13497,12 +12072,16 @@
 	} : $assign;
 
 /***/ },
-/* 99 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
+
+	var _extends2 = __webpack_require__(93);
+
+	var _extends3 = _interopRequireDefault(_extends2);
 
 	var _classCallCheck2 = __webpack_require__(2);
 
@@ -13524,7 +12103,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _pool = __webpack_require__(100);
+	var _pool = __webpack_require__(99);
 
 	var _pool2 = _interopRequireDefault(_pool);
 
@@ -13544,20 +12123,15 @@
 	    var travelCircleExpand = new mojs.Shape({
 	      fill: _colors2.default.BLACK,
 	      radius: 126,
-	      left: '50%', top: '50%',
-	      // x: { 0: -70 },
-	      // y: { 0:  60 },
 	      scale: { .1: 1 },
-	      isTimelineLess: true,
 	      easing: 'cubic.out',
 	      duration: 400,
+	      opacity: { 0: 1 },
 	      isForce3d: true,
-	      opacity: { 0: 1 }
-	      // opacity: .25
+	      isTimelineLess: true
 	    });
 
 	    var travelCircle = new mojs.Shape({
-	      left: '50%', top: '50%',
 	      radius: 115,
 	      fill: _colors2.default.WHITE,
 	      scale: { .2: 1 },
@@ -13572,7 +12146,6 @@
 
 	    var circle = new mojs.Shape({
 	      fill: _colors2.default.WHITE,
-	      left: '50%', top: '50%',
 	      radius: 500,
 	      scale: { .1: _pool2.default.getScaler(500) },
 	      isForce3d: true,
@@ -13582,18 +12155,15 @@
 	    });
 
 	    var bg = new mojs.Shape({
-	      left: '50%', top: '50%',
 	      fill: _colors2.default.BLACK,
 	      radius: 500,
 	      scale: { 0: _pool2.default.getScaler(500) },
 	      duration: BG_DURATION,
-	      // opacity: .95,
 	      isForce3d: true,
 	      delay: DELAY + 50
 	    });
 
 	    var modal = new mojs.Shape({
-	      left: '50%', top: '50%',
 	      parent: this._o.el,
 	      className: 'modal-shape',
 	      shape: 'rect',
@@ -13603,7 +12173,6 @@
 	      ry: 38,
 	      radiusX: 124,
 	      radiusY: 92,
-	      // angle:     -3,
 	      scaleX: { 0: 1 },
 	      scaleY: { 0: 1 },
 	      fill: _colors2.default.WHITE,
@@ -13629,7 +12198,6 @@
 	        style = modalInner.style;
 
 	    var ripple = new mojs.Shape({
-	      left: '50%', top: '50%',
 	      fill: _colors2.default.RED,
 	      rx: 38,
 	      ry: 38,
@@ -13652,6 +12220,7 @@
 	      }
 	    });
 
+	    var prefixedStyle = mojs.h.setPrefixedStyle.bind(mojs.h);
 	    var buttonsTween = new mojs.Tween({
 	      delay: 75,
 	      onUpdate: function onUpdate(ep, p) {
@@ -13659,19 +12228,13 @@
 	            hateTransform = 'translate(' + 30 * (1 - ep) + 'px, ' + 20 * (1 - ep) + 'px) rotate(' + -2 + 'deg)',
 	            textTransform = 'translate(' + -50 * (1 - ep) + 'px, ' + 30 * (1 - ep) + 'px) scale(' + Math.min(.3 + ep, 1) + ')';
 
-	        buttonLove.style['transform'] = loveTransform;
-	        buttonLove.style[prefix + 'transform'] = loveTransform;
-
-	        buttonHate.style['transform'] = hateTransform;
-	        buttonHate.style[prefix + 'transform'] = hateTransform;
-
-	        modalText.style['transform'] = textTransform;
-	        modalText.style[prefix + 'transform'] = textTransform;
+	        prefixedStyle(buttonLove, 'transform', loveTransform);
+	        prefixedStyle(buttonHate, 'transform', hateTransform);
+	        prefixedStyle(modalText, 'transform', textTransform);
 	      }
 	    });
 
 	    var corner = new mojs.Shape({
-	      left: '50%', top: '50%',
 	      parent: this._o.el,
 	      fill: _colors2.default.RED,
 	      shape: 'polygon',
@@ -13687,7 +12250,6 @@
 	    });
 
 	    var cornerShadow = new mojs.Shape({
-	      left: '50%', top: '50%',
 	      fill: 'rgba(0,0,0,.25)',
 	      shape: 'polygon',
 	      parent: corner.el,
@@ -13706,49 +12268,52 @@
 
 	    var ShapeStagger = mojs.stagger(mojs.Shape);
 
-	    var triangles = new ShapeStagger({
-	      left: '50%', top: '50%',
+	    var triangles = [];
+	    var TRI_OPTS = {
 	      parent: this._o.el,
-	      quantifier: 2,
 	      shape: 'polygon',
-	      fill: [_colors2.default.RED, _colors2.default.WHITE],
 	      y: (_y4 = {}, _y4[-115] = -105, _y4),
 	      x: { 'rand(70, 100)': 'rand(45, 55)' },
 	      radius: 'rand(8, 12)',
 	      scale: { 1: 0 },
-	      delay: 'stagger(250)',
 	      isForce3d: true,
 	      isTimelineLess: true
-	    });
+	    };
+	    for (var i = 0; i < 2; i++) {
+	      triangles.push(new mojs.Shape((0, _extends3.default)({}, TRI_OPTS, {
+	        fill: [_colors2.default.RED, _colors2.default.WHITE][i],
+	        delay: i * 250
+	      })));
+	    }
 
-	    var lines = new ShapeStagger({
-	      left: '50%', top: '50%',
+	    var lines = [];
+	    var LINES_OPTS = {
 	      parent: this._o.el,
-	      quantifier: 3,
 	      fill: 'none',
 	      shape: 'curve',
-	      stroke: [_colors2.default.WHITE, _colors2.default.RED, _colors2.default.WHITE],
 	      radiusX: 30,
 	      radiusY: 11,
-	      angle: [133, 123],
-	      // x:            117,
-	      x: [{ 70: 117 }, { 55: 117 }],
 	      y: 76,
 	      strokeLinecap: 'round',
 	      strokeDasharray: '100%',
 	      strokeDashoffset: { '-100%': '100%' },
-	      // isShowStart:  true,
 	      isShowEnd: false,
 	      isTimelineLess: true
-	    });
+	    };
 
-	    // delay: 1600,
-	    this.timeline = new mojs.Timeline();
+	    for (var _i = 0; _i < 3; _i++) {
+	      lines.push(new mojs.Shape((0, _extends3.default)({}, LINES_OPTS, {
+	        stroke: [_colors2.default.RED, _colors2.default.WHITE, _colors2.default.RED][_i],
+	        x: [{ 70: 117 }, { 55: 117 }, { 40: 117 }][_i],
+	        angle: [133, 123, 113][_i],
+	        delay: 50 * _i
+	      })));
+	    }
 
 	    var modalTimeline = new mojs.Timeline({ delay: BG_DURATION + 100 });
-
 	    modalTimeline.add(modal, ripple, corner, triangles, lines, buttonsTween);
 
+	    this.timeline = new mojs.Timeline();
 	    this.timeline.add(bg, modalTimeline, circle, travelCircle, travelCircleExpand);
 
 	    return this;
@@ -13760,14 +12325,14 @@
 	exports.default = ModalIn;
 
 /***/ },
-/* 100 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _getIterator2 = __webpack_require__(89);
+	var _getIterator2 = __webpack_require__(88);
 
 	var _getIterator3 = _interopRequireDefault(_getIterator2);
 
@@ -13831,7 +12396,7 @@
 	exports.default = new Pool();
 
 /***/ },
-/* 101 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13858,15 +12423,15 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _characters = __webpack_require__(102);
+	var _characters = __webpack_require__(101);
 
 	var _characters2 = _interopRequireDefault(_characters);
 
-	var _geometricShapes = __webpack_require__(103);
+	var _geometricShapes = __webpack_require__(102);
 
 	var _geometricShapes2 = _interopRequireDefault(_geometricShapes);
 
-	var _pool = __webpack_require__(100);
+	var _pool = __webpack_require__(99);
 
 	var _pool2 = _interopRequireDefault(_pool);
 
@@ -13921,7 +12486,7 @@
 	      count: 6,
 	      radius: { 100: 250 },
 	      parent: this.parent,
-	      childOptions: {
+	      children: {
 	        fill: 'white',
 	        shape: 'line',
 	        stroke: [_colors2.default.WHITE, _colors2.default.VINOUS],
@@ -13943,7 +12508,7 @@
 	      radius: { 100: 250 },
 	      parent: this.parent,
 	      angle: 90,
-	      childOptions: {
+	      children: {
 	        fill: 'white',
 	        shape: 'line',
 	        stroke: [_colors2.default.WHITE, _colors2.default.VINOUS],
@@ -13964,7 +12529,7 @@
 	      left: '50%', top: '50%',
 	      radius: { 0: 250 },
 	      parent: this.parent,
-	      childOptions: {
+	      children: {
 	        shape: ['circle', 'rect'],
 	        points: 5,
 	        fill: [_colors2.default.WHITE, _colors2.default.VINOUS],
@@ -14021,14 +12586,14 @@
 	exports.default = ModalHide;
 
 /***/ },
-/* 102 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _extends2 = __webpack_require__(94);
+	var _extends2 = __webpack_require__(93);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -14117,7 +12682,6 @@
 	      };
 
 	      Underline.prototype.getLength = function getLength() {
-	        this._props.length = 100;
 	        return 100;
 	      };
 
@@ -14156,8 +12720,6 @@
 	      isShowEnd: true,
 	      isForce3d: true,
 	      parent: parent
-	      // origin:   '50% 100%'
-	      // isShowStart:  true
 	    };
 
 	    var CHAR_STEP = 40;
@@ -14282,7 +12844,7 @@
 	      y: -100 + Y_SHIFT,
 	      radius: { 10: 100 },
 	      timeline: { delay: 900 },
-	      childOptions: {
+	      children: {
 	        shape: 'line',
 	        scale: { 1: 0 },
 	        radius: 'rand(8, 18)',
@@ -14304,7 +12866,7 @@
 	      y: Y_SHIFT,
 	      radius: { 10: 100 },
 	      timeline: { delay: 2200 },
-	      childOptions: {
+	      children: {
 	        shape: 'line',
 	        scale: { 1: 0 },
 	        radius: 'rand(8, 18)',
@@ -14369,7 +12931,7 @@
 	      x: 3,
 	      radius: { 55: 95 },
 	      timeline: { delay: 2500 },
-	      childOptions: {
+	      children: {
 	        shape: 'line',
 	        scale: { 1: 0 },
 	        radius: 12,
@@ -14404,14 +12966,14 @@
 	exports.default = Characters;
 
 /***/ },
-/* 103 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _extends2 = __webpack_require__(94);
+	var _extends2 = __webpack_require__(93);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 

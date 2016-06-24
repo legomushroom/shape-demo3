@@ -6,22 +6,17 @@ class ModalIn extends Module {
   _render () {
 
     const travelCircleExpand = new mojs.Shape({
-      fill: COLORS.BLACK,
-      radius: 126,
-      left: '50%', top: '50%',
-      // x: { 0: -70 },
-      // y: { 0:  60 },
-      scale: { .1: 1 },
+      fill:       COLORS.BLACK,
+      radius:     126,
+      scale:      { .1: 1 },
+      easing:     'cubic.out',
+      duration:   400,
+      opacity:    { 0 : 1 },
+      isForce3d:  true,
       isTimelineLess: true,
-      easing: 'cubic.out',
-      duration: 400,
-      isForce3d: true,
-      opacity: { 0 : 1 }
-      // opacity: .25
     });
 
     const travelCircle = new mojs.Shape({
-      left: '50%', top: '50%',
       radius:         115,
       fill:           COLORS.WHITE,
       scale:          { .2: 1 },
@@ -35,8 +30,7 @@ class ModalIn extends Module {
     const DELAY = 300;
 
     const circle = new mojs.Shape({
-      fill: COLORS.WHITE,
-      left: '50%', top: '50%',
+      fill:       COLORS.WHITE,
       radius:     500,
       scale:      { .1 : pool.getScaler( 500 ) },
       isForce3d:  true,
@@ -46,18 +40,15 @@ class ModalIn extends Module {
     });
 
     const bg = new mojs.Shape({
-      left: '50%', top: '50%',
       fill:       COLORS.BLACK,
       radius:     500,
       scale:      { 0: pool.getScaler( 500 ) },
       duration:   BG_DURATION,
-      // opacity: .95,
       isForce3d:  true,
       delay:      DELAY + 50,
     });
 
     const modal = new mojs.Shape({
-      left: '50%', top: '50%',
       parent:     this._o.el,
       className:  'modal-shape',
       shape:      'rect',
@@ -67,7 +58,6 @@ class ModalIn extends Module {
       ry:         38,
       radiusX:    124,
       radiusY:    92,
-      // angle:     -3,
       scaleX:     { 0: 1 },
       scaleY:     { 0: 1 },
       fill:       COLORS.WHITE,
@@ -93,7 +83,6 @@ class ModalIn extends Module {
           style  = modalInner.style;
 
     const ripple = new mojs.Shape({
-      left: '50%', top: '50%',
       fill:       COLORS.RED,
       rx:         38,
       ry:         38,
@@ -116,6 +105,7 @@ class ModalIn extends Module {
       }
     });
 
+    const prefixedStyle = mojs.h.setPrefixedStyle.bind(mojs.h);
     const buttonsTween = new mojs.Tween({
       delay: 75,
       onUpdate ( ep, p ) {
@@ -123,19 +113,13 @@ class ModalIn extends Module {
             hateTransform = `translate(${30*(1-ep)}px, ${20*(1-ep)}px) rotate(${-2}deg)`,
             textTransform = `translate(${-50*(1-ep)}px, ${30*(1-ep)}px) scale(${Math.min( .3 + ep, 1 )})`;
 
-        buttonLove.style[ 'transform' ] = loveTransform;
-        buttonLove.style[ `${prefix}transform` ] = loveTransform;
-
-        buttonHate.style[ 'transform' ] = hateTransform;
-        buttonHate.style[ `${prefix}transform` ] = hateTransform;
-
-        modalText.style[ 'transform' ] = textTransform;
-        modalText.style[ `${prefix}transform` ] = textTransform;
+        prefixedStyle( buttonLove, 'transform', loveTransform );
+        prefixedStyle( buttonHate, 'transform', hateTransform );
+        prefixedStyle( modalText,  'transform', textTransform );
       }
     });
 
     const corner = new mojs.Shape({
-      left: '50%', top: '50%',
       parent:     this._o.el,
       fill:       COLORS.RED,
       shape:      'polygon',
@@ -151,7 +135,6 @@ class ModalIn extends Module {
     });
 
     const cornerShadow = new mojs.Shape({
-      left: '50%', top: '50%',
       fill:         'rgba(0,0,0,.25)',
       shape:        'polygon',
       parent:       corner.el,
@@ -170,47 +153,51 @@ class ModalIn extends Module {
 
     const ShapeStagger = mojs.stagger( mojs.Shape );
 
-    const triangles = new ShapeStagger({
-      left: '50%', top: '50%',
+    const triangles = [];
+    const TRI_OPTS = {
       parent:       this._o.el,
-      quantifier:   2,
       shape:        'polygon',
-      fill:         [ COLORS.RED, COLORS.WHITE ],
       y:            { [-115] : -105 },
       x:            { 'rand(70, 100)': 'rand(45, 55)' },
       radius:       'rand(8, 12)',
       scale:        { 1 : 0 },
-      delay:        'stagger(250)',
       isForce3d:    true,
       isTimelineLess: true,
-    });
+    }
+    for ( let i = 0; i < 2; i++ ) {
+      triangles.push(new mojs.Shape({
+        ...TRI_OPTS,
+        fill:         [ COLORS.RED, COLORS.WHITE ][i],
+        delay:        i*250
+      }));
+    }
 
-    const lines = new ShapeStagger({
-      left: '50%', top: '50%',
-      parent:       this._o.el,
-      quantifier:   3,
-      fill:         'none',
-      shape:        'curve',
-      stroke:       [ COLORS.WHITE, COLORS.RED, COLORS.WHITE ],
-      radiusX:      30,
-      radiusY:      11,
-      angle:        [ 133, 123 ],
-      // x:            117,
-      x:            [{ 70 : 117 }, { 55 : 117 } ],
-      y:            76,
-      strokeLinecap: 'round',
-      strokeDasharray: '100%',
+    const lines = [];
+    const LINES_OPTS = {
+      parent:           this._o.el,
+      fill:             'none',
+      shape:            'curve',
+      radiusX:          30,
+      radiusY:          11,
+      y:                76,
+      strokeLinecap:    'round',
+      strokeDasharray:  '100%',
       strokeDashoffset: { '-100%' : '100%' },
-      // isShowStart:  true,
-      isShowEnd: false,
-      isTimelineLess: true,
-      // delay: 1600,
-    });
+      isShowEnd:        false,
+      isTimelineLess:   true,
+    }
 
-    this.timeline = new mojs.Timeline();
-
+    for ( let i = 0; i < 3; i++ ) {
+      lines.push(new mojs.Shape({
+        ...LINES_OPTS,
+        stroke:       [ COLORS.RED, COLORS.WHITE, COLORS.RED ][i],
+        x:            [{ 70 : 117 }, { 55 : 117 }, { 40 : 117 } ][i],
+        angle:        [ 133, 123, 113 ][i],
+        delay:        50*i
+      }));
+    }
+  
     const modalTimeline = new mojs.Timeline({ delay: BG_DURATION + 100 });
-
     modalTimeline
       .add(
         modal, ripple, corner,
@@ -218,6 +205,7 @@ class ModalIn extends Module {
         buttonsTween,
       );
 
+    this.timeline = new mojs.Timeline;
     this.timeline
       .add(
         bg,
