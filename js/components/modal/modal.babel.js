@@ -61,7 +61,7 @@ class Modal extends Module {
     let coef = 1;
 
     this.noiseTween = new mojs.Timeline;
-    let scale = 1;
+    // let scale = 1;
     this.shakeTween = new mojs.Tween({
       duration: 800,
       onUpdate: ( ep, p, isFwd ) => {
@@ -81,11 +81,8 @@ class Modal extends Module {
       }
     });
 
-    this.shakeTween.isIt = 1;
-
     const sideOpts = {
-      left: 0, top: '50%',
-      duration:   300,
+      left:       0,
       shape:      'curve',
       parent:     this.shakeEl,
       easing:     'cubic.out',
@@ -98,7 +95,8 @@ class Modal extends Module {
       angle:     -90,
       scaleY:     { 0: 1 },
       scaleX:     { 1: 1.1 },
-      isShowStart: 1,
+      duration:   300,
+      isShowStart: true,
       isForce3d:  true
     }
 
@@ -151,34 +149,46 @@ class Modal extends Module {
   }
 
   _createReleaseEffect () {
-    const ShapeStagger = mojs.stagger( mojs.ShapeSwirl );
 
     const smokeOpts = {
-      quantifier:   3,
-      top:          '78%',
-      fill:         'white',
-      x:            'rand(-40, 40)',
-      y:            { 0: -100 },
-      duration:     1000,
-      pathScale:    'rand(.35, 1)',
-      direction:    [ 1, -1 ],
-      radius:       'rand( 3, 7 )',
-      scale:        { 1: 0 },
-      swirlSize:    'rand( 8, 12 )',
+      top:            '78%',
+      fill:           'white',
+      x:              'rand(-40, 40)',
+      y:              { 0: -100 },
+      pathScale:      'rand(.35, 1)',
+      direction:      [ 1, -1 ],
+      radius:         'rand( 3, 7 )',
+      scale:          { 1: 0 },
+      swirlSize:      'rand( 8, 12 )',
       swirlFrequency: 'rand( 2, 5 )',
-      parent:       this.el,
+      parent:         this.el,
+      duration:       1000,
       isForce3d:      true
     }
 
-    this.loveSmoke = new ShapeStagger({
-      ...smokeOpts,
-      left:         '28%',
-    });
+    const count = 3;
+    this.loveSmokeTimeline = new mojs.Timeline;
+    this.loveSmoke = [];
+    for ( let i = 0; i < count; i++ ) {
+      this.loveSmoke.push(new mojs.ShapeSwirl({
+        ...smokeOpts,
+        direction:  [ 1, -1 ][ i % (count-1) ],
+        left:    '28%',
+      }));
+    }
+    this.loveSmokeTimeline.add( this.loveSmoke );
 
-    this.hateSmoke = new ShapeStagger({
-      ...smokeOpts,
-      left:         '72%',
-    });
+    this.hateSmokeTimeline = new mojs.Timeline;
+    this.hateSmoke = [];
+    for ( let i = 0; i < count; i++ ) {
+      this.hateSmoke.push(new mojs.ShapeSwirl({
+        ...smokeOpts,
+        direction:  [ 1, -1 ][ i % (count-1) ],
+        left:    '72%',
+      }));
+    }
+    this.hateSmokeTimeline.add( this.hateSmoke );
+
   }
 
   _addListeners () {
@@ -211,15 +221,15 @@ class Modal extends Module {
     this.rotateTween.play();
 
     if ( e.target === this.buttonLove ) {
-      for ( let module of this.loveSmoke.childModules ) {
+      for ( let module of this.loveSmoke ) {
         module.generate();
       }
-      this.loveSmoke.timeline.replay(); 
+      this.loveSmokeTimeline.replay(); 
     } else {
-      for ( let module of this.hateSmoke.childModules ) {
+      for ( let module of this.hateSmoke ) {
         module.generate();
       }
-      this.hateSmoke.timeline.replay();
+      this.hateSmokeTimeline.replay();
     }
 
     this._isShake = false;

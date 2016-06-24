@@ -91,15 +91,15 @@
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _modalHide = __webpack_require__(100);
+	var _modalHide = __webpack_require__(88);
 
 	var _modalHide2 = _interopRequireDefault(_modalHide);
 
-	var _characters = __webpack_require__(101);
+	var _characters = __webpack_require__(89);
 
 	var _characters2 = _interopRequireDefault(_characters);
 
-	var _pool = __webpack_require__(99);
+	var _pool = __webpack_require__(96);
 
 	var _pool2 = _interopRequireDefault(_pool);
 
@@ -11608,11 +11608,11 @@
 
 	exports.__esModule = true;
 
-	var _getIterator2 = __webpack_require__(88);
+	var _getIterator2 = __webpack_require__(97);
 
 	var _getIterator3 = _interopRequireDefault(_getIterator2);
 
-	var _extends2 = __webpack_require__(93);
+	var _extends2 = __webpack_require__(90);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -11636,11 +11636,11 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _modalIn = __webpack_require__(98);
+	var _modalIn = __webpack_require__(102);
 
 	var _modalIn2 = _interopRequireDefault(_modalIn);
 
-	var _modalHide = __webpack_require__(100);
+	var _modalHide = __webpack_require__(88);
 
 	var _modalHide2 = _interopRequireDefault(_modalHide);
 
@@ -11717,7 +11717,7 @@
 	    var coef = 1;
 
 	    this.noiseTween = new mojs.Timeline();
-	    var scale = 1;
+	    // let scale = 1;
 	    this.shakeTween = new mojs.Tween({
 	      duration: 800,
 	      onUpdate: function onUpdate(ep, p, isFwd) {
@@ -11736,11 +11736,8 @@
 	      }
 	    });
 
-	    this.shakeTween.isIt = 1;
-
 	    var sideOpts = (_sideOpts = {
-	      left: 0, top: '50%',
-	      duration: 300,
+	      left: 0,
 	      shape: 'curve',
 	      parent: this.shakeEl,
 	      easing: 'cubic.out',
@@ -11750,7 +11747,7 @@
 	      angle: { 0: 2 },
 	      radiusY: 28,
 	      radiusX: 76
-	    }, _sideOpts['angle'] = -90, _sideOpts.scaleY = { 0: 1 }, _sideOpts.scaleX = { 1: 1.1 }, _sideOpts.isShowStart = 1, _sideOpts.isForce3d = true, _sideOpts);
+	    }, _sideOpts['angle'] = -90, _sideOpts.scaleY = { 0: 1 }, _sideOpts.scaleX = { 1: 1.1 }, _sideOpts.duration = 300, _sideOpts.isShowStart = true, _sideOpts.isForce3d = true, _sideOpts);
 
 	    var leftSide = new mojs.Shape((0, _extends3.default)({}, sideOpts, {
 	      onUpdate: function onUpdate(ep, p, isFwd) {
@@ -11794,15 +11791,12 @@
 	  };
 
 	  Modal.prototype._createReleaseEffect = function _createReleaseEffect() {
-	    var ShapeStagger = mojs.stagger(mojs.ShapeSwirl);
 
 	    var smokeOpts = {
-	      quantifier: 3,
 	      top: '78%',
 	      fill: 'white',
 	      x: 'rand(-40, 40)',
 	      y: { 0: -100 },
-	      duration: 1000,
 	      pathScale: 'rand(.35, 1)',
 	      direction: [1, -1],
 	      radius: 'rand( 3, 7 )',
@@ -11810,16 +11804,30 @@
 	      swirlSize: 'rand( 8, 12 )',
 	      swirlFrequency: 'rand( 2, 5 )',
 	      parent: this.el,
+	      duration: 1000,
 	      isForce3d: true
 	    };
 
-	    this.loveSmoke = new ShapeStagger((0, _extends3.default)({}, smokeOpts, {
-	      left: '28%'
-	    }));
+	    var count = 3;
+	    this.loveSmokeTimeline = new mojs.Timeline();
+	    this.loveSmoke = [];
+	    for (var i = 0; i < count; i++) {
+	      this.loveSmoke.push(new mojs.ShapeSwirl((0, _extends3.default)({}, smokeOpts, {
+	        direction: [1, -1][i % (count - 1)],
+	        left: '28%'
+	      })));
+	    }
+	    this.loveSmokeTimeline.add(this.loveSmoke);
 
-	    this.hateSmoke = new ShapeStagger((0, _extends3.default)({}, smokeOpts, {
-	      left: '72%'
-	    }));
+	    this.hateSmokeTimeline = new mojs.Timeline();
+	    this.hateSmoke = [];
+	    for (var _i = 0; _i < count; _i++) {
+	      this.hateSmoke.push(new mojs.ShapeSwirl((0, _extends3.default)({}, smokeOpts, {
+	        direction: [1, -1][_i % (count - 1)],
+	        left: '72%'
+	      })));
+	    }
+	    this.hateSmokeTimeline.add(this.hateSmoke);
 	  };
 
 	  Modal.prototype._addListeners = function _addListeners() {
@@ -11856,41 +11864,41 @@
 	    this.rotateTween.play();
 
 	    if (e.target === this.buttonLove) {
-	      for (var _iterator = this.loveSmoke.childModules, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
+	      for (var _iterator = this.loveSmoke, _isArray = Array.isArray(_iterator), _i2 = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
 	        var _ref;
 
 	        if (_isArray) {
-	          if (_i >= _iterator.length) break;
-	          _ref = _iterator[_i++];
+	          if (_i2 >= _iterator.length) break;
+	          _ref = _iterator[_i2++];
 	        } else {
-	          _i = _iterator.next();
-	          if (_i.done) break;
-	          _ref = _i.value;
+	          _i2 = _iterator.next();
+	          if (_i2.done) break;
+	          _ref = _i2.value;
 	        }
 
 	        var module = _ref;
 
 	        module.generate();
 	      }
-	      this.loveSmoke.timeline.replay();
+	      this.loveSmokeTimeline.replay();
 	    } else {
-	      for (var _iterator2 = this.hateSmoke.childModules, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : (0, _getIterator3.default)(_iterator2);;) {
+	      for (var _iterator2 = this.hateSmoke, _isArray2 = Array.isArray(_iterator2), _i3 = 0, _iterator2 = _isArray2 ? _iterator2 : (0, _getIterator3.default)(_iterator2);;) {
 	        var _ref2;
 
 	        if (_isArray2) {
-	          if (_i2 >= _iterator2.length) break;
-	          _ref2 = _iterator2[_i2++];
+	          if (_i3 >= _iterator2.length) break;
+	          _ref2 = _iterator2[_i3++];
 	        } else {
-	          _i2 = _iterator2.next();
-	          if (_i2.done) break;
-	          _ref2 = _i2.value;
+	          _i3 = _iterator2.next();
+	          if (_i3.done) break;
+	          _ref2 = _i3.value;
 	        }
 
 	        var _module = _ref2;
 
 	        _module.generate();
 	      }
-	      this.hateSmoke.timeline.replay();
+	      this.hateSmokeTimeline.replay();
 	    }
 
 	    this._isShake = false;
@@ -11920,485 +11928,6 @@
 /* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(89), __esModule: true };
-
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(51);
-	__webpack_require__(7);
-	module.exports = __webpack_require__(90);
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var anObject = __webpack_require__(20)
-	  , get      = __webpack_require__(91);
-	module.exports = __webpack_require__(15).getIterator = function(it){
-	  var iterFn = get(it);
-	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
-	  return anObject(iterFn.call(it));
-	};
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var classof   = __webpack_require__(92)
-	  , ITERATOR  = __webpack_require__(48)('iterator')
-	  , Iterators = __webpack_require__(30);
-	module.exports = __webpack_require__(15).getIteratorMethod = function(it){
-	  if(it != undefined)return it[ITERATOR]
-	    || it['@@iterator']
-	    || Iterators[classof(it)];
-	};
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// getting tag from 19.1.3.6 Object.prototype.toString()
-	var cof = __webpack_require__(38)
-	  , TAG = __webpack_require__(48)('toStringTag')
-	  // ES3 wrong here
-	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
-
-	// fallback for IE11 Script Access Denied error
-	var tryGet = function(it, key){
-	  try {
-	    return it[key];
-	  } catch(e){ /* empty */ }
-	};
-
-	module.exports = function(it){
-	  var O, T, B;
-	  return it === undefined ? 'Undefined' : it === null ? 'Null'
-	    // @@toStringTag case
-	    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
-	    // builtinTag case
-	    : ARG ? cof(O)
-	    // ES3 arguments fallback
-	    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
-	};
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	var _assign = __webpack_require__(94);
-
-	var _assign2 = _interopRequireDefault(_assign);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = _assign2.default || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];
-
-	    for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }
-
-	  return target;
-	};
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(95), __esModule: true };
-
-/***/ },
-/* 95 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(96);
-	module.exports = __webpack_require__(15).Object.assign;
-
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.3.1 Object.assign(target, source)
-	var $export = __webpack_require__(13);
-
-	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(97)});
-
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	// 19.1.2.1 Object.assign(target, source, ...)
-	var getKeys  = __webpack_require__(34)
-	  , gOPS     = __webpack_require__(63)
-	  , pIE      = __webpack_require__(64)
-	  , toObject = __webpack_require__(50)
-	  , IObject  = __webpack_require__(37)
-	  , $assign  = Object.assign;
-
-	// should work with symbols and should have deterministic property order (V8 bug)
-	module.exports = !$assign || __webpack_require__(24)(function(){
-	  var A = {}
-	    , B = {}
-	    , S = Symbol()
-	    , K = 'abcdefghijklmnopqrst';
-	  A[S] = 7;
-	  K.split('').forEach(function(k){ B[k] = k; });
-	  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
-	}) ? function assign(target, source){ // eslint-disable-line no-unused-vars
-	  var T     = toObject(target)
-	    , aLen  = arguments.length
-	    , index = 1
-	    , getSymbols = gOPS.f
-	    , isEnum     = pIE.f;
-	  while(aLen > index){
-	    var S      = IObject(arguments[index++])
-	      , keys   = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S)
-	      , length = keys.length
-	      , j      = 0
-	      , key;
-	    while(length > j)if(isEnum.call(S, key = keys[j++]))T[key] = S[key];
-	  } return T;
-	} : $assign;
-
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	var _extends2 = __webpack_require__(93);
-
-	var _extends3 = _interopRequireDefault(_extends2);
-
-	var _classCallCheck2 = __webpack_require__(2);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	var _possibleConstructorReturn2 = __webpack_require__(3);
-
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-	var _inherits2 = __webpack_require__(72);
-
-	var _inherits3 = _interopRequireDefault(_inherits2);
-
-	var _module = __webpack_require__(82);
-
-	var _module2 = _interopRequireDefault(_module);
-
-	var _colors = __webpack_require__(83);
-
-	var _colors2 = _interopRequireDefault(_colors);
-
-	var _pool = __webpack_require__(99);
-
-	var _pool2 = _interopRequireDefault(_pool);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var ModalIn = function (_Module) {
-	  (0, _inherits3.default)(ModalIn, _Module);
-
-	  function ModalIn() {
-	    (0, _classCallCheck3.default)(this, ModalIn);
-	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
-	  }
-
-	  ModalIn.prototype._render = function _render() {
-	    var _x, _y, _x2, _y2, _x3, _y3, _y4;
-
-	    var travelCircleExpand = new mojs.Shape({
-	      fill: _colors2.default.BLACK,
-	      radius: 126,
-	      scale: { .1: 1 },
-	      easing: 'cubic.out',
-	      duration: 400,
-	      opacity: { 0: 1 },
-	      isForce3d: true,
-	      isTimelineLess: true
-	    });
-
-	    var travelCircle = new mojs.Shape({
-	      radius: 115,
-	      fill: _colors2.default.WHITE,
-	      scale: { .2: 1 },
-	      easing: 'back.in',
-	      isShowEnd: false,
-	      isForce3d: true,
-	      isTimelineLess: true
-	    });
-
-	    var BG_DURATION = 250;
-	    var DELAY = 300;
-
-	    var circle = new mojs.Shape({
-	      fill: _colors2.default.WHITE,
-	      radius: 500,
-	      scale: { .1: _pool2.default.getScaler(500) },
-	      isForce3d: true,
-	      easing: 'cubic.out',
-	      duration: BG_DURATION,
-	      delay: DELAY
-	    });
-
-	    var bg = new mojs.Shape({
-	      fill: _colors2.default.BLACK,
-	      radius: 500,
-	      scale: { 0: _pool2.default.getScaler(500) },
-	      duration: BG_DURATION,
-	      isForce3d: true,
-	      delay: DELAY + 50
-	    });
-
-	    var modal = new mojs.Shape({
-	      parent: this._o.el,
-	      className: 'modal-shape',
-	      shape: 'rect',
-	      x: (_x = {}, _x[-100] = 0, _x),
-	      y: (_y = {}, _y[100] = 0, _y),
-	      rx: 38,
-	      ry: 38,
-	      radiusX: 124,
-	      radiusY: 92,
-	      scaleX: { 0: 1 },
-	      scaleY: { 0: 1 },
-	      fill: _colors2.default.WHITE,
-	      duration: 300,
-	      origin: '15% 90%',
-	      easing: 'bounce.out',
-	      isForce3d: true
-	    });
-
-	    modal.el.style['overflow'] = 'hidden';
-
-	    var modalInner = this._createElement('div');
-	    modalInner.classList.add('modal__inner');
-	    modalInner.innerHTML = document.querySelector('#js-modal-template').innerHTML;
-	    this._o.el.appendChild(modalInner);
-	    mojs.h.setPrefixedStyle(modalInner, 'transform-origin', '15% 90%');
-
-	    var buttonLove = this._findEl('#js-button-love'),
-	        buttonHate = this._findEl('#js-button-hate'),
-	        modalText = this._findEl('#js-modal-text');
-
-	    var prefix = mojs.h.prefix.css,
-	        style = modalInner.style;
-
-	    var ripple = new mojs.Shape({
-	      fill: _colors2.default.RED,
-	      rx: 38,
-	      ry: 38,
-	      radius: 142,
-	      x: (_x2 = {}, _x2[-150] = 0, _x2),
-	      y: (_y2 = {}, _y2[150] = 0, _y2),
-	      scale: { 0: 1 },
-	      parent: modal.el,
-	      isForce3d: true,
-	      isShoeEnd: false,
-	      duration: 400,
-	      isTimelineLess: true,
-	      onUpdate: function onUpdate(ep, p) {
-	        var bounceP = mojs.easing.bounce.out(p),
-	            transform = 'scale(' + bounceP + ')';
-
-	        style['transform'] = transform;
-	        style[prefix + 'transform'] = transform;
-	        style.opacity = ep;
-	      }
-	    });
-
-	    var prefixedStyle = mojs.h.setPrefixedStyle.bind(mojs.h);
-	    var buttonsTween = new mojs.Tween({
-	      delay: 75,
-	      onUpdate: function onUpdate(ep, p) {
-	        var loveTransform = 'translate(' + -30 * (1 - ep) + 'px, ' + 20 * (1 - ep) + 'px) rotate(' + 3 + 'deg)',
-	            hateTransform = 'translate(' + 30 * (1 - ep) + 'px, ' + 20 * (1 - ep) + 'px) rotate(' + -2 + 'deg)',
-	            textTransform = 'translate(' + -50 * (1 - ep) + 'px, ' + 30 * (1 - ep) + 'px) scale(' + Math.min(.3 + ep, 1) + ')';
-
-	        prefixedStyle(buttonLove, 'transform', loveTransform);
-	        prefixedStyle(buttonHate, 'transform', hateTransform);
-	        prefixedStyle(modalText, 'transform', textTransform);
-	      }
-	    });
-
-	    var corner = new mojs.Shape({
-	      parent: this._o.el,
-	      fill: _colors2.default.RED,
-	      shape: 'polygon',
-	      radiusX: 45,
-	      radiusY: 45,
-	      x: (_x3 = {}, _x3[-100] = -75, _x3),
-	      y: (_y3 = {}, _y3[110] = 76, _y3),
-	      angle: 90,
-	      scale: { 0: 1 },
-	      isForce3d: true,
-	      duration: 250,
-	      isTimelineLess: true
-	    });
-
-	    var cornerShadow = new mojs.Shape({
-	      fill: 'rgba(0,0,0,.25)',
-	      shape: 'polygon',
-	      parent: corner.el,
-	      radiusX: 27,
-	      radiusY: 27,
-	      x: 20,
-	      y: 5,
-	      isForce3d: true,
-	      isShoeEnd: false,
-	      isShowStart: true
-	    });
-
-	    this.corner = corner;
-
-	    cornerShadow.el.style['z-index'] = '-1';
-
-	    var ShapeStagger = mojs.stagger(mojs.Shape);
-
-	    var triangles = [];
-	    var TRI_OPTS = {
-	      parent: this._o.el,
-	      shape: 'polygon',
-	      y: (_y4 = {}, _y4[-115] = -105, _y4),
-	      x: { 'rand(70, 100)': 'rand(45, 55)' },
-	      radius: 'rand(8, 12)',
-	      scale: { 1: 0 },
-	      isForce3d: true,
-	      isTimelineLess: true
-	    };
-	    for (var i = 0; i < 2; i++) {
-	      triangles.push(new mojs.Shape((0, _extends3.default)({}, TRI_OPTS, {
-	        fill: [_colors2.default.RED, _colors2.default.WHITE][i],
-	        delay: i * 250
-	      })));
-	    }
-
-	    var lines = [];
-	    var LINES_OPTS = {
-	      parent: this._o.el,
-	      fill: 'none',
-	      shape: 'curve',
-	      radiusX: 30,
-	      radiusY: 11,
-	      y: 76,
-	      strokeLinecap: 'round',
-	      strokeDasharray: '100%',
-	      strokeDashoffset: { '-100%': '100%' },
-	      isShowEnd: false,
-	      isTimelineLess: true
-	    };
-
-	    for (var _i = 0; _i < 3; _i++) {
-	      lines.push(new mojs.Shape((0, _extends3.default)({}, LINES_OPTS, {
-	        stroke: [_colors2.default.RED, _colors2.default.WHITE, _colors2.default.RED][_i],
-	        x: [{ 70: 117 }, { 55: 117 }, { 40: 117 }][_i],
-	        angle: [133, 123, 113][_i],
-	        delay: 50 * _i
-	      })));
-	    }
-
-	    var modalTimeline = new mojs.Timeline({ delay: BG_DURATION + 100 });
-	    modalTimeline.add(modal, ripple, corner, triangles, lines, buttonsTween);
-
-	    this.timeline = new mojs.Timeline();
-	    this.timeline.add(bg, modalTimeline, circle, travelCircle, travelCircleExpand);
-
-	    return this;
-	  };
-
-	  return ModalIn;
-	}(_module2.default);
-
-	exports.default = ModalIn;
-
-/***/ },
-/* 99 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	var _getIterator2 = __webpack_require__(88);
-
-	var _getIterator3 = _interopRequireDefault(_getIterator2);
-
-	var _classCallCheck2 = __webpack_require__(2);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Pool = function () {
-	  function Pool() {
-	    (0, _classCallCheck3.default)(this, Pool);
-
-	    this._vars();
-	    this._getWindowSize();
-	    this._listenResize();
-	  }
-
-	  Pool.prototype._vars = function _vars() {
-	    this._subscribers = [];
-	  };
-
-	  Pool.prototype._listenResize = function _listenResize() {
-	    window.addEventListener('resize', this._getWindowSize.bind(this));
-	  };
-
-	  Pool.prototype._getWindowSize = function _getWindowSize() {
-	    this.windowWidth = window.innerWidth;
-	    this.windowHeight = window.innerHeight;
-	    this._emitSubscribe();
-	  };
-
-	  Pool.prototype.getScaler = function getScaler(initial) {
-	    var max = Math.max(this.windowWidth, this.windowHeight);
-	    return 1.25 * (max / (2 * initial));
-	  };
-
-	  Pool.prototype.resizeSubscribe = function resizeSubscribe(subscriber) {
-	    this._subscribers.push(subscriber);
-	    subscriber(this.windowWidth, this.windowHeight);
-	  };
-
-	  Pool.prototype._emitSubscribe = function _emitSubscribe() {
-	    for (var _iterator = this._subscribers, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
-	      if (_isArray) {
-	        if (_i >= _iterator.length) break;
-	        subscriber = _iterator[_i++];
-	      } else {
-	        _i = _iterator.next();
-	        if (_i.done) break;
-	        subscriber = _i.value;
-	      }
-
-	      subscriber(this.windowWidth, this.windowHeight);
-	    }
-	  };
-
-	  return Pool;
-	}();
-
-	exports.default = new Pool();
-
-/***/ },
-/* 100 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	exports.__esModule = true;
@@ -12423,15 +11952,15 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _characters = __webpack_require__(101);
+	var _characters = __webpack_require__(89);
 
 	var _characters2 = _interopRequireDefault(_characters);
 
-	var _geometricShapes = __webpack_require__(102);
+	var _geometricShapes = __webpack_require__(95);
 
 	var _geometricShapes2 = _interopRequireDefault(_geometricShapes);
 
-	var _pool = __webpack_require__(99);
+	var _pool = __webpack_require__(96);
 
 	var _pool2 = _interopRequireDefault(_pool);
 
@@ -12586,14 +12115,14 @@
 	exports.default = ModalHide;
 
 /***/ },
-/* 101 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _extends2 = __webpack_require__(93);
+	var _extends2 = __webpack_require__(90);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -12966,14 +12495,102 @@
 	exports.default = Characters;
 
 /***/ },
-/* 102 */
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _assign = __webpack_require__(91);
+
+	var _assign2 = _interopRequireDefault(_assign);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _assign2.default || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];
+
+	    for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }
+
+	  return target;
+	};
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(92), __esModule: true };
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(93);
+	module.exports = __webpack_require__(15).Object.assign;
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.3.1 Object.assign(target, source)
+	var $export = __webpack_require__(13);
+
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(94)});
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	// 19.1.2.1 Object.assign(target, source, ...)
+	var getKeys  = __webpack_require__(34)
+	  , gOPS     = __webpack_require__(63)
+	  , pIE      = __webpack_require__(64)
+	  , toObject = __webpack_require__(50)
+	  , IObject  = __webpack_require__(37)
+	  , $assign  = Object.assign;
+
+	// should work with symbols and should have deterministic property order (V8 bug)
+	module.exports = !$assign || __webpack_require__(24)(function(){
+	  var A = {}
+	    , B = {}
+	    , S = Symbol()
+	    , K = 'abcdefghijklmnopqrst';
+	  A[S] = 7;
+	  K.split('').forEach(function(k){ B[k] = k; });
+	  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+	}) ? function assign(target, source){ // eslint-disable-line no-unused-vars
+	  var T     = toObject(target)
+	    , aLen  = arguments.length
+	    , index = 1
+	    , getSymbols = gOPS.f
+	    , isEnum     = pIE.f;
+	  while(aLen > index){
+	    var S      = IObject(arguments[index++])
+	      , keys   = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S)
+	      , length = keys.length
+	      , j      = 0
+	      , key;
+	    while(length > j)if(isEnum.call(S, key = keys[j++]))T[key] = S[key];
+	  } return T;
+	} : $assign;
+
+/***/ },
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _extends2 = __webpack_require__(93);
+	var _extends2 = __webpack_require__(90);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -13209,6 +12826,397 @@
 	}(_module2.default);
 
 	exports.default = GeometricShapes;
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _getIterator2 = __webpack_require__(97);
+
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Pool = function () {
+	  function Pool() {
+	    (0, _classCallCheck3.default)(this, Pool);
+
+	    this._vars();
+	    this._getWindowSize();
+	    this._listenResize();
+	  }
+
+	  Pool.prototype._vars = function _vars() {
+	    this._subscribers = [];
+	  };
+
+	  Pool.prototype._listenResize = function _listenResize() {
+	    window.addEventListener('resize', this._getWindowSize.bind(this));
+	  };
+
+	  Pool.prototype._getWindowSize = function _getWindowSize() {
+	    this.windowWidth = window.innerWidth;
+	    this.windowHeight = window.innerHeight;
+	    this._emitSubscribe();
+	  };
+
+	  Pool.prototype.getScaler = function getScaler(initial) {
+	    var max = Math.max(this.windowWidth, this.windowHeight);
+	    return 1.25 * (max / (2 * initial));
+	  };
+
+	  Pool.prototype.resizeSubscribe = function resizeSubscribe(subscriber) {
+	    this._subscribers.push(subscriber);
+	    subscriber(this.windowWidth, this.windowHeight);
+	  };
+
+	  Pool.prototype._emitSubscribe = function _emitSubscribe() {
+	    for (var _iterator = this._subscribers, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
+	      if (_isArray) {
+	        if (_i >= _iterator.length) break;
+	        subscriber = _iterator[_i++];
+	      } else {
+	        _i = _iterator.next();
+	        if (_i.done) break;
+	        subscriber = _i.value;
+	      }
+
+	      subscriber(this.windowWidth, this.windowHeight);
+	    }
+	  };
+
+	  return Pool;
+	}();
+
+	exports.default = new Pool();
+
+/***/ },
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(98), __esModule: true };
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(51);
+	__webpack_require__(7);
+	module.exports = __webpack_require__(99);
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var anObject = __webpack_require__(20)
+	  , get      = __webpack_require__(100);
+	module.exports = __webpack_require__(15).getIterator = function(it){
+	  var iterFn = get(it);
+	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
+	  return anObject(iterFn.call(it));
+	};
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var classof   = __webpack_require__(101)
+	  , ITERATOR  = __webpack_require__(48)('iterator')
+	  , Iterators = __webpack_require__(30);
+	module.exports = __webpack_require__(15).getIteratorMethod = function(it){
+	  if(it != undefined)return it[ITERATOR]
+	    || it['@@iterator']
+	    || Iterators[classof(it)];
+	};
+
+/***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// getting tag from 19.1.3.6 Object.prototype.toString()
+	var cof = __webpack_require__(38)
+	  , TAG = __webpack_require__(48)('toStringTag')
+	  // ES3 wrong here
+	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
+
+	// fallback for IE11 Script Access Denied error
+	var tryGet = function(it, key){
+	  try {
+	    return it[key];
+	  } catch(e){ /* empty */ }
+	};
+
+	module.exports = function(it){
+	  var O, T, B;
+	  return it === undefined ? 'Undefined' : it === null ? 'Null'
+	    // @@toStringTag case
+	    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
+	    // builtinTag case
+	    : ARG ? cof(O)
+	    // ES3 arguments fallback
+	    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+	};
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _extends2 = __webpack_require__(90);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _classCallCheck2 = __webpack_require__(2);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(3);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(72);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(82);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _colors = __webpack_require__(83);
+
+	var _colors2 = _interopRequireDefault(_colors);
+
+	var _pool = __webpack_require__(96);
+
+	var _pool2 = _interopRequireDefault(_pool);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ModalIn = function (_Module) {
+	  (0, _inherits3.default)(ModalIn, _Module);
+
+	  function ModalIn() {
+	    (0, _classCallCheck3.default)(this, ModalIn);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  ModalIn.prototype._render = function _render() {
+	    var _x, _y, _x2, _y2, _x3, _y3, _y4;
+
+	    var travelCircleExpand = new mojs.Shape({
+	      fill: _colors2.default.BLACK,
+	      radius: 126,
+	      scale: { .1: 1 },
+	      easing: 'cubic.out',
+	      duration: 400,
+	      opacity: { 0: 1 },
+	      isForce3d: true,
+	      isTimelineLess: true
+	    });
+
+	    var travelCircle = new mojs.Shape({
+	      radius: 115,
+	      fill: _colors2.default.WHITE,
+	      scale: { .2: 1 },
+	      easing: 'back.in',
+	      isShowEnd: false,
+	      isForce3d: true,
+	      isTimelineLess: true
+	    });
+
+	    var BG_DURATION = 250;
+	    var DELAY = 300;
+
+	    var circle = new mojs.Shape({
+	      fill: _colors2.default.WHITE,
+	      radius: 500,
+	      scale: { .1: _pool2.default.getScaler(500) },
+	      isForce3d: true,
+	      easing: 'cubic.out',
+	      duration: BG_DURATION,
+	      delay: DELAY
+	    });
+
+	    var bg = new mojs.Shape({
+	      fill: _colors2.default.BLACK,
+	      radius: 500,
+	      scale: { 0: _pool2.default.getScaler(500) },
+	      duration: BG_DURATION,
+	      isForce3d: true,
+	      delay: DELAY + 50
+	    });
+
+	    var modal = new mojs.Shape({
+	      parent: this._o.el,
+	      className: 'modal-shape',
+	      shape: 'rect',
+	      x: (_x = {}, _x[-100] = 0, _x),
+	      y: (_y = {}, _y[100] = 0, _y),
+	      rx: 38,
+	      ry: 38,
+	      radiusX: 124,
+	      radiusY: 92,
+	      scaleX: { 0: 1 },
+	      scaleY: { 0: 1 },
+	      fill: _colors2.default.WHITE,
+	      duration: 300,
+	      origin: '15% 90%',
+	      easing: 'bounce.out',
+	      isForce3d: true
+	    });
+
+	    modal.el.style['overflow'] = 'hidden';
+
+	    var modalInner = this._createElement('div');
+	    modalInner.classList.add('modal__inner');
+	    modalInner.innerHTML = document.querySelector('#js-modal-template').innerHTML;
+	    this._o.el.appendChild(modalInner);
+	    mojs.h.setPrefixedStyle(modalInner, 'transform-origin', '15% 90%');
+
+	    var buttonLove = this._findEl('#js-button-love'),
+	        buttonHate = this._findEl('#js-button-hate'),
+	        modalText = this._findEl('#js-modal-text');
+
+	    var prefix = mojs.h.prefix.css,
+	        style = modalInner.style;
+
+	    var ripple = new mojs.Shape({
+	      fill: _colors2.default.RED,
+	      rx: 38,
+	      ry: 38,
+	      radius: 142,
+	      x: (_x2 = {}, _x2[-150] = 0, _x2),
+	      y: (_y2 = {}, _y2[150] = 0, _y2),
+	      scale: { 0: 1 },
+	      parent: modal.el,
+	      isForce3d: true,
+	      isShoeEnd: false,
+	      duration: 400,
+	      isTimelineLess: true,
+	      onUpdate: function onUpdate(ep, p) {
+	        var bounceP = mojs.easing.bounce.out(p),
+	            transform = 'scale(' + bounceP + ')';
+
+	        style['transform'] = transform;
+	        style[prefix + 'transform'] = transform;
+	        style.opacity = ep;
+	      }
+	    });
+
+	    var prefixedStyle = mojs.h.setPrefixedStyle.bind(mojs.h);
+	    var buttonsTween = new mojs.Tween({
+	      delay: 75,
+	      onUpdate: function onUpdate(ep, p) {
+	        var loveTransform = 'translate(' + -30 * (1 - ep) + 'px, ' + 20 * (1 - ep) + 'px) rotate(' + 3 + 'deg)',
+	            hateTransform = 'translate(' + 30 * (1 - ep) + 'px, ' + 20 * (1 - ep) + 'px) rotate(' + -2 + 'deg)',
+	            textTransform = 'translate(' + -50 * (1 - ep) + 'px, ' + 30 * (1 - ep) + 'px) scale(' + Math.min(.3 + ep, 1) + ')';
+
+	        prefixedStyle(buttonLove, 'transform', loveTransform);
+	        prefixedStyle(buttonHate, 'transform', hateTransform);
+	        prefixedStyle(modalText, 'transform', textTransform);
+	      }
+	    });
+
+	    var corner = new mojs.Shape({
+	      parent: this._o.el,
+	      fill: _colors2.default.RED,
+	      shape: 'polygon',
+	      radiusX: 45,
+	      radiusY: 45,
+	      x: (_x3 = {}, _x3[-100] = -75, _x3),
+	      y: (_y3 = {}, _y3[110] = 76, _y3),
+	      angle: 90,
+	      scale: { 0: 1 },
+	      isForce3d: true,
+	      duration: 250,
+	      isTimelineLess: true
+	    });
+
+	    var cornerShadow = new mojs.Shape({
+	      fill: 'rgba(0,0,0,.25)',
+	      shape: 'polygon',
+	      parent: corner.el,
+	      radiusX: 27,
+	      radiusY: 27,
+	      x: 20,
+	      y: 5,
+	      isForce3d: true,
+	      isShoeEnd: false,
+	      isShowStart: true
+	    });
+
+	    this.corner = corner;
+
+	    cornerShadow.el.style['z-index'] = '-1';
+
+	    var ShapeStagger = mojs.stagger(mojs.Shape);
+
+	    var triangles = [];
+	    var TRI_OPTS = {
+	      parent: this._o.el,
+	      shape: 'polygon',
+	      y: (_y4 = {}, _y4[-115] = -105, _y4),
+	      x: { 'rand(70, 100)': 'rand(45, 55)' },
+	      radius: 'rand(8, 12)',
+	      scale: { 1: 0 },
+	      isForce3d: true,
+	      isTimelineLess: true
+	    };
+	    for (var i = 0; i < 2; i++) {
+	      triangles.push(new mojs.Shape((0, _extends3.default)({}, TRI_OPTS, {
+	        fill: [_colors2.default.RED, _colors2.default.WHITE][i],
+	        delay: i * 250
+	      })));
+	    }
+
+	    var lines = [];
+	    var LINES_OPTS = {
+	      parent: this._o.el,
+	      fill: 'none',
+	      shape: 'curve',
+	      radiusX: 30,
+	      radiusY: 11,
+	      y: 76,
+	      strokeLinecap: 'round',
+	      strokeDasharray: '100%',
+	      strokeDashoffset: { '-100%': '100%' },
+	      isShowEnd: false,
+	      isTimelineLess: true
+	    };
+
+	    for (var _i = 0; _i < 3; _i++) {
+	      lines.push(new mojs.Shape((0, _extends3.default)({}, LINES_OPTS, {
+	        stroke: [_colors2.default.RED, _colors2.default.WHITE, _colors2.default.RED][_i],
+	        x: [{ 70: 117 }, { 55: 117 }, { 40: 117 }][_i],
+	        angle: [133, 123, 113][_i],
+	        delay: 50 * _i
+	      })));
+	    }
+
+	    var modalTimeline = new mojs.Timeline({ delay: BG_DURATION + 100 });
+	    modalTimeline.add(modal, ripple, corner, triangles, lines, buttonsTween);
+
+	    this.timeline = new mojs.Timeline();
+	    this.timeline.add(bg, modalTimeline, circle, travelCircle, travelCircleExpand);
+
+	    return this;
+	  };
+
+	  return ModalIn;
+	}(_module2.default);
+
+	exports.default = ModalIn;
 
 /***/ }
 /******/ ]);
