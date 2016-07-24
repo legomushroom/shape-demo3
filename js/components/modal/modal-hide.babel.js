@@ -19,9 +19,7 @@ class ModalHide extends Module {
       radius:       500,
       duration:     500,
       scale:        { .25 : pool.getScaler( 500 ) },
-      // scale:        .25,
       easing:       'cubic.out',
-      // isShowStart:  true,
       isTimelineLess: true,
       isForce3d: true
     });
@@ -42,56 +40,30 @@ class ModalHide extends Module {
     });
 
     const burst = new mojs.Burst({
-      left: '50%', top: '50%',
-      count:    6,
-      radius:   { 100: 250 },
-      parent:   this.parent,
+      count:      5,
+      radius:     { 50: 250 },
+      parent:     this.parent,
       children: {
-        fill:   'white',
-        shape:  'line',
-        stroke: [ COLORS.WHITE, COLORS.VINOUS ],
-        strokeWidth: 12, 
-        radius: 'rand(30, 60)',
-        radiusY: 0,
-        scale: { 1: 0 },
-        // duration: 800,
-        pathScale: 'rand(.5, 1)',
-        isForce3d: true,
-        degreeShift: 'rand(0, 360)',
-        // angle: 90
+        fill:         'white',
+        shape:        'line',
+        stroke:       [ COLORS.WHITE, COLORS.VINOUS ],
+        strokeWidth:  12, 
+        radius:       'rand(30, 60)',
+        radiusY:      0,
+        scale:        { 1: 0 },
+        pathScale:    'rand(.5, 1)',
+        degreeShift:  'rand(-360, 360)',
+        isForce3d:    true,
       }
     });
 
     const burst2 = new mojs.Burst({
-      count: 3,
-      left: '50%', top: '50%',
-      radius: { 100: 250 },
-      parent: this.parent,
-      angle: 90,
-      children: {
-        fill: 'white',
-        shape: 'line',
-        stroke: [ COLORS.WHITE, COLORS.VINOUS ],
-        strokeWidth: 12, 
-        radius: 'rand(30, 60)',
-        radiusY: 0,
-        scale: { 1: 0 },
-        // duration: 800,
-        pathScale: 'rand(.5, 1)',
-        isForce3d: true
-        // degreeShift: 90,
-        // angle: 90
-      }
-    });
-
-    const burst3 = new mojs.Burst({
       count:  3,
-      left:   '50%', top: '50%',
       radius: { 0: 250 },
       parent: this.parent,
+      angle:  90,
       children: {
         shape:      [ 'circle', 'rect' ],
-        points:     5,
         fill:       [ COLORS.WHITE, COLORS.VINOUS ],
         radius:     'rand(30, 60)',
         scale:      { 1: 0 },
@@ -130,9 +102,7 @@ class ModalHide extends Module {
       .add(
         redBg,
         // whiteBg,
-        burst,
-        // burst2,
-        burst3,
+        burst, burst2,
         circle,
         circle2,
         new GeometricShapes,

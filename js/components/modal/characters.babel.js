@@ -214,7 +214,7 @@ class Characters extends Module {
       x:        CHAR_STEP + X_SHIFT,
       y:        Y_SHIFT,
       radius:   { 10: 100 },
-      timeline: { delay: 2200 },
+      timeline: { delay: 2150 },
       children: {
         shape:        'line',
         scale:        { 1 : 0 },
@@ -241,10 +241,7 @@ class Characters extends Module {
       delay: 1550,
       duration: 100,
       isTimelineLess: true,
-      isShowEnd: false,
-      onComplete () {
-        // showButton.timeline.replay();
-      }
+      isShowEnd: false
     });
 
     line.el.style[ 'z-index' ] = 1;
@@ -257,7 +254,6 @@ class Characters extends Module {
       radius:  15,
       radiusY: 0,
       x:      { [X_SHIFT] : CHAR_STEP + X_SHIFT },
-      // x:      200,
       y:       50 + Y_SHIFT,
       scaleX: { 1 : 0 },
       strokeWidth: 4,
@@ -280,16 +276,15 @@ class Characters extends Module {
       angle:   -60,
       x:        3,
       radius:    { 55: 95 },
-      timeline: { delay: 2500 },
+      timeline: { delay: 2650 },
       children: {
         shape:        'line',
         scale:        { 1 : 0 },
         radius:       12,
-        // radius:       'rand(8, 18)',
         radiusY:      0,
         stroke:       COLORS.VINOUS,
         strokeWidth:  7,
-        duration:     400,
+        duration:     500,
         isForce3d:    true
       }
     });

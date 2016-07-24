@@ -9,8 +9,6 @@ import Modal      from './components/modal/modal';
 import ModalHide  from './components/modal/modal-hide';
 import Characters from './components/modal/characters';
 
-import pool from './pool';
-
 // require('../css/main.postcss.css');
 // const CLASSES = require('../css/main.postcss.css.json');
 
