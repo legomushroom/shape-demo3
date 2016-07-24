@@ -12623,6 +12623,10 @@
 
 	exports.__esModule = true;
 
+	var _extends2 = __webpack_require__(93);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
 	var _classCallCheck2 = __webpack_require__(2);
 
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -12672,32 +12676,43 @@
 
 	    this.timeline = new mojs.Timeline();
 
-	    var whiteBg = new mojs.Shape({
+	    var BG_OPTS = {
 	      parent: this.parent,
-	      fill: _colors2.default.WHITE,
-	      left: '50%', top: '50%',
-	      radius: 500,
+	      radius: 100,
+	      scale: { .25: 3 },
 	      duration: 500,
-	      scale: { .25: _pool2.default.getScaler(500) },
 	      easing: 'cubic.out',
-	      isTimelineLess: true,
-	      isForce3d: true
-	    });
+	      isForce3d: true,
+	      isTimelineLess: true
+	    };
 
-	    var redBg = new mojs.Shape({
-	      parent: this.parent,
-	      fill: _colors2.default.RED,
-	      left: '50%', top: '50%',
+	    var whiteBigBg = new mojs.Shape((0, _extends3.default)({}, BG_OPTS, {
+	      fill: _colors2.default.WHITE,
 	      radius: 500,
-	      duration: 500,
+	      scale: { .25: _pool2.default.getScaler(500) }
+	    }));
+
+	    var redBigBg = new mojs.Shape((0, _extends3.default)({}, BG_OPTS, {
+	      fill: _colors2.default.RED,
+	      radius: 500,
 	      delay: 50,
 	      scale: { .25: _pool2.default.getScaler(500) },
-	      // scale:        .25,
-	      easing: 'quad.out',
-	      // isShowStart:  true,
-	      isTimelineLess: true,
-	      isForce3d: true
-	    });
+	      easing: 'quad.out'
+	    }));
+
+	    // BLAST
+	    var whiteBg = new mojs.Shape((0, _extends3.default)({}, BG_OPTS, {
+	      radius: BG_OPTS.radius - 2,
+	      fill: _colors2.default.WHITE,
+	      duration: 600
+	    }));
+
+	    var redBg = new mojs.Shape((0, _extends3.default)({}, BG_OPTS, {
+	      fill: _colors2.default.RED,
+	      duration: 600,
+	      delay: 50,
+	      easing: 'quad.out'
+	    }));
 
 	    var burst = new mojs.Burst({
 	      count: 5,
@@ -12758,9 +12773,7 @@
 
 	    this.characters = new _characters2.default({ delay: 1600 });
 
-	    this.timeline.add(redBg,
-	    // whiteBg,
-	    burst, burst2, circle, circle2, new _geometricShapes2.default(), this.characters);
+	    this.timeline.add(redBigBg, whiteBigBg, redBg, whiteBg, burst, burst2, circle, circle2, new _geometricShapes2.default(), this.characters);
 
 	    return this;
 	  };
@@ -13041,7 +13054,7 @@
 	        radiusY: 0,
 	        stroke: _colors2.default.VINOUS,
 	        strokeWidth: 7,
-	        duration: 450,
+	        duration: 550,
 	        isForce3d: true
 	      }
 	    });
@@ -13063,7 +13076,7 @@
 	        radiusY: 0,
 	        stroke: _colors2.default.VINOUS,
 	        strokeWidth: 7,
-	        duration: 450,
+	        duration: 550,
 	        isForce3d: true
 	      }
 	    });

@@ -12,31 +12,46 @@ class ModalHide extends Module {
 
     this.timeline = new mojs.Timeline;
 
-    const whiteBg = new mojs.Shape({
-      parent:       this.parent,
-      fill:         COLORS.WHITE,
-      left:         '50%', top: '50%',
-      radius:       500,
-      duration:     500,
-      scale:        { .25 : pool.getScaler( 500 ) },
-      easing:       'cubic.out',
+    const BG_OPTS = {
+      parent:         this.parent,
+      radius:         100,
+      scale:          { .25 : 3 },
+      duration:       500,
+      easing:         'cubic.out',
+      isForce3d:      true,
       isTimelineLess: true,
-      isForce3d: true
+    }
+
+    const whiteBigBg = new mojs.Shape({
+      ...BG_OPTS,
+      fill:         COLORS.WHITE,
+      radius:       500,
+      scale:        { .25 : pool.getScaler( 500 ) }
+    });
+
+    const redBigBg = new mojs.Shape({
+      ...BG_OPTS,
+      fill:         COLORS.RED,
+      radius:       500,
+      delay:        50,
+      scale:        { .25 : pool.getScaler( 500 ) },
+      easing:       'quad.out'
+    });
+
+    // BLAST
+    const whiteBg = new mojs.Shape({
+      ...BG_OPTS,
+      radius:         BG_OPTS.radius-2,
+      fill:           COLORS.WHITE,
+      duration:       600,
     });
 
     const redBg = new mojs.Shape({
-      parent:       this.parent,
-      fill:         COLORS.RED,
-      left:         '50%', top: '50%',
-      radius:       500,
-      duration:     500,
-      delay:        50,
-      scale:        { .25 : pool.getScaler( 500 ) },
-      // scale:        .25,
-      easing:       'quad.out',
-      // isShowStart:  true,
-      isTimelineLess: true,
-      isForce3d:      true
+      ...BG_OPTS,
+      fill:           COLORS.RED,
+      duration:       600,
+      delay:          50,
+      easing:         'quad.out'
     });
 
     const burst = new mojs.Burst({
@@ -100,8 +115,7 @@ class ModalHide extends Module {
 
     this.timeline
       .add(
-        redBg,
-        // whiteBg,
+        redBigBg, whiteBigBg, redBg, whiteBg,
         burst, burst2,
         circle,
         circle2,

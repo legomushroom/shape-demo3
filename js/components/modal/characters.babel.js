@@ -200,7 +200,7 @@ class Characters extends Module {
         radiusY:      0,
         stroke:       COLORS.VINOUS,
         strokeWidth:  7,
-        duration:     450,
+        duration:     550,
         isForce3d:    true
       }
     });
@@ -222,7 +222,7 @@ class Characters extends Module {
         radiusY:      0,
         stroke:       COLORS.VINOUS,
         strokeWidth:  7,
-        duration:     450,
+        duration:     550,
         isForce3d:    true
       }
     });
